@@ -19,6 +19,14 @@ class ImportJob(Base):
     completed_at = Column(DateTime(timezone=True), nullable=True)
     notes = Column(Text, nullable=True)
 
+class Category(Base):
+    __tablename__ = "categories"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String, nullable=False, unique=True)
+    created_at = Column(DateTime(timezone=True), default=utcnow)
+    
+    conversations = relationship("Conversation", back_populates="category")
+
 class Conversation(Base):
     __tablename__ = "conversations"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -29,7 +37,9 @@ class Conversation(Base):
     imported_at = Column(DateTime(timezone=True), default=utcnow)
     raw_text = Column(Text, nullable=True)
     summary = Column(Text, nullable=True)
+    category_id = Column(UUID(as_uuid=True), ForeignKey("categories.id", ondelete="SET NULL"), nullable=True)
 
+    category = relationship("Category", back_populates="conversations")
     messages = relationship("Message", back_populates="conversation", cascade="all, delete-orphan")
     chunks = relationship("Chunk", back_populates="conversation", cascade="all, delete-orphan")
 

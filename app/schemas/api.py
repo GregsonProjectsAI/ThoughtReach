@@ -36,6 +36,18 @@ class MessageOut(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+class CategoryCreate(BaseModel):
+    name: str
+
+class CategoryOut(BaseModel):
+    id: UUID
+    name: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+class ConversationCategoryUpdate(BaseModel):
+    category_id: Optional[UUID] = None
+
 class ConversationOut(BaseModel):
     id: UUID
     title: str
@@ -44,6 +56,8 @@ class ConversationOut(BaseModel):
     created_at: Optional[datetime]
     imported_at: datetime
     summary: Optional[str] = None
+    category_id: Optional[UUID] = None
+    category: Optional[CategoryOut] = None
     messages: Optional[List[MessageOut]] = None
 
     @computed_field
