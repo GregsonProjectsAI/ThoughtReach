@@ -15,7 +15,7 @@ async def list_tags(db: AsyncSession = Depends(get_db)):
     result = await db.execute(stmt)
     return list(result.scalars().all())
 
-@router.post("", response_model=TagOut)
+@router.post("", response_model=TagOut, status_code=201)
 async def create_tag(payload: TagCreate, db: AsyncSession = Depends(get_db)):
     name = payload.name.strip().lower()
     if not name:

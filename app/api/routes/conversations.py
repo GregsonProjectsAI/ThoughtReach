@@ -1,20 +1,34 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from app.db.session import get_db
 from app.schemas.api import ConversationOut, ConversationCategoryUpdate, ConversationTagsUpdate
-from app.models.models import Conversation, Category, Tag
+from app.models.models import Conversation, Category, Tag, conversation_tags
 
 router = APIRouter(prefix="/conversations", tags=["Conversations"])
 
 @router.get("", response_model=list[ConversationOut])
-async def list_conversations(db: AsyncSession = Depends(get_db), limit: int = 50):
+async def list_conversations(
+    db: AsyncSession = Depends(get_db),
+    limit: int = Query(default=50, le=100),
+    offset: int = Query(default=0, ge=0),
+    tag_ids: list[UUID] = Query(default=[]),
+    category_ids: list[UUID] = Query(default=[])
+):
     stmt = select(Conversation).options(
         selectinload(Conversation.category),
         selectinload(Conversation.tags)
-    ).order_by(Conversation.imported_at.desc()).limit(limit)
+    )
+    
+    if category_ids:
+        stmt = stmt.where(Conversation.category_id.in_(category_ids))
+    
+    if tag_ids:
+        stmt = stmt.join(conversation_tags).where(conversation_tags.c.tag_id.in_(tag_ids)).distinct()
+    
+    stmt = stmt.order_by(Conversation.imported_at.desc()).offset(offset).limit(limit)
     result = await db.execute(stmt)
     return list(result.scalars().all())
 

@@ -70,7 +70,7 @@ class ConversationOut(BaseModel):
     summary: Optional[str] = None
     category_id: Optional[UUID] = None
     category: Optional[CategoryOut] = None
-    tags: Optional[List[TagOut]] = None
+    tags: List[TagOut] = Field(default_factory=list)
     messages: Optional[List[MessageOut]] = None
 
     @computed_field

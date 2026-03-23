@@ -8,7 +8,7 @@ from app.models.models import Category
 
 router = APIRouter(prefix="/categories", tags=["Categories"])
 
-@router.post("", response_model=CategoryOut)
+@router.post("", response_model=CategoryOut, status_code=201)
 async def create_category(payload: CategoryCreate, db: AsyncSession = Depends(get_db)):
     name = payload.name.strip()
     if not name:
