@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
-from app.models.models import Chunk, Conversation
+from sqlalchemy import select, func
+from app.models.models import Chunk, Conversation, Message
 from app.services.embeddings import generate_embeddings
 
 async def search_chunks(query: str, db: AsyncSession, limit: int = 10):
@@ -24,10 +24,42 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10):
     
     import math
     out = []
+    message_counts_cache = {}
+    
     for chunk, conversation, distance in rows:
         sim_score = 0.0
         if distance is not None and not math.isnan(distance):
             sim_score = 1.0 - distance
+            
+        surrounding = []
+        s_idx = chunk.message_start_index
+        e_idx = chunk.message_end_index
+        
+        if conversation.id not in message_counts_cache:
+            count_stmt = select(func.count()).select_from(Message).where(Message.conversation_id == conversation.id)
+            total_msgs = (await db.execute(count_stmt)).scalar() or 0
+            message_counts_cache[conversation.id] = total_msgs
+        else:
+            total_msgs = message_counts_cache[conversation.id]
+            
+        rel_pos = round(s_idx / total_msgs, 2) if total_msgs > 0 else 0.0
+        
+        stmt_msgs = (
+            select(Message)
+            .where(Message.conversation_id == conversation.id)
+            .where(Message.message_index >= s_idx - 1)
+            .where(Message.message_index <= e_idx + 1)
+            .order_by(Message.message_index)
+        )
+        msg_result = await db.execute(stmt_msgs)
+        msgs = msg_result.scalars().all()
+        
+        for m in msgs:
+            pos = m.message_index - s_idx
+            surrounding.append({
+                "position": pos,
+                "text": f"{m.role}: {m.content}"
+            })
             
         out.append({
             "conversation_id": conversation.id,
@@ -36,7 +68,11 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10):
             "matched_chunk_text": chunk.chunk_text,
             "similarity_score": sim_score,
             "message_start_index": chunk.message_start_index,
-            "message_end_index": chunk.message_end_index
+            "message_end_index": chunk.message_end_index,
+            "chunk_index": chunk.chunk_index,
+            "message_count": total_msgs,
+            "relative_position": rel_pos,
+            "surrounding_messages": surrounding
         })
     return out
 
