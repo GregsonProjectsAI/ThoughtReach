@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 from typing import List, Optional
 from datetime import datetime
 from uuid import UUID
@@ -43,7 +43,13 @@ class ConversationOut(BaseModel):
     external_id: Optional[str]
     created_at: Optional[datetime]
     imported_at: datetime
+    summary: Optional[str] = None
     messages: Optional[List[MessageOut]] = None
+
+    @computed_field
+    @property
+    def has_summary(self) -> bool:
+        return bool(self.summary is not None and self.summary.strip())
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -64,7 +70,13 @@ class SearchRequest(BaseModel):
 class SearchResultOut(BaseModel):
     conversation_id: UUID
     conversation_title: str
+    conversation_summary: Optional[str] = None
     matched_chunk_text: str
     similarity_score: float
     message_start_index: int
     message_end_index: int
+
+    @computed_field
+    @property
+    def has_summary(self) -> bool:
+        return bool(self.conversation_summary is not None and self.conversation_summary.strip())

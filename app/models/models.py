@@ -28,6 +28,7 @@ class Conversation(Base):
     created_at = Column(DateTime(timezone=True), nullable=True)
     imported_at = Column(DateTime(timezone=True), default=utcnow)
     raw_text = Column(Text, nullable=True)
+    summary = Column(Text, nullable=True)
 
     messages = relationship("Message", back_populates="conversation", cascade="all, delete-orphan")
     chunks = relationship("Chunk", back_populates="conversation", cascade="all, delete-orphan")

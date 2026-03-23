@@ -27,10 +27,31 @@ async def process_paste_import(job_id, request: PasteImportRequest, db: AsyncSes
                 source_type=conv_data.source_type,
                 external_id=conv_data.external_id,
                 created_at=conv_data.created_at,
-                raw_text=conv_data.raw_text
+                raw_text=conv_data.raw_text,
+                summary=getattr(conv_data, "summary", None)
             )
+            
             db.add(conv)
             await db.flush() # get conv.id
+            
+            import logging
+            logger = logging.getLogger(__name__)
+
+            full_text = conv_data.raw_text
+            if not full_text and conv_data.messages:
+                full_text = "\n".join(f"{m.role}: {m.content}" for m in conv_data.messages)
+                
+            if conv.summary:
+                logger.info(f"Skipped summary generation for {conv.id}: already exists")
+            elif not full_text:
+                logger.info(f"Skipped summary generation for {conv.id}: no usable source text")
+            else:
+                from app.services.embeddings import generate_summary
+                conv.summary = await generate_summary(full_text)
+                if conv.summary:
+                    logger.info(f"Completed summary generation successfully for {conv.id}")
+                else:
+                    logger.warning(f"Failed summary generation for {conv.id}: ignored")
             
             chunk_index_counter = 0
             
