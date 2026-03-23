@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime, timezone
-from sqlalchemy import Column, String, Text, DateTime, ForeignKey, Integer
+from sqlalchemy import Column, String, Text, DateTime, ForeignKey, Integer, Table
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.dialects.postgresql import UUID
 from pgvector.sqlalchemy import Vector
@@ -18,6 +18,21 @@ class ImportJob(Base):
     started_at = Column(DateTime(timezone=True), default=utcnow)
     completed_at = Column(DateTime(timezone=True), nullable=True)
     notes = Column(Text, nullable=True)
+
+conversation_tags = Table(
+    "conversation_tags",
+    Base.metadata,
+    Column("conversation_id", UUID(as_uuid=True), ForeignKey("conversations.id", ondelete="CASCADE"), primary_key=True),
+    Column("tag_id", UUID(as_uuid=True), ForeignKey("tags.id", ondelete="CASCADE"), primary_key=True)
+)
+
+class Tag(Base):
+    __tablename__ = "tags"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String, nullable=False, unique=True)
+    created_at = Column(DateTime(timezone=True), default=utcnow)
+    
+    conversations = relationship("Conversation", secondary=conversation_tags, back_populates="tags")
 
 class Category(Base):
     __tablename__ = "categories"
@@ -40,6 +55,7 @@ class Conversation(Base):
     category_id = Column(UUID(as_uuid=True), ForeignKey("categories.id", ondelete="SET NULL"), nullable=True)
 
     category = relationship("Category", back_populates="conversations")
+    tags = relationship("Tag", secondary=conversation_tags, back_populates="conversations")
     messages = relationship("Message", back_populates="conversation", cascade="all, delete-orphan")
     chunks = relationship("Chunk", back_populates="conversation", cascade="all, delete-orphan")
 
