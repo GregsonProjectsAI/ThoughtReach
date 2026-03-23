@@ -4,20 +4,27 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from app.db.session import get_db
-from app.schemas.api import ConversationOut, ConversationCategoryUpdate
-from app.models.models import Conversation, Category
+from app.schemas.api import ConversationOut, ConversationCategoryUpdate, ConversationTagsUpdate
+from app.models.models import Conversation, Category, Tag
 
 router = APIRouter(prefix="/conversations", tags=["Conversations"])
 
 @router.get("", response_model=list[ConversationOut])
 async def list_conversations(db: AsyncSession = Depends(get_db), limit: int = 50):
-    stmt = select(Conversation).options(selectinload(Conversation.category)).order_by(Conversation.imported_at.desc()).limit(limit)
+    stmt = select(Conversation).options(
+        selectinload(Conversation.category),
+        selectinload(Conversation.tags)
+    ).order_by(Conversation.imported_at.desc()).limit(limit)
     result = await db.execute(stmt)
     return list(result.scalars().all())
 
 @router.get("/{conversation_id}", response_model=ConversationOut)
 async def get_conversation(conversation_id: UUID, db: AsyncSession = Depends(get_db)):
-    stmt = select(Conversation).options(selectinload(Conversation.messages), selectinload(Conversation.category)).where(Conversation.id == conversation_id)
+    stmt = select(Conversation).options(
+        selectinload(Conversation.messages),
+        selectinload(Conversation.category),
+        selectinload(Conversation.tags)
+    ).where(Conversation.id == conversation_id)
     result = await db.execute(stmt)
     conv = result.scalars().first()
     if not conv:
@@ -28,7 +35,8 @@ async def get_conversation(conversation_id: UUID, db: AsyncSession = Depends(get
 async def update_conversation_category(conversation_id: UUID, payload: ConversationCategoryUpdate, db: AsyncSession = Depends(get_db)):
     stmt = select(Conversation).options(
         selectinload(Conversation.messages),
-        selectinload(Conversation.category)
+        selectinload(Conversation.category),
+        selectinload(Conversation.tags)
     ).where(Conversation.id == conversation_id)
     result = await db.execute(stmt)
     conv = result.scalars().first()
@@ -44,6 +52,35 @@ async def update_conversation_category(conversation_id: UUID, payload: Conversat
             raise HTTPException(status_code=404, detail="Category not found")
             
     conv.category_id = payload.category_id
+    await db.commit()
+    await db.refresh(conv)
+    
+    return conv
+
+@router.put("/{conversation_id}/tags", response_model=ConversationOut)
+async def update_conversation_tags(conversation_id: UUID, payload: ConversationTagsUpdate, db: AsyncSession = Depends(get_db)):
+    stmt = select(Conversation).options(
+        selectinload(Conversation.messages),
+        selectinload(Conversation.category),
+        selectinload(Conversation.tags)
+    ).where(Conversation.id == conversation_id)
+    result = await db.execute(stmt)
+    conv = result.scalars().first()
+    
+    if not conv:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+        
+    tags = []
+    if payload.tag_ids:
+        tags_stmt = select(Tag).where(Tag.id.in_(payload.tag_ids))
+        tags_result = await db.execute(tags_stmt)
+        tags = list(tags_result.scalars().all())
+        
+        # Verify all provided tag IDs exist natively
+        if len(tags) != len(set(payload.tag_ids)):
+            raise HTTPException(status_code=404, detail="One or more tags not found")
+            
+    conv.tags = tags
     await db.commit()
     await db.refresh(conv)
     

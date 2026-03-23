@@ -45,8 +45,20 @@ class CategoryOut(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+class TagCreate(BaseModel):
+    name: str
+
+class TagOut(BaseModel):
+    id: UUID
+    name: str
+
+    model_config = ConfigDict(from_attributes=True)
+
 class ConversationCategoryUpdate(BaseModel):
     category_id: Optional[UUID] = None
+
+class ConversationTagsUpdate(BaseModel):
+    tag_ids: List[UUID]
 
 class ConversationOut(BaseModel):
     id: UUID
@@ -58,6 +70,7 @@ class ConversationOut(BaseModel):
     summary: Optional[str] = None
     category_id: Optional[UUID] = None
     category: Optional[CategoryOut] = None
+    tags: Optional[List[TagOut]] = None
     messages: Optional[List[MessageOut]] = None
 
     @computed_field
