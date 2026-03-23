@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+sqlalchemy[asyncio]
+asyncpg
+greenlet
+alembic
+pgvector
+openai
+pydantic
+pydantic-settings
+python-dotenv
+tiktoken
+python-multipart

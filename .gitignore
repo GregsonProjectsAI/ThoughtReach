@@ -1,0 +1,18 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs / temp
+*.log
+docker_error.txt
+
+# Optional test scripts (keep repo clean for now)
+test_*.py
