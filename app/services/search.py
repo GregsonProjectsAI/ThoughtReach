@@ -107,7 +107,7 @@ async def get_formatted_search_context(db: AsyncSession, query: str, limit: int 
     a ready-to-use structured context block for downstream LLM agents.
     It delegates exclusively to semantic layout constraints and serves solely as internal RAG wiring.
     """
-    raw_results = await search_chunks(db, query, limit)
+    raw_results = await search_chunks(query, db, limit)
     return format_search_results_for_llm(raw_results)
 
 def assemble_rag_prompt(query: str, formatted_context: str) -> str:

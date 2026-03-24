@@ -60,6 +60,20 @@ class ConversationCategoryUpdate(BaseModel):
 class ConversationTagsUpdate(BaseModel):
     tag_ids: List[UUID]
 
+class ConversationSummaryOut(BaseModel):
+    id: UUID
+    title: str
+    summary: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+class ConversationSummariesResponse(BaseModel):
+    summaries: List[ConversationSummaryOut]
+    total_count: Optional[int] = None
+    top_words: Optional[List[dict]] = None
+    grouped_summaries: Optional[dict] = None
+    insight: Optional[str] = None
+
 class ConversationOut(BaseModel):
     id: UUID
     title: str
