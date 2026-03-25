@@ -1,9 +1,12 @@
+from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
-from app.models.models import Chunk, Conversation, Message
+from app.models.models import Chunk, Conversation, Message, Category
 from app.services.embeddings import generate_embeddings
 
-async def search_chunks(query: str, db: AsyncSession, limit: int = 10):
+from uuid import UUID
+
+async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_id: Optional[UUID] = None):
     query_embs = await generate_embeddings([query])
     if not query_embs:
         return []
@@ -12,12 +15,16 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10):
     distance_expr = Chunk.embedding.cosine_distance(query_vector).label('distance')
     
     stmt = (
-        select(Chunk, Conversation, distance_expr)
+        select(Chunk, Conversation, Category, distance_expr)
         .join(Conversation, Chunk.conversation_id == Conversation.id)
+        .outerjoin(Category, Conversation.category_id == Category.id)
         .where(Chunk.embedding.isnot(None))
-        .order_by(distance_expr)
-        .limit(limit)
     )
+    
+    if category_id:
+        stmt = stmt.where(Conversation.category_id == category_id)
+        
+    stmt = stmt.order_by(distance_expr).limit(limit)
     
     result = await db.execute(stmt)
     rows = result.all()
@@ -26,7 +33,7 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10):
     out = []
     message_counts_cache = {}
     
-    for chunk, conversation, distance in rows:
+    for chunk, conversation, category, distance in rows:
         sim_score = 0.0
         if distance is not None and not math.isnan(distance):
             sim_score = 1.0 - distance
@@ -65,6 +72,8 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10):
             "conversation_id": conversation.id,
             "conversation_title": conversation.title,
             "conversation_summary": conversation.summary,
+            "category_id": conversation.category_id,
+            "category_name": category.name if category else None,
             "matched_chunk_text": chunk.chunk_text,
             "similarity_score": sim_score,
             "message_start_index": chunk.message_start_index,

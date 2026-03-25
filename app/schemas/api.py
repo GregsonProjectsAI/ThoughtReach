@@ -108,11 +108,14 @@ class ImportJobOut(BaseModel):
 class SearchRequest(BaseModel):
     query: str
     limit: int = 10
+    category_id: Optional[UUID] = None
 
 class SearchResultOut(BaseModel):
     conversation_id: UUID
     conversation_title: str
     conversation_summary: Optional[str] = None
+    category_id: Optional[UUID] = None
+    category_name: Optional[str] = None
     matched_chunk_text: str
     similarity_score: float
     message_start_index: int
