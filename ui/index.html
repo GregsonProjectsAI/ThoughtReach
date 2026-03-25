@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThoughtReach Search</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="search-container">
+        <header>
+            <h1>ThoughtReach Search</h1>
+        </header>
+
+        <section class="search-bar-section">
+            <form id="search-form" class="search-form">
+                <input type="text" id="search-input" placeholder="Search your conversations..." required />
+                <select id="category-select">
+                    <option value="">All Categories</option>
+                </select>
+                <button type="submit">Search</button>
+            </form>
+            <div id="status-message" class="status-message"></div>
+        </section>
+
+        <section class="results-area" id="results-container">
+            <!-- Results will be injected here -->
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

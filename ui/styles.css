@@ -1,0 +1,201 @@
+/* Minimal, Clean, Typography-focused CSS */
+:root {
+    --primary-color: #2563eb;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --bg-main: #f9fafb;
+    --bg-card: #ffffff;
+    --border-color: #e5e7eb;
+    --border-radius: 6px;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --accent-success: #10b981;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.5;
+    margin: 0;
+    padding: 2rem;
+}
+
+.search-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.search-form {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+#search-input {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+#category-select {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: #fff;
+    max-width: 250px;
+    text-overflow: ellipsis;
+}
+
+button[type="submit"] {
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+button[type="submit"]:hover {
+    background-color: #1d4ed8;
+}
+
+.status-message {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    min-height: 1.5rem;
+}
+
+.results-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Result Card */
+.result-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.result-card:hover {
+    border-color: #9ca3af;
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.result-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.result-meta {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 9999px;
+    background-color: #f3f4f6;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.badge.category {
+    background-color: #e0e7ff;
+    color: #3730a3;
+}
+
+.badge.score {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.snippet-container {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+
+.snippet-preview {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.expanded-content {
+    display: none;
+    margin-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+.result-card.expanded .expanded-content {
+    display: block;
+}
+
+.surrounding-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.message {
+    background-color: #f9fafb;
+    padding: 0.75rem;
+    border-radius: 4px;
+    border-left: 3px solid var(--border-color);
+}
+
+.message.user {
+    border-left-color: var(--primary-color);
+}
+
+.message.assistant {
+    border-left-color: var(--accent-success);
+}
+
+.message-role {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+}
+
+.message-content {
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+}
+
+/* Utilities */
+.hidden {
+    display: none;
+}
