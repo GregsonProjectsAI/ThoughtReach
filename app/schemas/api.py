@@ -86,6 +86,7 @@ class ConversationOut(BaseModel):
     category: Optional[CategoryOut] = None
     tags: List[TagOut] = Field(default_factory=list)
     messages: Optional[List[MessageOut]] = None
+    content_fingerprint: Optional[str] = None
 
     @computed_field
     @property
@@ -116,6 +117,7 @@ class SearchResultOut(BaseModel):
     similarity_score: float
     message_start_index: int
     message_end_index: int
+    surrounding_messages: Optional[List[dict]] = None
 
     @computed_field
     @property

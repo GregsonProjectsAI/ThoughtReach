@@ -1,0 +1,46 @@
+{
+  "existence": {
+    "Understanding Vector Embeddings": "c10c4a47-88a0-4029-8b16-a8d471aebf1c",
+    "LLM Memory and Context Windows": "1352ba68-bc8d-40a5-87eb-9f9429d1a74e",
+    "Japan Travel Itinerary - Autumn": "250a77dd-2311-4997-b870-6666513b0e9d",
+    "Personal Finance: Index Funds vs Stock Picking": "49fe6d05-403d-40df-91f1-072fe02fd517",
+    "Building a Zone 2 Running Base": "4cee76b8-eae9-46fb-985b-5465ba00eb1c",
+    "PKM: Organizing Digital Notes": "d65f0e1f-5c03-4381-80db-afa5bbb2d2ea"
+  },
+  "spot_checks": {
+    "Understanding Vector Embeddings": {
+      "id": "c10c4a47-88a0-4029-8b16-a8d471aebf1c",
+      "first_3_messages": [
+        {
+          "role": "user",
+          "content": "Can you explain how vector databases work? I'm building a RAG application."
+        },
+        {
+          "role": "assistant",
+          "content": "A vector database stores data as high-dimensional vectors, which are mathematical representations of"
+        },
+        {
+          "role": "user",
+          "content": "Oh, so it's not just checking if a word exists in the text."
+        }
+      ]
+    },
+    "Japan Travel Itinerary - Autumn": {
+      "id": "250a77dd-2311-4997-b870-6666513b0e9d",
+      "first_3_messages": [
+        {
+          "role": "user",
+          "content": "I'm planning a 10-day trip to Japan in late November. I want to see autumn leaves. Where should I go"
+        },
+        {
+          "role": "assistant",
+          "content": "Late November is peak season for autumn foliage (koyo) in central Japan! For a 10-day trip, a classi"
+        },
+        {
+          "role": "user",
+          "content": "What are the best spots in Kyoto for the leaves?"
+        }
+      ]
+    }
+  }
+}

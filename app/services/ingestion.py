@@ -1,8 +1,168 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from app.models.models import ImportJob, Conversation, Message, Chunk, utcnow
 from app.schemas.api import PasteImportRequest
 from app.services.embeddings import generate_embeddings
 from typing import List
+import hashlib
+import re as _re
+
+
+def compute_fingerprint(raw_text: str) -> str:
+    """Return SHA256 hex digest of the raw text for duplicate detection."""
+    return hashlib.sha256(raw_text.encode("utf-8")).hexdigest()
+
+
+def parse_raw_text_to_messages(raw_text: str) -> List[dict]:
+    """
+    Deterministically split raw_text into message dicts.
+
+    Step 1 — Speaker-based parsing:
+        Detects lines starting with 'User:' or 'Assistant:' (case-insensitive).
+        Continuation lines are appended to the current speaker's content.
+        Strict order is preserved.
+
+    Step 2 — Fallback (double-newline split):
+        Splits on two or more consecutive newlines.
+        Assigns 'user' / 'assistant' roles by alternating index (0 → user).
+
+    Guarantees:
+        - All content is stripped of leading/trailing whitespace.
+        - Empty segments are always discarded.
+        - Result is never empty: if all parsing yields nothing, the entire
+          raw_text is wrapped as a single {"role": "user"} message.
+
+    Output format: [{"role": "user"|"assistant", "content": str}, ...]
+    """
+    # Only match 'User:' or 'Assistant:' at the very start of a line.
+    speaker_pattern = _re.compile(
+        r"^(user|assistant)\s*:\s*(.*)$",
+        _re.IGNORECASE
+    )
+
+    raw = raw_text.strip()
+    lines = raw.splitlines()
+
+    # Detect whether any non-empty line starts with a speaker marker
+    has_speakers = any(
+        speaker_pattern.match(line.strip())
+        for line in lines
+        if line.strip()
+    )
+
+    messages: list[dict] = []
+
+    if has_speakers:
+        current_role: str = "user"
+        current_lines: list[str] = []
+
+        for line in lines:
+            m = speaker_pattern.match(line.strip())
+            if m:
+                # Flush the current buffer before starting a new speaker block
+                if current_lines:
+                    content = "\n".join(current_lines).strip()
+                    if content:
+                        messages.append({"role": current_role, "content": content})
+                    current_lines = []
+
+                raw_role = m.group(1).lower()
+                current_role = "assistant" if raw_role == "assistant" else "user"
+
+                # The first line of a speaker block may already have inline content
+                inline = m.group(2).strip()
+                if inline:
+                    current_lines.append(inline)
+            else:
+                # Continuation line — strip but keep (including blank lines as spacing)
+                current_lines.append(line.rstrip())
+
+        # Flush any remaining buffer
+        if current_lines:
+            content = "\n".join(current_lines).strip()
+            if content:
+                messages.append({"role": current_role, "content": content})
+
+    else:
+        # Fallback: split on two or more consecutive newlines
+        paragraphs = _re.split(r"\n{2,}", raw)
+        for para in paragraphs:
+            content = para.strip()
+            if content:
+                messages.append({"role": "user", "content": content})
+
+    # Final safety guarantee: never return an empty list
+    if not messages:
+        messages = [{"role": "user", "content": raw}]
+
+    return messages
+
+
+async def ingest_paste_direct(
+    title: str,
+    raw_text: str,
+    db: AsyncSession,
+) -> tuple[bool, str | None]:
+    """
+    Synchronously ingest a single pasted conversation.
+    Returns (was_ingested: bool, conversation_id: str | None).
+    Returns (False, None) if the content is a duplicate.
+    """
+    fingerprint = compute_fingerprint(raw_text)
+
+    # Duplicate check
+    existing = await db.execute(
+        select(Conversation).where(Conversation.content_fingerprint == fingerprint)
+    )
+    if existing.scalars().first():
+        return False, None
+
+    # Parse messages
+    messages = parse_raw_text_to_messages(raw_text)
+    if not messages:
+        messages = [{"role": "user", "content": raw_text.strip()}]
+
+    # Create conversation
+    conv = Conversation(
+        title=title,
+        source_type="paste",
+        raw_text=raw_text,
+        content_fingerprint=fingerprint,
+    )
+    db.add(conv)
+    await db.flush()
+
+    # Process messages → chunks → embeddings
+    chunk_index_counter = 0
+    for idx, msg_data in enumerate(messages):
+        msg = Message(
+            conversation_id=conv.id,
+            role=msg_data["role"],
+            message_index=idx,
+            content=msg_data["content"],
+        )
+        db.add(msg)
+        await db.flush()
+
+        text_chunks = simple_chunk_text(msg.content)
+        if not text_chunks:
+            continue
+
+        embeddings = await generate_embeddings(text_chunks)
+        for text_chunk, emb in zip(text_chunks, embeddings):
+            chunk = Chunk(
+                conversation_id=conv.id,
+                message_start_index=msg.message_index,
+                message_end_index=msg.message_index,
+                chunk_index=chunk_index_counter,
+                chunk_text=text_chunk,
+                embedding=emb,
+            )
+            db.add(chunk)
+            chunk_index_counter += 1
+
+    await db.commit()
+    return True, str(conv.id)
 
 def simple_chunk_text(text: str, max_words: int = 250) -> List[str]:
     """Basic chunking by words to preserve some semantics."""

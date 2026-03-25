@@ -53,6 +53,7 @@ class Conversation(Base):
     raw_text = Column(Text, nullable=True)
     summary = Column(Text, nullable=True)
     category_id = Column(UUID(as_uuid=True), ForeignKey("categories.id", ondelete="SET NULL"), nullable=True)
+    content_fingerprint = Column(String(64), nullable=True, unique=True)
 
     category = relationship("Category", back_populates="conversations")
     tags = relationship("Tag", secondary=conversation_tags, back_populates="conversations")
