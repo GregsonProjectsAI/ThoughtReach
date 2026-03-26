@@ -114,14 +114,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <!-- Collapsed Text View -->
                 <div class="snippet-container snippet-preview collapsed-snippet">
-                    ${escapeHTML(fullText)}
+                    ${renderHighlightedText(fullText)}
                 </div>
                 <!-- Expanded Content View -->
                 <div class="expanded-content hidden">
                     ${summaryHtml}
                     <div class="snippet-container full-snippet" style="margin-bottom: 1rem;">
                         <strong>Matched Text:</strong><br/>
-                        ${escapeHTML(fullText)}
+                        ${renderHighlightedText(fullText)}
                     </div>
                     <div class="surrounding-messages">
                         <strong>Context:</strong>
@@ -167,6 +167,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function setStatus(msg, isError = false) {
         statusMessage.textContent = msg;
         statusMessage.style.color = isError ? 'red' : 'inherit';
+    }
+
+    function renderHighlightedText(text) {
+        if (!text) return '';
+        const escaped = escapeHTML(text);
+        return escaped.replace(/\[\[(.*?)\]\]/g, '<span class="highlight">$1</span>');
     }
 
     function escapeHTML(str) {

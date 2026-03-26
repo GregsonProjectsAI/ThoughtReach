@@ -142,6 +142,14 @@ button[type="submit"]:hover {
     color: var(--text-muted);
 }
 
+.highlight {
+    background-color: #fef9c3; /* Subtle yellow */
+    font-weight: 600;
+    color: #854d0e; /* Darker yellow text */
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
 .snippet-preview {
     display: -webkit-box;
     -webkit-line-clamp: 3;

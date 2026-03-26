@@ -7,6 +7,7 @@ from app.services.embeddings import generate_embeddings
 from uuid import UUID
 
 async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_id: Optional[UUID] = None):
+    import re
     query_embs = await generate_embeddings([query])
     if not query_embs:
         return []
@@ -24,10 +25,38 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
     if category_id:
         stmt = stmt.where(Conversation.category_id == category_id)
         
-    stmt = stmt.order_by(distance_expr).limit(limit)
+    stmt = stmt.order_by(distance_expr).limit(50)
     
     result = await db.execute(stmt)
     rows = result.all()
+    
+    # Filter out low-information single-word chunks
+    filtered_rows = []
+    for chunk, conversation, category, distance in rows:
+        text = chunk.chunk_text or ""
+        if len(text.split()) == 1:
+            continue
+        filtered_rows.append((chunk, conversation, category, distance))
+    rows = filtered_rows
+    
+    # 2. Conversation-level deduplication (Max 2 results per conversation)
+    from collections import defaultdict
+    conv_counts = defaultdict(int)
+    deduped_rows = []
+    for chunk, conversation, category, distance in rows:
+        if conv_counts[conversation.id] < 2:
+            deduped_rows.append((chunk, conversation, category, distance))
+            conv_counts[conversation.id] += 1
+    
+    # Final truncation to requested limit
+    rows = deduped_rows[:limit]
+    
+    # Prepare highlighting regex for individual terms
+    highlight_regex = None
+    terms = [re.escape(t) for t in query.split() if t]
+    if terms:
+        pattern = "|".join(terms)
+        highlight_regex = re.compile(f"({pattern})", re.IGNORECASE)
     
     import math
     out = []
@@ -65,8 +94,14 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
             pos = m.message_index - s_idx
             surrounding.append({
                 "position": pos,
-                "text": f"{m.role}: {m.content}"
+                "role": m.role,
+                "content": m.content
             })
+            
+        raw_text = chunk.chunk_text or ""
+        highlighted_text = raw_text
+        if highlight_regex:
+            highlighted_text = highlight_regex.sub(r"[[\1]]", raw_text)
             
         out.append({
             "conversation_id": conversation.id,
@@ -74,7 +109,7 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
             "conversation_summary": conversation.summary,
             "category_id": conversation.category_id,
             "category_name": category.name if category else None,
-            "matched_chunk_text": chunk.chunk_text,
+            "matched_chunk_text": highlighted_text,
             "similarity_score": sim_score,
             "message_start_index": chunk.message_start_index,
             "message_end_index": chunk.message_end_index,
