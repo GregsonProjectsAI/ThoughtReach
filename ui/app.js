@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="result-meta">
                         ${categoryBadgeHtml}
                         <span class="badge score">${scorePercent}</span>
+                        <button class="toggle-btn">Expand</button>
                     </div>
                 </div>
                 <!-- Collapsed Text View -->
@@ -130,23 +131,52 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
-            // Toggle logic on click
-            card.addEventListener('click', () => {
-                const isExpanded = card.classList.toggle('expanded');
-                const content = card.querySelector('.expanded-content');
-                const collapsedSnippet = card.querySelector('.collapsed-snippet');
+            // Explicit Toggle Logic
+            const toggleBtn = card.querySelector('.toggle-btn');
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Avoid double toggle if clicking near the button
+                const isExpanding = !card.classList.contains('expanded');
                 
-                if (isExpanded) {
-                    content.classList.remove('hidden');
-                    collapsedSnippet.classList.add('hidden');
+                if (isExpanding) {
+                    // Single Expand: Collapse all other cards first
+                    document.querySelectorAll('.result-card.expanded').forEach(otherCard => {
+                        if (otherCard !== card) collapseCard(otherCard);
+                    });
+                    expandCard(card);
                 } else {
-                    content.classList.add('hidden');
-                    collapsedSnippet.classList.remove('hidden');
+                    collapseCard(card);
+                }
+            });
+
+            // Keep card-level click for convenience but use the shared logic
+            card.addEventListener('click', () => {
+                const isExpanding = !card.classList.contains('expanded');
+                if (isExpanding) {
+                    document.querySelectorAll('.result-card.expanded').forEach(otherCard => {
+                        if (otherCard !== card) collapseCard(otherCard);
+                    });
+                    expandCard(card);
+                } else {
+                    collapseCard(card);
                 }
             });
 
             resultsContainer.appendChild(card);
         });
+    }
+
+    function expandCard(card) {
+        card.classList.add('expanded');
+        card.querySelector('.expanded-content').classList.remove('hidden');
+        card.querySelector('.collapsed-snippet').classList.add('hidden');
+        card.querySelector('.toggle-btn').textContent = 'Collapse';
+    }
+
+    function collapseCard(card) {
+        card.classList.remove('expanded');
+        card.querySelector('.expanded-content').classList.add('hidden');
+        card.querySelector('.collapsed-snippet').classList.remove('hidden');
+        card.querySelector('.toggle-btn').textContent = 'Expand';
     }
 
     function renderMessages(messages) {

@@ -78,6 +78,7 @@ class Chunk(Base):
     message_start_index = Column(Integer, nullable=False)
     message_end_index = Column(Integer, nullable=False)
     chunk_index = Column(Integer, nullable=False)
+    chunk_position_sub = Column(Integer, nullable=True)
     chunk_text = Column(Text, nullable=False)
     embedding = Column(Vector(1536))
     created_at = Column(DateTime(timezone=True), default=utcnow)

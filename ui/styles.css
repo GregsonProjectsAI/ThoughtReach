@@ -137,6 +137,24 @@ button[type="submit"]:hover {
     color: #065f46;
 }
 
+.toggle-btn {
+    font-size: 0.8rem;
+    color: var(--primary-color);
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    padding: 0.2rem 0.6rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    margin-left: 0.5rem;
+}
+
+.toggle-btn:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
+
 .snippet-container {
     font-size: 0.95rem;
     color: var(--text-muted);

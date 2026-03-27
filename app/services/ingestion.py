@@ -144,17 +144,18 @@ async def ingest_paste_direct(
         db.add(msg)
         await db.flush()
 
-        text_chunks = simple_chunk_text(msg.content)
+        text_chunks = split_message_into_chunks(msg.content)
         if not text_chunks:
             continue
 
         embeddings = await generate_embeddings(text_chunks)
-        for text_chunk, emb in zip(text_chunks, embeddings):
+        for i, (text_chunk, emb) in enumerate(zip(text_chunks, embeddings)):
             chunk = Chunk(
                 conversation_id=conv.id,
                 message_start_index=msg.message_index,
                 message_end_index=msg.message_index,
                 chunk_index=chunk_index_counter,
+                chunk_position_sub=i,
                 chunk_text=text_chunk,
                 embedding=emb,
             )
@@ -164,13 +165,68 @@ async def ingest_paste_direct(
     await db.commit()
     return True, str(conv.id)
 
-def simple_chunk_text(text: str, max_words: int = 250) -> List[str]:
-    """Basic chunking by words to preserve some semantics."""
-    words = text.split()
-    chunks = []
-    for i in range(0, len(words), max_words):
-        chunks.append(" ".join(words[i:i + max_words]))
-    return chunks
+def split_message_into_chunks(text: str) -> List[str]:
+    """
+    Spec-compliant deterministic chunking for a single message.
+    1. Split on double line breaks (paragraphs).
+    2. Split on single line breaks if segment > 400 chars and contains '\n'.
+    3. Trim whitespace and discard empty segments.
+    4. Merge fragments < 20 chars with NEXT (default) or PREVIOUS (fallback).
+    """
+    if not text:
+        return []
+    
+    # 1. Paragraph splits
+    base_segments = [s.strip() for s in text.split('\n\n') if s.strip()]
+    
+    # 2. Line splits fallback
+    intermediate_chunks = []
+    for seg in base_segments:
+        if len(seg) > 400 and '\n' in seg:
+            # split on single newlines
+            lines = [l.strip() for l in seg.split('\n') if l.strip()]
+            intermediate_chunks.extend(lines)
+        else:
+            intermediate_chunks.append(seg)
+            
+    if not intermediate_chunks:
+        return []
+    
+    # Phase 3: Single-pass, left-to-right merge.
+    # Rule order (spec precedence):
+    #   R1 (P1): Header-aware — len < 60 AND no terminal punctuation → merge with NEXT
+    #   R2: Short fragment  — len < 20 → merge with NEXT (or PREVIOUS as fallback)
+    # Each merge is applied immediately; the resulting segment is NOT re-evaluated.
+    TERMINAL_PUNCT = ('.', '!', '?')
+    merged_chunks = []
+    temp_chunks = intermediate_chunks[:]
+    i = 0
+    while i < len(temp_chunks):
+        chunk = temp_chunks[i]
+
+        # R1 (P1 header-aware): short, no terminal punctuation — merge into NEXT,
+        # append merged result immediately without re-evaluation, then advance past both.
+        if len(chunk) < 60 and not chunk.rstrip().endswith(TERMINAL_PUNCT):
+            if i + 1 < len(temp_chunks):
+                merged = (chunk + " " + temp_chunks[i+1]).strip()
+                merged_chunks.append(merged)
+                i += 2  # advance past current and next; merged segment is NOT re-evaluated
+                continue
+
+        # R2: very short fragment — merge with NEXT or PREVIOUS
+        if len(chunk) < 20:
+            if i + 1 < len(temp_chunks):
+                temp_chunks[i+1] = chunk + " " + temp_chunks[i+1]
+            elif merged_chunks:
+                merged_chunks[-1] = merged_chunks[-1] + " " + chunk
+            else:
+                merged_chunks.append(chunk)
+        else:
+            merged_chunks.append(chunk)
+
+        i += 1
+
+    return [c.strip() for c in merged_chunks if c.strip()]
 
 async def process_paste_import(job_id, request: PasteImportRequest, db: AsyncSession):
     job = await db.get(ImportJob, job_id)
@@ -227,7 +283,7 @@ async def process_paste_import(job_id, request: PasteImportRequest, db: AsyncSes
                 await db.flush() # get msg.id
                 
                 # Chunking
-                text_chunks = simple_chunk_text(msg.content)
+                text_chunks = split_message_into_chunks(msg.content)
                 if not text_chunks:
                     continue
                 
@@ -243,6 +299,7 @@ async def process_paste_import(job_id, request: PasteImportRequest, db: AsyncSes
                         message_start_index=msg.message_index or 0,
                         message_end_index=msg.message_index or 0,
                         chunk_index=chunk_index_counter,
+                        chunk_position_sub=i,
                         chunk_text=text_chunk,
                         embedding=emb
                     )
