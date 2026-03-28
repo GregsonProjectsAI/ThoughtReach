@@ -123,6 +123,8 @@ class SearchResultOut(BaseModel):
     surrounding_messages: Optional[List[dict]] = None
     source_user_message: Optional[str] = None
     source_assistant_message: Optional[str] = None
+    source_user_is_match: bool = False
+    source_assistant_is_match: bool = False
     previous_exchange_user_message: Optional[str] = None
     previous_exchange_assistant_message: Optional[str] = None
     next_exchange_user_message: Optional[str] = None

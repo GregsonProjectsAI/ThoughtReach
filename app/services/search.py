@@ -102,40 +102,65 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
         source_assistant_message = None
         
         l2_start_idx = s_idx
-        l2_end_idx = s_idx
+        l2_end_idx = e_idx
 
-        primary_msg = next((m for m in msgs if m.message_index == s_idx), None)
-        if primary_msg:
-            if primary_msg.role == "user":
-                source_user_message = primary_msg.content
-                # Fetch the strict adjacent next message
-                stmt_next = (
-                    select(Message)
-                    .where(Message.conversation_id == conversation.id)
-                    .where(Message.message_index > s_idx)
-                    .order_by(Message.message_index.asc())
-                    .limit(1)
-                )
-                next_msg_db = (await db.execute(stmt_next)).scalar()
-                # Only pair if the immediate adjacent is an assistant
-                if next_msg_db and next_msg_db.role == "assistant":
-                    source_assistant_message = next_msg_db.content
-                    l2_end_idx = next_msg_db.message_index
-            else: # assistant
-                source_assistant_message = primary_msg.content
-                # Fetch the strict adjacent preceding message
-                stmt_prev = (
-                    select(Message)
-                    .where(Message.conversation_id == conversation.id)
-                    .where(Message.message_index < s_idx)
-                    .order_by(Message.message_index.desc())
-                    .limit(1)
-                )
-                prev_msg_db = (await db.execute(stmt_prev)).scalar()
-                # Only pair if the immediate preceding is a user
-                if prev_msg_db and prev_msg_db.role == "user":
-                    source_user_message = prev_msg_db.content
-                    l2_start_idx = prev_msg_db.message_index
+        # Collect all messages covered by the chunk [s_idx, e_idx]
+        # We use a fresh query to ensure we have the full content and indices
+        stmt_chunk_msgs = (
+            select(Message)
+            .where(Message.conversation_id == conversation.id)
+            .where(Message.message_index >= s_idx)
+            .where(Message.message_index <= e_idx)
+            .order_by(Message.message_index)
+        )
+        chunk_msgs = (await db.execute(stmt_chunk_msgs)).scalars().all()
+        
+        user_parts = []
+        assistant_parts = []
+        for m in chunk_msgs:
+            if m.role == "user":
+                user_parts.append(m.content)
+            else:
+                assistant_parts.append(m.content)
+        
+        source_user_is_match = bool(user_parts)
+        source_assistant_is_match = bool(assistant_parts)
+
+        # Determine current state and fill gaps to form exactly one exchange
+        if user_parts:
+            source_user_message = "\n\n".join(user_parts)
+        if assistant_parts:
+            source_assistant_message = "\n\n".join(assistant_parts)
+            
+        # Ensure we have an Assistant response if we matched a User thought
+        if not source_assistant_message:
+            stmt_next_a = (
+                select(Message)
+                .where(Message.conversation_id == conversation.id)
+                .where(Message.message_index > e_idx)
+                .where(Message.role == "assistant")
+                .order_by(Message.message_index.asc())
+                .limit(1)
+            )
+            next_a = (await db.execute(stmt_next_a)).scalar()
+            if next_a:
+                source_assistant_message = next_a.content
+                l2_end_idx = next_a.message_index
+
+        # Ensure we have a User query if we matched an Assistant thought
+        if not source_user_message:
+            stmt_prev_u = (
+                select(Message)
+                .where(Message.conversation_id == conversation.id)
+                .where(Message.message_index < s_idx)
+                .where(Message.role == "user")
+                .order_by(Message.message_index.desc())
+                .limit(1)
+            )
+            prev_u = (await db.execute(stmt_prev_u)).scalar()
+            if prev_u:
+                source_user_message = prev_u.content
+                l2_start_idx = prev_u.message_index
             
         # Layer 3 Context - Previous Exchange
         prev_exchange_user_message = None
@@ -182,6 +207,20 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
         if highlight_regex:
             highlighted_text = highlight_regex.sub(r"[[\1]]", raw_text)
             
+            # Highlight all exchange content strings
+            if source_user_message:
+                source_user_message = highlight_regex.sub(r"[[\1]]", source_user_message)
+            if source_assistant_message:
+                source_assistant_message = highlight_regex.sub(r"[[\1]]", source_assistant_message)
+            if prev_exchange_user_message:
+                prev_exchange_user_message = highlight_regex.sub(r"[[\1]]", prev_exchange_user_message)
+            if prev_exchange_assistant_message:
+                prev_exchange_assistant_message = highlight_regex.sub(r"[[\1]]", prev_exchange_assistant_message)
+            if next_exchange_user_message:
+                next_exchange_user_message = highlight_regex.sub(r"[[\1]]", next_exchange_user_message)
+            if next_exchange_assistant_message:
+                next_exchange_assistant_message = highlight_regex.sub(r"[[\1]]", next_exchange_assistant_message)
+
         out.append({
             "conversation_id": conversation.id,
             "conversation_title": conversation.title,
@@ -198,6 +237,8 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
             "surrounding_messages": surrounding,
             "source_user_message": source_user_message,
             "source_assistant_message": source_assistant_message,
+            "source_user_is_match": source_user_is_match,
+            "source_assistant_is_match": source_assistant_is_match,
             "previous_exchange_user_message": prev_exchange_user_message,
             "previous_exchange_assistant_message": prev_exchange_assistant_message,
             "next_exchange_user_message": next_exchange_user_message,

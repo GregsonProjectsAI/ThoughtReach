@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     prevExchangeHtml += `
                         <div class="message user">
                             <div class="message-role">User</div>
-                            <div class="message-content">${escapeHTML(result.previous_exchange_user_message)}</div>
+                            <div class="message-content">${renderHighlightedText(result.previous_exchange_user_message)}</div>
                         </div>
                     `;
                 }
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     prevExchangeHtml += `
                         <div class="message assistant">
                             <div class="message-role">Assistant</div>
-                            <div class="message-content">${escapeHTML(result.previous_exchange_assistant_message)}</div>
+                            <div class="message-content">${renderHighlightedText(result.previous_exchange_assistant_message)}</div>
                         </div>
                     `;
                 }
@@ -154,18 +154,20 @@ document.addEventListener('DOMContentLoaded', () => {
             // Build Source Exchange HTML
             let sourceExchangeHtml = '';
             if (result.source_user_message) {
+                const highlightClass = result.source_user_is_match ? ' highlight-message' : '';
                 sourceExchangeHtml += `
-                    <div class="message user">
+                    <div class="message user${highlightClass}">
                         <div class="message-role">User</div>
-                        <div class="message-content">${escapeHTML(result.source_user_message)}</div>
+                        <div class="message-content">${renderHighlightedText(result.source_user_message)}</div>
                     </div>
                 `;
             }
             if (result.source_assistant_message) {
+                const highlightClass = result.source_assistant_is_match ? ' highlight-message' : '';
                 sourceExchangeHtml += `
-                    <div class="message assistant">
+                    <div class="message assistant${highlightClass}">
                         <div class="message-role">Assistant</div>
-                        <div class="message-content">${escapeHTML(result.source_assistant_message)}</div>
+                        <div class="message-content">${renderHighlightedText(result.source_assistant_message)}</div>
                     </div>
                 `;
             }
@@ -178,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     nextExchangeHtml += `
                         <div class="message user">
                             <div class="message-role">User</div>
-                            <div class="message-content">${escapeHTML(result.next_exchange_user_message)}</div>
+                            <div class="message-content">${renderHighlightedText(result.next_exchange_user_message)}</div>
                         </div>
                     `;
                 }
@@ -186,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     nextExchangeHtml += `
                         <div class="message assistant">
                             <div class="message-role">Assistant</div>
-                            <div class="message-content">${escapeHTML(result.next_exchange_assistant_message)}</div>
+                            <div class="message-content">${renderHighlightedText(result.next_exchange_assistant_message)}</div>
                         </div>
                     `;
                 }
@@ -208,10 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <!-- Expanded Content View -->
                 <div class="expanded-content hidden">
-                    <div class="snippet-container full-snippet">
-                        ${renderHighlightedText(fullText)}
-                    </div>
-                    
                     ${hasPrevExchange ? `
                     <div class="exchange-expansion-controls before">
                         <button class="expand-prev-btn">Show 1 before</button>
