@@ -98,6 +98,85 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
                 "content": m.content
             })
             
+        source_user_message = None
+        source_assistant_message = None
+        
+        l2_start_idx = s_idx
+        l2_end_idx = s_idx
+
+        primary_msg = next((m for m in msgs if m.message_index == s_idx), None)
+        if primary_msg:
+            if primary_msg.role == "user":
+                source_user_message = primary_msg.content
+                # Fetch the strict adjacent next message
+                stmt_next = (
+                    select(Message)
+                    .where(Message.conversation_id == conversation.id)
+                    .where(Message.message_index > s_idx)
+                    .order_by(Message.message_index.asc())
+                    .limit(1)
+                )
+                next_msg_db = (await db.execute(stmt_next)).scalar()
+                # Only pair if the immediate adjacent is an assistant
+                if next_msg_db and next_msg_db.role == "assistant":
+                    source_assistant_message = next_msg_db.content
+                    l2_end_idx = next_msg_db.message_index
+            else: # assistant
+                source_assistant_message = primary_msg.content
+                # Fetch the strict adjacent preceding message
+                stmt_prev = (
+                    select(Message)
+                    .where(Message.conversation_id == conversation.id)
+                    .where(Message.message_index < s_idx)
+                    .order_by(Message.message_index.desc())
+                    .limit(1)
+                )
+                prev_msg_db = (await db.execute(stmt_prev)).scalar()
+                # Only pair if the immediate preceding is a user
+                if prev_msg_db and prev_msg_db.role == "user":
+                    source_user_message = prev_msg_db.content
+                    l2_start_idx = prev_msg_db.message_index
+            
+        # Layer 3 Context - Previous Exchange
+        prev_exchange_user_message = None
+        prev_exchange_assistant_message = None
+        stmt_prev2 = (
+            select(Message)
+            .where(Message.conversation_id == conversation.id)
+            .where(Message.message_index < l2_start_idx)
+            .order_by(Message.message_index.desc())
+            .limit(2)
+        )
+        prev2_msgs = (await db.execute(stmt_prev2)).scalars().all()
+        if prev2_msgs:
+            m1 = prev2_msgs[0]
+            if m1.role == "assistant":
+                prev_exchange_assistant_message = m1.content
+                if len(prev2_msgs) > 1 and prev2_msgs[1].role == "user":
+                    prev_exchange_user_message = prev2_msgs[1].content
+            elif m1.role == "user":
+                prev_exchange_user_message = m1.content
+
+        # Layer 3 Context - Next Exchange
+        next_exchange_user_message = None
+        next_exchange_assistant_message = None
+        stmt_next2 = (
+            select(Message)
+            .where(Message.conversation_id == conversation.id)
+            .where(Message.message_index > l2_end_idx)
+            .order_by(Message.message_index.asc())
+            .limit(2)
+        )
+        next2_msgs = (await db.execute(stmt_next2)).scalars().all()
+        if next2_msgs:
+            n1 = next2_msgs[0]
+            if n1.role == "user":
+                next_exchange_user_message = n1.content
+                if len(next2_msgs) > 1 and next2_msgs[1].role == "assistant":
+                    next_exchange_assistant_message = next2_msgs[1].content
+            elif n1.role == "assistant":
+                next_exchange_assistant_message = n1.content
+            
         raw_text = chunk.chunk_text or ""
         highlighted_text = raw_text
         if highlight_regex:
@@ -116,7 +195,13 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
             "chunk_index": chunk.chunk_index,
             "message_count": total_msgs,
             "relative_position": rel_pos,
-            "surrounding_messages": surrounding
+            "surrounding_messages": surrounding,
+            "source_user_message": source_user_message,
+            "source_assistant_message": source_assistant_message,
+            "previous_exchange_user_message": prev_exchange_user_message,
+            "previous_exchange_assistant_message": prev_exchange_assistant_message,
+            "next_exchange_user_message": next_exchange_user_message,
+            "next_exchange_assistant_message": next_exchange_assistant_message
         })
     return out
 

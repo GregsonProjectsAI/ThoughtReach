@@ -121,6 +121,12 @@ class SearchResultOut(BaseModel):
     message_start_index: int
     message_end_index: int
     surrounding_messages: Optional[List[dict]] = None
+    source_user_message: Optional[str] = None
+    source_assistant_message: Optional[str] = None
+    previous_exchange_user_message: Optional[str] = None
+    previous_exchange_assistant_message: Optional[str] = None
+    next_exchange_user_message: Optional[str] = None
+    next_exchange_assistant_message: Optional[str] = None
 
     @computed_field
     @property
