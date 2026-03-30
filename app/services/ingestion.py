@@ -133,7 +133,9 @@ async def ingest_paste_direct(
     await db.flush()
 
     # Process messages → chunks → embeddings
-    chunk_index_counter = 0
+    all_chunks_metadata = []
+    flat_text_chunks = []
+    
     for idx, msg_data in enumerate(messages):
         msg = Message(
             conversation_id=conv.id,
@@ -147,20 +149,29 @@ async def ingest_paste_direct(
         text_chunks = split_message_into_chunks(msg.content)
         if not text_chunks:
             continue
+            
+        for i, text_chunk in enumerate(text_chunks):
+            flat_text_chunks.append(text_chunk)
+            all_chunks_metadata.append({
+                "message_index": msg.message_index,
+                "chunk_position_sub": i,
+                "text_chunk": text_chunk
+            })
 
-        embeddings = await generate_embeddings(text_chunks)
-        for i, (text_chunk, emb) in enumerate(zip(text_chunks, embeddings)):
+    if flat_text_chunks:
+        embeddings = await generate_embeddings(flat_text_chunks)
+        
+        for chunk_index_counter, (meta, emb) in enumerate(zip(all_chunks_metadata, embeddings)):
             chunk = Chunk(
                 conversation_id=conv.id,
-                message_start_index=msg.message_index,
-                message_end_index=msg.message_index,
+                message_start_index=meta["message_index"],
+                message_end_index=meta["message_index"],
                 chunk_index=chunk_index_counter,
-                chunk_position_sub=i,
-                chunk_text=text_chunk,
+                chunk_position_sub=meta["chunk_position_sub"],
+                chunk_text=meta["text_chunk"],
                 embedding=emb,
             )
             db.add(chunk)
-            chunk_index_counter += 1
 
     await db.commit()
     return True, str(conv.id)
@@ -249,27 +260,10 @@ async def process_paste_import(job_id, request: PasteImportRequest, db: AsyncSes
             
             db.add(conv)
             await db.flush() # get conv.id
-            
-            import logging
-            logger = logging.getLogger(__name__)
 
-            full_text = conv_data.raw_text
-            if not full_text and conv_data.messages:
-                full_text = "\n".join(f"{m.role}: {m.content}" for m in conv_data.messages)
-                
-            if conv.summary:
-                logger.info(f"Skipped summary generation for {conv.id}: already exists")
-            elif not full_text:
-                logger.info(f"Skipped summary generation for {conv.id}: no usable source text")
-            else:
-                from app.services.embeddings import generate_summary
-                conv.summary = await generate_summary(full_text)
-                if conv.summary:
-                    logger.info(f"Completed summary generation successfully for {conv.id}")
-                else:
-                    logger.warning(f"Failed summary generation for {conv.id}: ignored")
-            
-            chunk_index_counter = 0
+            # Process messages → chunks → embeddings
+            conv_all_chunks_metadata = []
+            conv_flat_text_chunks = []
             
             for idx, msg_data in enumerate(conv_data.messages):
                 msg = Message(
@@ -282,29 +276,37 @@ async def process_paste_import(job_id, request: PasteImportRequest, db: AsyncSes
                 db.add(msg)
                 await db.flush() # get msg.id
                 
-                # Chunking
+                # Split message into chunks
                 text_chunks = split_message_into_chunks(msg.content)
                 if not text_chunks:
                     continue
                 
-                embeddings = await generate_embeddings(text_chunks)
+                for i, text_chunk in enumerate(text_chunks):
+                    conv_flat_text_chunks.append(text_chunk)
+                    conv_all_chunks_metadata.append({
+                        "message_index": msg.message_index,
+                        "chunk_position_sub": i,
+                        "text_chunk": text_chunk
+                    })
+            
+            if conv_flat_text_chunks:
+                embeddings = await generate_embeddings(conv_flat_text_chunks)
                 
                 from app.core.config import settings
                 if embeddings and settings.ALLOW_MOCK_EMBEDDINGS and embeddings[0][0] == 0.0:
                     job.notes = "Mock embeddings were used for local development."
                 
-                for i, (text_chunk, emb) in enumerate(zip(text_chunks, embeddings)):
+                for i, (meta, emb) in enumerate(zip(conv_all_chunks_metadata, embeddings)):
                     chunk = Chunk(
                         conversation_id=conv.id,
-                        message_start_index=msg.message_index or 0,
-                        message_end_index=msg.message_index or 0,
-                        chunk_index=chunk_index_counter,
-                        chunk_position_sub=i,
-                        chunk_text=text_chunk,
+                        message_start_index=meta["message_index"],
+                        message_end_index=meta["message_index"],
+                        chunk_index=i,
+                        chunk_position_sub=meta["chunk_position_sub"],
+                        chunk_text=meta["text_chunk"],
                         embedding=emb
                     )
                     db.add(chunk)
-                    chunk_index_counter += 1
         
         job.status = "completed"
         job.completed_at = utcnow()

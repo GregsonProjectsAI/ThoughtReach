@@ -308,7 +308,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                     fullConvBtn.textContent = 'Loading...';
                                     fullConvBtn.disabled = true;
                                     
-                                    const res = await fetch(`${BASE_URL}/conversations/${result.conversation_id}`);
+                                    const currentQuery = searchInput.value.trim();
+                                    const res = await fetch(`${BASE_URL}/conversations/${result.conversation_id}?highlight_query=${encodeURIComponent(currentQuery)}`);
                                     if (!res.ok) throw new Error('API Error');
                                     const conv = await res.json();
                                     
@@ -323,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                             return `
                                                 <div class="message ${roleClass}${highlightClass}">
                                                     <div class="message-role">${roleLabel}</div>
-                                                    <div class="message-content">${escapeHTML(msg.content)}</div>
+                                                    <div class="message-content">${renderHighlightedText(msg.content)}</div>
                                                 </div>
                                             `;
                                         }).join('');

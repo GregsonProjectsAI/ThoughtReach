@@ -1,0 +1,1008 @@
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\requirements.txt
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\docs\ui_interaction_result_item.md
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\docs\ui_spec_search.md
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\alembic\testing\requirements.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\alembic\testing\__pycache__\requirements.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\asyncpg\pgproto\uuid.pyx
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\asyncpg\pgproto\codecs\uuid.pyx
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\asyncpg\protocol\coreproto.pxd
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\asyncpg\protocol\coreproto.pyx
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\certifi\core.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\certifi\__pycache__\core.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\click\core.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\click\termui.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\click\_termui_impl.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\click\__pycache__\core.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\click\__pycache__\termui.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\click\__pycache__\_termui_impl.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\idna\core.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\idna\__pycache__\core.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\numpy\f2py\_backends\meson.build.template
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\numpy\ma\core.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\numpy\ma\core.pyi
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\numpy\ma\tests\test_core.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\numpy\ma\tests\__pycache__\test_core.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\numpy\ma\__pycache__\core.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\numpy\random\_examples\cython\meson.build
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\numpy\testing\_private\extbuild.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\numpy\testing\_private\extbuild.pyi
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\numpy\testing\_private\__pycache__\extbuild.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\numpy\_core\tests\examples\cython\meson.build
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\numpy\_core\tests\examples\limited_api\meson.build
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\image_input_reference_param.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\beta\realtime\conversation_item_with_reference.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\beta\realtime\conversation_item_with_reference_param.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\beta\realtime\__pycache__\conversation_item_with_reference.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\beta\realtime\__pycache__\conversation_item_with_reference_param.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\beta\threads\required_action_function_tool_call.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\beta\threads\__pycache__\required_action_function_tool_call.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\graders\score_model_grader.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\graders\score_model_grader_param.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\graders\__pycache__\score_model_grader.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\graders\__pycache__\score_model_grader_param.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\responses\container_reference.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\responses\container_reference_param.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\responses\response_container_reference.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\responses\skill_reference.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\responses\skill_reference_param.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\responses\__pycache__\container_reference.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\responses\__pycache__\container_reference_param.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\responses\__pycache__\response_container_reference.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\responses\__pycache__\skill_reference.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\responses\__pycache__\skill_reference_param.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\openai\types\__pycache__\image_input_reference_param.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_internal\build_env.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_internal\wheel_builder.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_internal\operations\build\build_tracker.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_internal\operations\build\__pycache__\build_tracker.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_internal\resolution\resolvelib\requirements.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_internal\resolution\resolvelib\__pycache__\requirements.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_internal\utils\setuptools_build.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_internal\utils\__pycache__\setuptools_build.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_internal\__pycache__\build_env.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_internal\__pycache__\wheel_builder.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_vendor\certifi\core.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_vendor\certifi\__pycache__\core.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_vendor\idna\core.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_vendor\idna\__pycache__\core.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_vendor\packaging\requirements.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pip\_vendor\packaging\__pycache__\requirements.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pydantic\_internal\_core_metadata.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pydantic\_internal\_core_utils.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pydantic\_internal\__pycache__\_core_metadata.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pydantic\_internal\__pycache__\_core_utils.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pydantic_core\core_schema.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pydantic_core\_pydantic_core.cp313-win_amd64.pyd
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pydantic_core\_pydantic_core.pyi
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\pydantic_core\__pycache__\core_schema.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\regex\_regex_core.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\regex\__pycache__\_regex_core.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\sqlalchemy\dialects\type_migration_guidelines.txt
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\sqlalchemy\testing\requirements.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\sqlalchemy\testing\__pycache__\requirements.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\tiktoken\core.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\tiktoken\__pycache__\core.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\tqdm\gui.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\tqdm\_tqdm_gui.py
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\tqdm\__pycache__\gui.cpython-313.pyc
+C:/Users/alexg/Documents\Antigravity Projects\ThoughtReach V1\venv\Lib\site-packages\tqdm\__pycache__\_tqdm_gui.cpython-313.pyc
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\hiscore.dat
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\croquis.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\dquizgo.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\liquidk.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\liquidku.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\livequiz.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\md_squirrel.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\pce_cybrcore.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\quiz18k.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\quizdai2.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\quizdais.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\quizdaisk.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\quizf1.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\quizhq.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\quizkof.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\quizkofk.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\quizo.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\sf2ui.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\fbneo\cheats\tg_cybrcore.ini
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\mame2003-xtreme\hiscore.dat
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\BIOS\scummvm\extra\macgui.dat
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\CFW\config\coremapping.json
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\CFW\retroarch\.retroarch\cores\quicknes_libretro.so
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\CFW\retroarch\.retroarch\core_info\core_info.cache
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\CFW\retroarch\.retroarch\core_info\dosbox_core_libretro.info
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\CFW\retroarch\.retroarch\core_info\ep128emu_core_libretro.info
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\CFW\retroarch\.retroarch\core_info\quicknes_libretro.info
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\CFW\retroarch\.retroarch\core_info\squirreljme_libretro.info
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\CFW\skin\guide-overlay.png
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\Roms\GBA\Mario & Luigi - Superstar Saga (Europe) (En,Fr,De,Es,It).gba
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\Roms\GBA\Mario Kart - Super Circuit (Europe).gba
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\Roms\PS\Imgs\Suikoden II [U] [SLUS-00958].png
+C:/Users/alexg/Documents\Gameboy Backup\garlic os + roms + saves + tetris in colour\Roms\PS\Imgs\Suikoden [U] [SLUS-00292].png
+C:/Users/alexg/Documents\Gameboy Backup\ROMS\GBA\Mario & Luigi - Superstar Saga (Europe) (En,Fr,De,Es,It).gba
+C:/Users/alexg/Documents\Gameboy Backup\ROMS\GBA\Mario Kart - Super Circuit (Europe).gba
+C:/Users/alexg/Documents\My Games\Sid Meier's Civilization 5\cache\Civ5CoreDatabase.db
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\app-build-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\build-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\fallback-build-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\middleware-build-manifest.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\server-reference-manifest.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\server-reference-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\page_client-reference-manifest.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\favicon.ico\route\app-build-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\favicon.ico\route\build-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\page\app-build-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\page\build-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\page\server-reference-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\signup\page_client-reference-manifest.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\signup\page\app-build-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\signup\page\build-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\signup\page\server-reference-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\_not-found\page_client-reference-manifest.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\_not-found\page\app-build-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\_not-found\page\build-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\app\_not-found\page\server-reference-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\pages\_app\build-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\server\pages\_error\build-manifest.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\static\chunks\node_modules_next_dist_build_polyfills_polyfill-nomodule.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\.next\static\development\_buildManifest.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@ampproject\remapping\dist\types\build-source-map-tree.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@emnapi\core\dist\emnapi-core.cjs.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@emnapi\core\dist\emnapi-core.cjs.min.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@emnapi\core\dist\emnapi-core.cjs.min.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@emnapi\core\dist\emnapi-core.d.mts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@emnapi\core\dist\emnapi-core.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@emnapi\core\dist\emnapi-core.esm-bundler.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@emnapi\core\dist\emnapi-core.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@emnapi\core\dist\emnapi-core.min.d.mts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@emnapi\core\dist\emnapi-core.min.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@emnapi\core\dist\emnapi-core.min.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@emnapi\core\dist\emnapi-core.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\app\dist\app\src\registerCoreComponents.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\app\dist\esm\app\src\registerCoreComponents.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\app-compat\dist\esm\src\firebaseNamespaceCore.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\app-compat\dist\esm\src\registerCoreComponents.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\app-compat\dist\src\firebaseNamespaceCore.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\app-compat\dist\src\registerCoreComponents.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\auth\dist\browser-cjs\test\integration\webdriver\util\ui_page.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\auth\dist\cordova\test\integration\webdriver\util\ui_page.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\auth\dist\esm2017\test\integration\webdriver\util\ui_page.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\auth\dist\node\test\integration\webdriver\util\ui_page.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\auth\dist\node-esm\test\integration\webdriver\util\ui_page.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\auth\dist\rn\test\integration\webdriver\util\ui_page.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\auth\dist\test\integration\webdriver\util\ui_page.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\auth\dist\web-extension-cjs\test\integration\webdriver\util\ui_page.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\auth\dist\web-extension-esm2017\test\integration\webdriver\util\ui_page.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\data-connect\dist\node-esm\src\api\Reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\data-connect\dist\src\api\Reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\database\dist\node-esm\src\api\Reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\database\dist\node-esm\src\api\Reference_impl.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\database\dist\src\api\Reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\database\dist\src\api\Reference_impl.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\database-compat\dist\database-compat\src\api\Reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\database-compat\dist\node-esm\database-compat\src\api\Reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\firestore\src\api\reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\firestore\src\api\reference_impl.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\firestore\src\lite-api\reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\firestore\src\lite-api\reference_impl.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\firestore\src\local\reference_set.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\firestore\src\util\debug_uid.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\firestore\test\unit\local\reference_set.test.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\firestore\test\unit\model\object_value_builder.test.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\firestore\test\unit\specs\spec_builder.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\lite\firestore\src\api\reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\lite\firestore\src\api\reference_impl.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\lite\firestore\src\lite-api\reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\lite\firestore\src\lite-api\reference_impl.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\lite\firestore\src\local\reference_set.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\lite\firestore\src\util\debug_uid.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\lite\firestore\test\unit\local\reference_set.test.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\lite\firestore\test\unit\model\object_value_builder.test.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\firestore\dist\lite\firestore\test\unit\specs\spec_builder.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\storage\dist\node-esm\src\reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\storage\dist\src\reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\storage-compat\dist\esm\src\reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\storage-compat\dist\esm\test\unit\reference.test.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\storage-compat\dist\src\reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\storage-compat\dist\test\unit\reference.test.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\vertexai\dist\esm\src\requests\schema-builder.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@firebase\vertexai\dist\src\requests\schema-builder.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\core\dist\floating-ui.core.browser.min.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\core\dist\floating-ui.core.browser.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\core\dist\floating-ui.core.d.mts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\core\dist\floating-ui.core.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\core\dist\floating-ui.core.esm.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\core\dist\floating-ui.core.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\core\dist\floating-ui.core.umd.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\core\dist\floating-ui.core.umd.min.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\dom\dist\floating-ui.dom.browser.min.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\dom\dist\floating-ui.dom.browser.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\dom\dist\floating-ui.dom.d.mts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\dom\dist\floating-ui.dom.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\dom\dist\floating-ui.dom.esm.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\dom\dist\floating-ui.dom.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\dom\dist\floating-ui.dom.umd.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\dom\dist\floating-ui.dom.umd.min.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\dist\floating-ui.react.d.mts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\dist\floating-ui.react.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\dist\floating-ui.react.esm.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\dist\floating-ui.react.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\dist\floating-ui.react.umd.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\dist\floating-ui.react.umd.min.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\dist\floating-ui.react.utils.d.mts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\dist\floating-ui.react.utils.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\dist\floating-ui.react.utils.esm.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\dist\floating-ui.react.utils.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\dist\floating-ui.react.utils.umd.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\dist\floating-ui.react.utils.umd.min.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\utils\floating-ui.react.utils.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\utils\floating-ui.react.utils.esm.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react\utils\floating-ui.react.utils.umd.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react-dom\dist\floating-ui.react-dom.d.mts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react-dom\dist\floating-ui.react-dom.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react-dom\dist\floating-ui.react-dom.esm.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react-dom\dist\floating-ui.react-dom.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react-dom\dist\floating-ui.react-dom.umd.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\react-dom\dist\floating-ui.react-dom.umd.min.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dist\floating-ui.utils.d.mts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dist\floating-ui.utils.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dist\floating-ui.utils.dom.d.mts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dist\floating-ui.utils.dom.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dist\floating-ui.utils.dom.esm.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dist\floating-ui.utils.dom.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dist\floating-ui.utils.dom.umd.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dist\floating-ui.utils.dom.umd.min.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dist\floating-ui.utils.esm.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dist\floating-ui.utils.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dist\floating-ui.utils.umd.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dist\floating-ui.utils.umd.min.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dom\floating-ui.utils.dom.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dom\floating-ui.utils.dom.esm.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@floating-ui\utils\dom\floating-ui.utils.dom.umd.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@grpc\grpc-js\build\src\status-builder.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@grpc\grpc-js\build\src\status-builder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@grpc\grpc-js\build\src\status-builder.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@grpc\grpc-js\build\src\generated\google\protobuf\UInt32Value.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@grpc\grpc-js\build\src\generated\google\protobuf\UInt32Value.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@grpc\grpc-js\build\src\generated\google\protobuf\UInt32Value.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@grpc\grpc-js\build\src\generated\google\protobuf\UInt64Value.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@grpc\grpc-js\build\src\generated\google\protobuf\UInt64Value.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@grpc\grpc-js\build\src\generated\google\protobuf\UInt64Value.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@grpc\grpc-js\src\status-builder.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@grpc\grpc-js\src\generated\google\protobuf\UInt32Value.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@grpc\grpc-js\src\generated\google\protobuf\UInt64Value.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@headlessui\react\dist\headlessui.dev.cjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@headlessui\react\dist\headlessui.esm.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@headlessui\react\dist\headlessui.prod.cjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@headlessui\react\dist\hooks\use-quick-release.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@headlessui\react\dist\hooks\use-quick-release.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\BuildingLibraryIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\BuildingLibraryIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\BuildingOffice2Icon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\BuildingOffice2Icon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\BuildingOfficeIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\BuildingOfficeIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\BuildingStorefrontIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\BuildingStorefrontIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\TicketIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\TicketIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\esm\BuildingLibraryIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\esm\BuildingLibraryIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\esm\BuildingOffice2Icon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\esm\BuildingOffice2Icon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\esm\BuildingOfficeIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\esm\BuildingOfficeIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\esm\BuildingStorefrontIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\esm\BuildingStorefrontIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\esm\TicketIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\16\solid\esm\TicketIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\BuildingLibraryIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\BuildingLibraryIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\BuildingOffice2Icon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\BuildingOffice2Icon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\BuildingOfficeIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\BuildingOfficeIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\BuildingStorefrontIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\BuildingStorefrontIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\TicketIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\TicketIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\esm\BuildingLibraryIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\esm\BuildingLibraryIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\esm\BuildingOffice2Icon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\esm\BuildingOffice2Icon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\esm\BuildingOfficeIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\esm\BuildingOfficeIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\esm\BuildingStorefrontIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\esm\BuildingStorefrontIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\esm\TicketIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\20\solid\esm\TicketIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\BuildingLibraryIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\BuildingLibraryIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\BuildingOffice2Icon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\BuildingOffice2Icon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\BuildingOfficeIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\BuildingOfficeIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\BuildingStorefrontIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\BuildingStorefrontIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\TicketIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\TicketIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\esm\BuildingLibraryIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\esm\BuildingLibraryIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\esm\BuildingOffice2Icon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\esm\BuildingOffice2Icon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\esm\BuildingOfficeIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\esm\BuildingOfficeIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\esm\BuildingStorefrontIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\esm\BuildingStorefrontIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\esm\TicketIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\outline\esm\TicketIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\BuildingLibraryIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\BuildingLibraryIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\BuildingOffice2Icon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\BuildingOffice2Icon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\BuildingOfficeIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\BuildingOfficeIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\BuildingStorefrontIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\BuildingStorefrontIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\TicketIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\TicketIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\esm\BuildingLibraryIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\esm\BuildingLibraryIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\esm\BuildingOffice2Icon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\esm\BuildingOffice2Icon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\esm\BuildingOfficeIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\esm\BuildingOfficeIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\esm\BuildingStorefrontIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\esm\BuildingStorefrontIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\esm\TicketIcon.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@heroicons\react\24\solid\esm\TicketIcon.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@protobufjs\float\bench\suite.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@swc\helpers\cjs\_interop_require_default.cjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@swc\helpers\cjs\_interop_require_wildcard.cjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@swc\helpers\esm\_interop_require_default.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@swc\helpers\esm\_interop_require_wildcard.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@swc\helpers\scripts\build.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@swc\helpers\src\_interop_require_default.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@swc\helpers\src\_interop_require_wildcard.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@tailwindcss\node\dist\require-cache.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@tailwindcss\node\dist\require-cache.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\no-require-imports.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\no-require-imports.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\no-require-imports.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\no-var-requires.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\no-var-requires.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\no-var-requires.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\require-array-sort-compare.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\require-array-sort-compare.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\require-array-sort-compare.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\require-await.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\require-await.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\require-await.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\triple-slash-reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\triple-slash-reference.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\rules\triple-slash-reference.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\util\getESLintCoreRule.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\util\getESLintCoreRule.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\util\getESLintCoreRule.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\util\referenceContainsTypeQuery.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\util\referenceContainsTypeQuery.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\dist\util\referenceContainsTypeQuery.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\docs\rules\no-require-imports.mdx
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\docs\rules\no-var-requires.mdx
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\docs\rules\require-array-sort-compare.mdx
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\docs\rules\require-await.mdx
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\eslint-plugin\docs\rules\triple-slash-reference.mdx
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\scope-manager\dist\lib\es2015.core.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\scope-manager\dist\lib\es2015.core.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\scope-manager\dist\lib\es2015.core.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\scope-manager\dist\referencer\Reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\scope-manager\dist\referencer\Reference.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\scope-manager\dist\referencer\Reference.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\scope-manager\dist\referencer\Referencer.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\scope-manager\dist\referencer\Referencer.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\scope-manager\dist\referencer\Referencer.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\type-utils\dist\builtinSymbolLikes.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\type-utils\dist\builtinSymbolLikes.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\type-utils\dist\builtinSymbolLikes.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\type-utils\dist\requiresQuoting.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\type-utils\dist\requiresQuoting.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\type-utils\dist\requiresQuoting.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\utils\dist\ast-utils\eslint-utils\ReferenceTracker.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\utils\dist\ast-utils\eslint-utils\ReferenceTracker.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\@typescript-eslint\utils\dist\ast-utils\eslint-utils\ReferenceTracker.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\ajv\lib\dot\required.jst
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\ajv\lib\dotjs\required.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\ajv\scripts\publish-built-version
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\aria-query\lib\etc\roles\literal\menuitemcheckboxRole.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\aria-query\lib\etc\roles\literal\menuitemradioRole.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\aria-query\lib\etc\roles\literal\menuitemRole.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\async-function\require.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\axobject-query\lib\etc\objects\MenuItemCheckBoxRole.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\axobject-query\lib\etc\objects\MenuItemRadioRole.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\axobject-query\lib\etc\objects\MenuItemRole.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\caniuse-lite\data\features\blobbuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\caniuse-lite\data\features\font-family-system-ui.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\caniuse-lite\data\features\wasm-reference-types.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\d3-geo\img\azimuthalEquidistant.png
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\d3-geo\img\conicEquidistant.png
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\d3-geo\img\equirectangular.png
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\d3-geo\src\projection\azimuthalEquidistant.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\d3-geo\src\projection\conicEquidistant.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\d3-geo\src\projection\equirectangular.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\docs\i18nContributionGuide.md
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildFormatLongFn.cjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildFormatLongFn.d.cts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildFormatLongFn.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildFormatLongFn.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildLocalizeFn.cjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildLocalizeFn.d.cts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildLocalizeFn.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildLocalizeFn.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildMatchFn.cjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildMatchFn.d.cts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildMatchFn.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildMatchFn.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildMatchPatternFn.cjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildMatchPatternFn.d.cts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildMatchPatternFn.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\date-fns\locale\_lib\buildMatchPatternFn.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\enhanced-resolve\lib\SelfReferencePlugin.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2015\RequireObjectCoercible.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2015\ToUint16.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2015\ToUint32.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2015\ToUint8.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2015\ToUint8Clamp.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2016\RequireObjectCoercible.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2016\ToUint16.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2016\ToUint32.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2016\ToUint8.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2016\ToUint8Clamp.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2017\RequireObjectCoercible.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2017\ToUint16.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2017\ToUint32.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2017\ToUint8.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2017\ToUint8Clamp.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2018\RequireObjectCoercible.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2018\ToUint16.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2018\ToUint32.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2018\ToUint8.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2018\ToUint8Clamp.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2019\RequireObjectCoercible.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2019\ToUint16.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2019\ToUint32.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2019\ToUint8.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2019\ToUint8Clamp.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2020\RequireObjectCoercible.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2020\ToBigUint64.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2020\ToUint16.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2020\ToUint32.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2020\ToUint8.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2020\ToUint8Clamp.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2021\RequireObjectCoercible.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2021\ToBigUint64.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2021\ToUint16.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2021\ToUint32.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2021\ToUint8.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2021\ToUint8Clamp.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2022\RequireObjectCoercible.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2022\ToBigUint64.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2022\ToUint16.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2022\ToUint32.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2022\ToUint8.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2022\ToUint8Clamp.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2023\RequireObjectCoercible.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2023\ToBigUint64.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2023\ToUint16.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2023\ToUint32.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2023\ToUint8.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2023\ToUint8Clamp.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2024\RequireObjectCoercible.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2024\StringPaddingBuiltinsImpl.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2024\ToBigUint64.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2024\ToUint16.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2024\ToUint32.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2024\ToUint8.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\2024\ToUint8Clamp.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\5\ToUint16.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\5\ToUint32.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-abstract\operations\build-unicode.mjs
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-object-atoms\RequireObjectCoercible.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\es-object-atoms\RequireObjectCoercible.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint\lib\rules\global-require.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint\lib\rules\no-mixed-requires.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint\lib\rules\no-new-require.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint\lib\rules\no-prototype-builtins.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint\lib\rules\no-underscore-dangle.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint\lib\rules\no-useless-backreference.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint\lib\rules\require-atomic-updates.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint\lib\rules\require-await.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint\lib\rules\require-unicode-regexp.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint\lib\rules\require-yield.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-config-next\core-web-vitals.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-module-utils\module-require.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-module-utils\module-require.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-import\docs\rules\no-dynamic-require.md
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-import\lib\core\staticRequire.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-import\lib\exportMap\builder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-import\lib\rules\no-dynamic-require.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-jsx-a11y\docs\rules\role-has-required-aria-props.md
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-jsx-a11y\lib\rules\role-has-required-aria-props.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-jsx-a11y\lib\util\implicitRoles\menuitem.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-jsx-a11y\__tests__\src\rules\role-has-required-aria-props-test.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-jsx-a11y\__tests__\src\util\implicitRoles\menuitem-test.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-jsx-a11y\__tests__\__util__\helpers\getESLintCoreRule.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-react\lib\rules\checked-requires-onchange-or-readonly.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-react\lib\rules\checked-requires-onchange-or-readonly.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-react\lib\rules\checked-requires-onchange-or-readonly.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-react\lib\rules\require-default-props.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-react\lib\rules\require-default-props.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-react\lib\rules\require-default-props.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-react\lib\rules\require-optimization.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-react\lib\rules\require-optimization.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-react\lib\rules\require-optimization.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-react\lib\rules\require-render-return.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-react\lib\rules\require-render-return.d.ts.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-react\lib\rules\require-render-return.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-plugin-react\node_modules\resolve\test\shadowed_core.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-scope\lib\reference.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\eslint-scope\lib\referencer.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\geojson-polygon-self-intersections\node_modules\quickselect\quickselect.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\has-symbols\test\shams\core-js.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\has-tostringtag\test\shams\core-js.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\is-core-module\core.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\is-generator-function\test\corejs.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\js-yaml\lib\schema\core.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\json5\lib\require.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\java\lang\StringBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\edgegraph\EdgeGraphBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\geom\util\AffineTransformationBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\geom\util\ShortCircuitedGeometryVisitor.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\index\chain\MonotoneChainBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\linearref\LinearGeometryBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\operation\buffer\BufferBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\operation\buffer\OffsetCurveBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\operation\buffer\OffsetCurveSetBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\operation\distance\FacetSequenceTreeBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\operation\overlay\LineBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\operation\overlay\PointBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\operation\overlay\PolygonBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\operation\relate\EdgeEndBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\shape\GeometricShapeBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\shape\fractal\HilbertCurveBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\shape\fractal\KochSnowflakeBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\shape\fractal\MortonCurveBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\shape\fractal\SierpinskiCarpetBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\shape\random\RandomPointsBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\shape\random\RandomPointsInGridBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\triangulate\ConformingDelaunayTriangulationBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\triangulate\DelaunayTriangulationBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\triangulate\VoronoiDiagramBuilder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\jsts\org\locationtech\jts\util\TestBuilderProxy.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\brain-circuit.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\brain-circuit.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\building-2.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\building-2.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\building.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\building.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\circuit-board.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\circuit-board.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\fire-extinguisher.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\fire-extinguisher.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\guitar.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\guitar.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\squircle.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\squircle.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\squirrel.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\squirrel.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket-check.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket-check.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket-minus.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket-minus.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket-percent.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket-percent.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket-plus.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket-plus.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket-slash.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket-slash.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket-x.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket-x.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\ticket.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\tickets-plane.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\tickets-plane.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\tickets.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\lucide-react\dist\esm\icons\tickets.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\marchingsquares\examples\require\require.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\mime-types\mimeScore.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\build-context.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\build-context.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\build-context.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\collect-build-traces.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\collect-build-traces.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\collect-build-traces.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\generate-build-id.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\generate-build-id.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\generate-build-id.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\write-build-id.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\write-build-id.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\write-build-id.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\next-config-ts\require-hook.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\next-config-ts\require-hook.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\next-config-ts\require-hook.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\loaders\get-module-build-info.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\loaders\get-module-build-info.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\loaders\get-module-build-info.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\loaders\next-flight-server-reference-proxy-loader.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\loaders\next-flight-server-reference-proxy-loader.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\loaders\next-flight-server-reference-proxy-loader.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\loaders\next-flight-loader\server-reference.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\loaders\next-flight-loader\server-reference.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\loaders\next-flight-loader\server-reference.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\plugins\app-build-manifest-plugin.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\plugins\app-build-manifest-plugin.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\plugins\app-build-manifest-plugin.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\plugins\build-manifest-plugin.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\plugins\build-manifest-plugin.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\plugins\build-manifest-plugin.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\plugins\nextjs-require-cache-hot-reloader.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\plugins\nextjs-require-cache-hot-reloader.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\build\webpack\plugins\nextjs-require-cache-hot-reloader.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\cli\next-build.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\cli\next-build.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\cli\next-build.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\app-build-id.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\app-build-id.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\app-build-id.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\components\react-dev-overlay\ui\components\errors\dev-tools-indicator\dev-tools-info\preferences.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\components\react-dev-overlay\ui\components\errors\dev-tools-indicator\dev-tools-info\preferences.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\components\react-dev-overlay\ui\components\errors\dev-tools-indicator\dev-tools-info\preferences.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\components\react-dev-overlay\ui\components\errors\dev-tools-indicator\dev-tools-info\user-preferences.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\components\react-dev-overlay\ui\components\errors\dev-tools-indicator\dev-tools-info\user-preferences.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\components\react-dev-overlay\ui\components\errors\dev-tools-indicator\dev-tools-info\user-preferences.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\components\react-dev-overlay\ui\container\build-error.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\components\react-dev-overlay\ui\container\build-error.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\components\react-dev-overlay\ui\container\build-error.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\dev\dev-build-indicator\internal\dev-build-indicator.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\dev\dev-build-indicator\internal\dev-build-indicator.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\dev\dev-build-indicator\internal\dev-build-indicator.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\dev\dev-build-indicator\internal\handle-dev-build-indicator-hmr-events.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\dev\dev-build-indicator\internal\handle-dev-build-indicator-hmr-events.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\client\dev\dev-build-indicator\internal\handle-dev-build-indicator-hmr-events.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\compiled\@babel\runtime\helpers\interopRequireDefault.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\compiled\@babel\runtime\helpers\interopRequireWildcard.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\compiled\@babel\runtime\helpers\esm\interopRequireDefault.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\compiled\@babel\runtime\helpers\esm\interopRequireWildcard.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\compiled\babel\core-lib-block-hoist-plugin.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\compiled\babel\core-lib-config.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\compiled\babel\core-lib-normalize-file.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\compiled\babel\core-lib-normalize-opts.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\compiled\babel\core-lib-plugin-pass.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\compiled\babel\core.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\diagnostics\build-diagnostics.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\diagnostics\build-diagnostics.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\diagnostics\build-diagnostics.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\diagnostics\build-diagnostics.test.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\diagnostics\build-diagnostics.test.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\build-context.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\build-context.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\collect-build-traces.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\collect-build-traces.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\generate-build-id.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\generate-build-id.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\write-build-id.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\write-build-id.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\next-config-ts\require-hook.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\next-config-ts\require-hook.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\webpack\loaders\get-module-build-info.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\webpack\loaders\get-module-build-info.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\webpack\loaders\next-flight-server-reference-proxy-loader.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\webpack\loaders\next-flight-server-reference-proxy-loader.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\webpack\loaders\next-flight-loader\server-reference.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\webpack\loaders\next-flight-loader\server-reference.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\webpack\plugins\app-build-manifest-plugin.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\webpack\plugins\app-build-manifest-plugin.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\webpack\plugins\build-manifest-plugin.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\webpack\plugins\build-manifest-plugin.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\webpack\plugins\nextjs-require-cache-hot-reloader.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\build\webpack\plugins\nextjs-require-cache-hot-reloader.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\client\app-build-id.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\client\app-build-id.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\client\components\react-dev-overlay\ui\components\errors\dev-tools-indicator\dev-tools-info\preferences.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\client\components\react-dev-overlay\ui\components\errors\dev-tools-indicator\dev-tools-info\preferences.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\client\components\react-dev-overlay\ui\components\errors\dev-tools-indicator\dev-tools-info\user-preferences.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\client\components\react-dev-overlay\ui\components\errors\dev-tools-indicator\dev-tools-info\user-preferences.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\client\components\react-dev-overlay\ui\container\build-error.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\client\components\react-dev-overlay\ui\container\build-error.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\client\dev\dev-build-indicator\internal\dev-build-indicator.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\client\dev\dev-build-indicator\internal\dev-build-indicator.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\client\dev\dev-build-indicator\internal\handle-dev-build-indicator-hmr-events.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\client\dev\dev-build-indicator\internal\handle-dev-build-indicator-hmr-events.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\lib\build-custom-route.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\lib\build-custom-route.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\lib\client-and-server-references.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\lib\client-and-server-references.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\lib\require-instrumentation-client.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\lib\require-instrumentation-client.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\require-hook.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\require-hook.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\require.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\require.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\after\builtin-request-context.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\after\builtin-request-context.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\app-render\required-scripts.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\app-render\required-scripts.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\dev\require-cache.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\dev\require-cache.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\lib\router-utils\build-data-route.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\lib\router-utils\build-data-route.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\lib\router-utils\build-prefetch-segment-data-route.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\lib\router-utils\build-prefetch-segment-data-route.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\normalizers\underscore-normalizer.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\normalizers\underscore-normalizer.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\stream-utils\uint8array-helpers.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\server\stream-utils\uint8array-helpers.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\shared\lib\server-reference-info.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\esm\shared\lib\server-reference-info.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\lib\build-custom-route.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\lib\build-custom-route.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\lib\build-custom-route.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\lib\client-and-server-references.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\lib\client-and-server-references.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\lib\client-and-server-references.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\lib\require-instrumentation-client.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\lib\require-instrumentation-client.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\lib\require-instrumentation-client.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\require-hook.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\require-hook.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\require-hook.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\require.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\require.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\require.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\after\builtin-request-context.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\after\builtin-request-context.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\after\builtin-request-context.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\app-render\required-scripts.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\app-render\required-scripts.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\app-render\required-scripts.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\dev\require-cache.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\dev\require-cache.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\dev\require-cache.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\lib\router-utils\build-data-route.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\lib\router-utils\build-data-route.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\lib\router-utils\build-data-route.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\lib\router-utils\build-prefetch-segment-data-route.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\lib\router-utils\build-prefetch-segment-data-route.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\lib\router-utils\build-prefetch-segment-data-route.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\normalizers\underscore-normalizer.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\normalizers\underscore-normalizer.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\normalizers\underscore-normalizer.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\stream-utils\uint8array-helpers.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\stream-utils\uint8array-helpers.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\server\stream-utils\uint8array-helpers.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\shared\lib\server-reference-info.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\shared\lib\server-reference-info.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\shared\lib\server-reference-info.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\telemetry\events\build.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\telemetry\events\build.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\next\dist\telemetry\events\build.js.map
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\object-inspect\test-core-js.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\rbush\node_modules\quickselect\quickselect.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\react-is\build-info.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\regexp.prototype.flags\test\builtin.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\resolve\lib\core.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\resolve\lib\core.json
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\resolve\lib\is-core.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\resolve\test\core.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\resolve\test\shadowed_core.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\semver\functions\compare-build.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\serialize-to-js\lib\internal\reference.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\serialize-to-js\src\internal\reference.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\source-map-js\lib\quick-sort.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\string.prototype.includes\.github\workflows\require-allow-edits.yml
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\tinyglobby\node_modules\fdir\dist\builder\api-builder.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\tinyglobby\node_modules\fdir\dist\builder\api-builder.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\typescript\lib\lib.es2015.core.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\uri-js\dist\esnext\schemes\urn-uuid.d.ts
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\uri-js\dist\esnext\schemes\urn-uuid.js
+C:/Users/alexg/Documents\Windsurf projects\foragers-almanac\node_modules\uri-js\dist\esnext\schemes\urn-uuid.js.map
+C:/Users/alexg/Downloads\equity_proposal_final.pdf
+C:/Users/alexg/Downloads\equity_proposal_options.pdf
+C:/Users/alexg/Downloads\equity_proposal_options_clean.pdf
+C:/Users/alexg/Downloads\equity_proposal_options_paragraph.pdf
+C:/Users/alexg/Downloads\equity_proposal_options_paragraph_amended.pdf
+C:/Users/alexg/Downloads\pirate reference document.txt
+C:/Users/alexg/Downloads\popswap_equity_and_ip_pack.pdf
+C:/Users/alexg/Downloads\THOUGHTREACH — CORE SYSTEM (REFERENCE 1).txt
+C:/Users/alexg/Downloads\Data Analytics helpsheets\Requirements+Gathering+Worksheet.pdf
+C:/Users/alexg/Downloads\Data Analytics helpsheets\archive\penguins_lter.csv
+C:/Users/alexg/Downloads\Data Analytics helpsheets\archive\penguins_size.csv
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\009-Tools-Prerequisite-Information-KjiX-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\009-Tools-Prerequisite-Information-KjiX-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\009-Tools-Prerequisite-Information-KjiX-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\125-Ec2-Quick-Start-pWuF-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\125-Ec2-Quick-Start-pWuF-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\125-Ec2-Quick-Start-pWuF-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\145-Build-and-Deploy-Artifacts-we2Y-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\145-Build-and-Deploy-Artifacts-we2Y-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\145-Build-and-Deploy-Artifacts-we2Y-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\157-Build-Deploy-Artifact-l3fH-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\157-Build-Deploy-Artifact-l3fH-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\157-Build-Deploy-Artifact-l3fH-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\173-First-Build-Job-mz1l-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\173-First-Build-Job-mz1l-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\173-First-Build-Job-mz1l-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\194-Build-Triggers-Intro-ZkMY-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\194-Build-Triggers-Intro-ZkMY-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\194-Build-Triggers-Intro-ZkMY-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\195-Build-Triggers-Demo-cslF-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\195-Build-Triggers-Demo-cslF-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\195-Build-Triggers-Demo-cslF-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\208-Built-in-Functions-or-Methods-PlMJ-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\208-Built-in-Functions-or-Methods-PlMJ-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\208-Built-in-Functions-or-Methods-PlMJ-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\256-Code-build-CbGF-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\256-Code-build-CbGF-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\256-Code-build-CbGF-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\257-Build-Deploy-Code-Pipeline-uA9C-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\257-Build-Deploy-Code-Pipeline-uA9C-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\257-Build-Deploy-Code-Pipeline-uA9C-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\263-Building-images-kCYQ-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\263-Building-images-kCYQ-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\263-Building-images-kCYQ-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\271-Dockerhub-Dockerfile-References-FYs1-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\271-Dockerhub-Dockerfile-References-FYs1-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\271-Dockerhub-Dockerfile-References-FYs1-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\276-Build-and-Run-yRey-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\276-Build-and-Run-yRey-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\276-Build-and-Run-yRey-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\279-Build-Run-Microservice-App-0p0K-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\279-Build-Run-Microservice-App-0p0K-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\279-Build-Run-Microservice-App-0p0K-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\330-Docker-Build-Publish-nuJY-english-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\330-Docker-Build-Publish-nuJY-onehack.us.mp4
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\330-Docker-Build-Publish-nuJY-persian-onehack.us.srt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\01-Introduction-__-007-DevOps-Quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\02-Prerequisites-Info-Setup-__-001-Vprofile-Repository-Guthub.url
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\02-Prerequisites-Info-Setup-__-002-Find-Your-Software-in-Chocolatey.url
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\02-Prerequisites-Info-Setup-__-002-Install-Chocolatey.url
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\02-Prerequisites-Info-Setup-__-003-Homebrew.url
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\02-Prerequisites-Info-Setup-__-004-Prereqs-doc.pdf
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\02-Prerequisites-Info-Setup-__-005-Tools-Prerequisites-for-Ubuntu-20.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\02-Prerequisites-Info-Setup-__-external-links.txt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\04-Linux-__-001-Linux-Quickstart-V5.pdf
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\04-Linux-__-019-Sudo-quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\04-Linux-__-021-Package-Management-Quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\04-Linux-__-023-Services-Quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\04-Linux-__-025-Processes-quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\04-Linux-__-028-Linux-OS-Quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\05-Vagrant-Linux-Servers-__-010-IAC-Quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\07-VProfile-Project-Setup-Manual-Automated-__-011-Vprofile-Project-quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\08-Networking-__-005-Networking-Quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\09-Introducing-Containers-__-002-Container-Quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\09-Introducing-Containers-__-004-Docker-Intro-Quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\09-Introducing-Containers-__-006-Docker-Quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\10-Bash-Scripting-__-008-Variables-Quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\10-Bash-Scripting-__-011-Arguments-Quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\10-Bash-Scripting-__-014-Quote-quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\10-Bash-Scripting-__-016-Variable-Quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\10-Bash-Scripting-__-020-Conditions-Quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\10-Bash-Scripting-__-023-For-loop-quiz.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\16-Continuous-Integration-with-Jenkins-__-028-Build-Triggers-Remotely.docx
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\16-Continuous-Integration-with-Jenkins-__-028-Build-Triggers-Remotely.pdf
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\19-AWS-Part-2-__-015-buildspec-1.yml
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\19-AWS-Part-2-__-015-buildspec.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\20-AWS-CI-CD-Project-__-005-buildspec.yml
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\26-GitOps-Project-__-009-DockerBuildECRPublish.rtf
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\BUILDING.txt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\bin\commons-daemon-1.1.0-native-src\unix\support\buildconf.sh
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\bin\commons-daemon-1.1.0-native-src\windows\include\gui.h
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\bin\commons-daemon-1.1.0-native-src\windows\src\gui.c
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\bin\tomcat-native-1.2.19-src\build.properties.default
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\bin\tomcat-native-1.2.19-src\build.xml
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\bin\tomcat-native-1.2.19-src\native\build-outputs.mk
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\bin\tomcat-native-1.2.19-src\native\build.conf
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\bin\tomcat-native-1.2.19-src\native\buildconf
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\bin\tomcat-native-1.2.19-src\native\BUILDING
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\bin\tomcat-native-1.2.19-src\native\build\buildcheck.sh
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\bin\tomcat-native-1.2.19-src\native\srclib\BUILDING
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\bin\tomcat-native-1.2.19-src\xdocs\build.xml
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\webapps\docs\building.html
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\webapps\docs\BUILDING.txt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\webapps\docs\appdev\build.xml.txt
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Bash_Scripts\tomcat_scripts_ubuntu\tomcat_setup_scripts\apache-tomcat-8.5.37\webapps\docs\appdev\sample\build.xml
+C:/Users/alexg/Downloads\DevOps Beginners to Advanced with Projects\exercise_files\Python-Scripts\Built-in-Methods.py
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\06 File Handling\055 fruits.txt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\06 File Handling\057 fruits.txt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\13 Application 4 Building a Website with Python and Flask\128 Building your First Website-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\13 Application 4 Building a Website with Python and Flask\128 Building your First Website.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\14 Building Graphical User Interfaces with Tkinter\138 Setting up a GUI with Widgets-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\14 Building Graphical User Interfaces with Tkinter\138 Setting up a GUI with Widgets.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\14 Building Graphical User Interfaces with Tkinter\139 Connecting GUI Widgets with Callback Functions-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\14 Building Graphical User Interfaces with Tkinter\139 Connecting GUI Widgets with Callback Functions.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\14 Building Graphical User Interfaces with Tkinter\140 Exercise Creating a Multi-widget GUI.html
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\14 Building Graphical User Interfaces with Tkinter\141 Solution Creating a Multi-widget GUI.html
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\16 Application 5 Building a Desktop Database Application\149 Building the Front-end Interface-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\16 Application 5 Building a Desktop Database Application\149 Building the Front-end Interface.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\16 Application 5 Building a Desktop Database Application\150 Building the Back-end-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\16 Application 5 Building a Desktop Database Application\150 Building the Back-end.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\17 Object Oriented Programming\162 Exercise GUI OOP Design.html
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\17 Object Oriented Programming\163 Solution GUI OOP Design.html
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\23 Application 8 Building a Web-based Financial Graph\202 Building Chart Candlesticks with Bokeh Quadrants-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\23 Application 8 Building a Web-based Financial Graph\202 Building Chart Candlesticks with Bokeh Quadrants.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\23 Application 8 Building a Web-based Financial Graph\203 Building Chart Candlesticks with Bokeh Rectangles-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\23 Application 8 Building a Web-based Financial Graph\203 Building Chart Candlesticks with Bokeh Rectangles.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\23 Application 8 Building a Web-based Financial Graph\204 Building Candlestick Segments-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\23 Application 8 Building a Web-based Financial Graph\204 Building Candlestick Segments.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\210 Steps for Building a PostGreSQL Database-enabled Web App with Flask-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\210 Steps for Building a PostGreSQL Database-enabled Web App with Flask.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\211 Building the Front End HTML Part-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\211 Building the Front End HTML Part.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\212 Building the Front End CSS Part-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\212 Building the Front End CSS Part.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\213 Building the Back End Getting User Input-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\213 Building the Back End Getting User Input.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\214 Building the Back End Creating the PostGreSQL Database Model-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\214 Building the Back End Creating the PostGreSQL Database Model.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\215 Building the Back End Storing User Data to the Database-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\215 Building the Back End Storing User Data to the Database.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\216 Building the Back End Emailing Database Values Back to the User-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\216 Building the Back End Emailing Database Values Back to the User.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\217 Building the Back End Sending Statistics to Users-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\24 Application 9 Building a Data Collector Web App with PostGreSQL and Flask\217 Building the Back End Sending Statistics to Users.mp4
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\25 Application 10  Student Project on Building a Geocoder Web Service\220 Demonstration of the Geocoding Web Service Application and Project Requirements-subtitle-en.srt
+C:/Users/alexg/Downloads\The Python Mega Course Build 10 Real World Applications\[Tutsgalaxy.com] - The Python Mega Course Build 10 Real World Applications\25 Application 10  Student Project on Building a Geocoder Web Service\220 Demonstration of the Geocoding Web Service Application and Project Requirements.mp4
+C:/Users/alexg/Downloads\The Terence McKenna Audio Archive (2011)\Lectures - Workshops - Audiobooks\(1984) Terence McKenna - True Hallucinations [320 kbps]\Terence McKenna - True Hallucinations - 07 - A Violet Psychofluid.mp3
+C:/Users/alexg/Downloads\The Terence McKenna Audio Archive (2011)\Lectures - Workshops - Audiobooks\(1991) Sacred Plants As Guides\terrance mckenna - SacredPlantsAsGuides 01.mp3
+C:/Users/alexg/Downloads\The Terence McKenna Audio Archive (2011)\Lectures - Workshops - Audiobooks\(1991) Sacred Plants As Guides\terrance mckenna - SacredPlantsAsGuides 02.mp3
+C:/Users/alexg/Downloads\The Terence McKenna Audio Archive (2011)\Lectures - Workshops - Audiobooks\(1991) Sacred Plants As Guides\terrance mckenna - sacredplantsasguides 03.mp3
+C:/Users/alexg/Downloads\The Terence McKenna Audio Archive (2011)\Lectures - Workshops - Audiobooks\(1991) Sacred Plants As Guides\terrance mckenna - sacredplantsasguides 04.mp3
+C:/Users/alexg/Downloads\The Terence McKenna Audio Archive (2011)\Lectures - Workshops - Audiobooks\(1991) Sacred Plants As Guides\terrance mckenna - sacredplantsasguides 05.mp3
+C:/Users/alexg/Downloads\The Terence McKenna Audio Archive (2011)\Lectures - Workshops - Audiobooks\(1991) Sacred Plants As Guides\terrance mckenna - sacredplantsasguides 06.mp3
+C:/Users/alexg/Downloads\The Terence McKenna Audio Archive (2011)\Lectures - Workshops - Audiobooks\(1991) Sacred Plants As Guides\terrance mckenna - sacredplantsasguides 07.mp3
+C:/Users/alexg/Downloads\The Terence McKenna Audio Archive (2011)\Lectures - Workshops - Audiobooks\(1991) Sacred Plants As Guides\terrance mckenna - sacredplantsasguides 09.mp3
+C:/Users/alexg/Downloads\The Terence McKenna Audio Archive (2011)\Lectures - Workshops - Audiobooks\(1991) Sacred Plants As Guides\terrance mckenna - sacredplantsasguides 10.mp3
+C:/Users/alexg/Downloads\The Terence McKenna Audio Archive (2011)\Music\(1998) Terence McKenna with Lost at Last\McKenna98Maui.mp3
+C:/Users/alexg/Downloads\The Terence McKenna Audio Archive (2011)\Music\(1998) Terence McKenna with Lost at Last\Terence McKenna with Lost at Last (03-15-98, Maui, Hawaii).mp3
+C:/Users/alexg/Downloads\The Terence McKenna Audio Archive (2011)\Music\(2001) Journey Through the Spheres - A Tribute to Terence McKenna\14 liquid crystal love.mp3
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\extension-preferences.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\shield-preference-experiments.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\bookmarkbackups\bookmarks-2024-01-08_134_TsR91SUlYb6G2FlQ3wZuiA==.jsonlz4
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_arts_and_entertainment.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_autos_and_vehicles.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_beauty_and_fitness.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_blogging_resources_and_services.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_books_and_literature.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_business_and_industrial.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_computers_and_electronics.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_finance.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_food_and_drink.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_games.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_health.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_hobbies_and_leisure.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_home_and_garden.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_internet_and_telecom.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_jobs_and_education.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_law_and_government.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_online_communities.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_people_and_society.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_pets_and_animals.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_real_estate.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_reference.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_science.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_shopping.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_sports.json
+C:/Users/alexg/Desktop\Old Firefox Data\6zf84kgk.default-release\personality-provider\nb_model_build_attachment_travel.json
+C:/Users/alexg/Desktop\Tor Browser\Browser\fonts\NotoSansMendeKikakui-Regular.ttf
+C:/Users/alexg/Desktop\Tor Browser\Browser\TorBrowser\Data\Browser\profile.default\extension-preferences.json
+C:/Users/alexg/.gemini\antigravity\brain\03f0eb75-0f3d-4a7c-8dee-261dfa449c43\verify_search_ui_1774671178666.webp
+C:/Users/alexg/.gemini\antigravity\brain\326ea24b-3af2-43c1-bd94-35a39ded4150\debug_ui_highlighting_91_1774512836578.webp
+C:/Users/alexg/.gemini\antigravity\brain\326ea24b-3af2-43c1-bd94-35a39ded4150\verify_ui_highlighting_91_1774512613180.webp
+C:/Users/alexg/.gemini\antigravity\brain\326ea24b-3af2-43c1-bd94-35a39ded4150\verify_ui_highlighting_cleanup_91b_1774514031176.webp
+C:/Users/alexg/.gemini\antigravity\brain\326ea24b-3af2-43c1-bd94-35a39ded4150\verify_ui_highlighting_cleanup_final_91b_1774514217426.webp
+C:/Users/alexg/.gemini\antigravity\brain\326ea24b-3af2-43c1-bd94-35a39ded4150\verify_ui_highlighting_final_91_1774513155540.webp
+C:/Users/alexg/.gemini\antigravity\brain\4f48fbef-dde9-4def-85c0-ee101c0c97b4\no_results_ui_verification_115_1774684738520.webp
+C:/Users/alexg/.gemini\antigravity\brain\55b2d7e8-fd0b-4295-ba88-707046ba1b79\verify_full_conv_ui_1774674969035.webp
+C:/Users/alexg/.gemini\antigravity-browser-profile\Default\Preferences
+C:/Users/alexg/.gemini\antigravity-browser-profile\Default\Secure Preferences
+C:/Users/alexg/.gemini\antigravity-browser-profile\Default\Extensions\fheoggkfdfchfphceeifdbepaooicaho\8.1.0.9066_0\preference.js
+C:/Users/alexg/.gemini\antigravity-browser-profile\Default\Extensions\fheoggkfdfchfphceeifdbepaooicaho\8.1.0.9066_0\html\preference.html

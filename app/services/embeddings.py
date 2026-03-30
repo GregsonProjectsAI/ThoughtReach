@@ -8,9 +8,10 @@ async def generate_embeddings(texts: list[str]) -> list[list[float]]:
     """Generates embeddings using text-embedding-3-small in batch."""
     if not texts:
         return []
-    is_placeholder = not settings.OPENAI_API_KEY or settings.OPENAI_API_KEY.strip() == "your_openai_api_key_here"
-    if settings.ALLOW_MOCK_EMBEDDINGS or is_placeholder:
-        return [[0.0] * 1536 for _ in texts]
+    
+    is_placeholder = not settings.OPENAI_API_KEY or settings.OPENAI_API_KEY.strip() in ("", "your_openai_api_key_here")
+    if is_placeholder:
+        raise RuntimeError("Embedding generation failed: OpenAI API key is missing or is set to placeholder.")
         
     try:
         import asyncio
@@ -19,15 +20,16 @@ async def generate_embeddings(texts: list[str]) -> list[list[float]]:
                 input=texts,
                 model="text-embedding-3-small"
             ),
-            timeout=3.0
+            timeout=10.0 # Increased from 3.0 to be more robust for larger batches
         )
         # Ensure they are in correct order based on input array
         response.data.sort(key=lambda x: x.index)
         return [item.embedding for item in response.data]
     except Exception as e:
-        # Fallback to mock instead of hanging/crashing
-        print(f"DEBUG_EMB_ERROR: {str(e)}")
-        return [[0.0] * 1536 for _ in texts]
+        # No more silent fallback
+        error_msg = f"Embedding provider error: {str(e)}"
+        print(f"CRITICAL_EMB_ERROR: {error_msg}")
+        raise RuntimeError(error_msg) from e
 
 async def generate_summary(text: str) -> str | None:
     if not text.strip():

@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -114,23 +115,33 @@ async def list_conversation_summaries(
     # Shared async helper to call LLM for a list of summary strings
     async def _generate_insight(texts: list[str]) -> str | None:
         from app.services.embeddings import client as openai_client
+        import asyncio
+        
+        # Guard: max 20 summaries for cost/context control
+        if len(texts) > 20:
+            texts = texts[:20]
+            
         combined = "\n".join(f"- {t}" for t in texts if t and t.strip())
         if len(combined) < 100:
             return None
         if len(combined) > 8000:
             combined = combined[:8000] + "\n...[truncated]"
         try:
-            resp = await openai_client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "You summarize themes across multiple conversation summaries in 2-4 concise sentences."},
-                    {"role": "user", "content": f"Identify the main themes across these conversation summaries:\n\n{combined}"}
-                ],
-                max_tokens=200,
+            resp = await asyncio.wait_for(
+                openai_client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[
+                        {"role": "system", "content": "You summarize themes across multiple conversation summaries in 2-4 concise sentences."},
+                        {"role": "user", "content": f"Identify the main themes across these conversation summaries:\n\n{combined}"}
+                    ],
+                    max_tokens=200,
+                ),
+                timeout=10.0
             )
             result = resp.choices[0].message.content.strip()
             return result[:497] + "..." if len(result) > 500 else result
         except Exception:
+            # Fallback for timeout, rate-limits, or API errors
             return None
     
     insight = None
@@ -162,7 +173,7 @@ async def list_conversation_summaries(
     return ConversationSummariesResponse(summaries=summaries, total_count=total_count, top_words=top_words, grouped_summaries=grouped, insight=insight)
 
 @router.get("/{conversation_id}", response_model=ConversationOut)
-async def get_conversation(conversation_id: UUID, db: AsyncSession = Depends(get_db)):
+async def get_conversation(conversation_id: UUID, db: AsyncSession = Depends(get_db), highlight_query: Optional[str] = None):
     stmt = select(Conversation).options(
         selectinload(Conversation.messages),
         selectinload(Conversation.category),
@@ -172,7 +183,17 @@ async def get_conversation(conversation_id: UUID, db: AsyncSession = Depends(get
     conv = result.scalars().first()
     if not conv:
         raise HTTPException(status_code=404, detail="Conversation not found")
-    return conv
+        
+    out = ConversationOut.model_validate(conv)
+    if highlight_query and out.messages:
+        import re
+        terms = [re.escape(t) for t in highlight_query.split() if t]
+        if terms:
+            pattern = "|".join(terms)
+            highlight_regex = re.compile(f"({pattern})", re.IGNORECASE)
+            for msg in out.messages:
+                msg.content = highlight_regex.sub(r"[[\1]]", msg.content)
+    return out
 
 @router.patch("/{conversation_id}/category", response_model=ConversationOut)
 async def update_conversation_category(conversation_id: UUID, payload: ConversationCategoryUpdate, db: AsyncSession = Depends(get_db)):

@@ -107,7 +107,7 @@ class ImportJobOut(BaseModel):
 
 class SearchRequest(BaseModel):
     query: str
-    limit: int = 10
+    limit: int = Field(default=10, le=50)
     category_id: Optional[UUID] = None
 
 class SearchResultOut(BaseModel):
