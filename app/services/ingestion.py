@@ -13,7 +13,7 @@ def compute_fingerprint(raw_text: str) -> str:
     return hashlib.sha256(raw_text.encode("utf-8")).hexdigest()
 
 
-def parse_raw_text_to_messages(raw_text: str) -> List[dict]:
+def parse_raw_text_to_messages(raw_text: str, source_type: str = "structured") -> List[dict]:
     """
     Deterministically split raw_text into message dicts.
 
@@ -43,12 +43,13 @@ def parse_raw_text_to_messages(raw_text: str) -> List[dict]:
     raw = raw_text.strip()
     lines = raw.splitlines()
 
-    # Detect whether any non-empty line starts with a speaker marker
-    has_speakers = any(
-        speaker_pattern.match(line.strip())
-        for line in lines
-        if line.strip()
-    )
+    has_speakers = False
+    if source_type != "raw":
+        has_speakers = any(
+            speaker_pattern.match(line.strip())
+            for line in lines
+            if line.strip()
+        )
 
     messages: list[dict] = []
 
@@ -84,12 +85,19 @@ def parse_raw_text_to_messages(raw_text: str) -> List[dict]:
                 messages.append({"role": current_role, "content": content})
 
     else:
-        # Fallback: split on two or more consecutive newlines
+        # Fallback: split on two or more consecutive newlines (paragraphs).
         paragraphs = _re.split(r"\n{2,}", raw)
-        for para in paragraphs:
+        for i, para in enumerate(paragraphs):
             content = para.strip()
             if content:
-                messages.append({"role": "user", "content": content})
+                # Manual raw-text imports MUST NOT alternate roles.
+                # Use 'user' as a generic container for all semantic paragraphs.
+                if source_type == "raw":
+                    role = "user"
+                else:
+                    # Dynamic alternation only occurs for default structured fallback.
+                    role = "user" if (len(messages) % 2 == 0) else "assistant"
+                messages.append({"role": role, "content": content})
 
     # Final safety guarantee: never return an empty list
     if not messages:
@@ -102,6 +110,8 @@ async def ingest_paste_direct(
     title: str,
     raw_text: str,
     db: AsyncSession,
+    category_id: str | None = None,
+    source_type: str = "structured"
 ) -> tuple[bool, str | None]:
     """
     Synchronously ingest a single pasted conversation.
@@ -118,16 +128,17 @@ async def ingest_paste_direct(
         return False, None
 
     # Parse messages
-    messages = parse_raw_text_to_messages(raw_text)
+    messages = parse_raw_text_to_messages(raw_text, source_type)
     if not messages:
         messages = [{"role": "user", "content": raw_text.strip()}]
 
     # Create conversation
     conv = Conversation(
         title=title,
-        source_type="paste",
+        source_type=source_type,
         raw_text=raw_text,
         content_fingerprint=fingerprint,
+        category_id=category_id,
     )
     db.add(conv)
     await db.flush()

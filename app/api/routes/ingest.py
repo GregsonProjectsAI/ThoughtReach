@@ -11,6 +11,8 @@ router = APIRouter(prefix="/ingest", tags=["Ingest"])
 class PasteIngestRequest(BaseModel):
     title: Optional[str] = "Untitled Conversation"
     raw_text: str
+    category_id: Optional[str] = None
+    source_type: str = "structured"
 
 
 class PasteIngestResponse(BaseModel):
@@ -28,7 +30,13 @@ async def ingest_paste(
         raise HTTPException(status_code=422, detail="raw_text cannot be empty")
 
     title = (request.title or "Untitled Conversation").strip() or "Untitled Conversation"
-    was_ingested, conversation_id = await ingest_paste_direct(title, request.raw_text, db)
+    was_ingested, conversation_id = await ingest_paste_direct(
+        title=title, 
+        raw_text=request.raw_text, 
+        db=db,
+        category_id=request.category_id,
+        source_type=request.source_type
+    )
 
     if not was_ingested:
         return PasteIngestResponse(

@@ -6,7 +6,7 @@ from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
 from app.db.session import get_db
 from app.schemas.api import ConversationOut, ConversationCategoryUpdate, ConversationTagsUpdate, ConversationSummaryOut, ConversationSummariesResponse
-from app.models.models import Conversation, Category, Tag, conversation_tags
+from app.models.models import Conversation, Message, Category, Tag, conversation_tags
 from app.services.embeddings import generate_summary
 
 router = APIRouter(prefix="/conversations", tags=["Conversations"])
@@ -173,9 +173,15 @@ async def list_conversation_summaries(
     return ConversationSummariesResponse(summaries=summaries, total_count=total_count, top_words=top_words, grouped_summaries=grouped, insight=insight)
 
 @router.get("/{conversation_id}", response_model=ConversationOut)
-async def get_conversation(conversation_id: UUID, db: AsyncSession = Depends(get_db), highlight_query: Optional[str] = None):
+async def get_conversation(
+    conversation_id: UUID, 
+    db: AsyncSession = Depends(get_db), 
+    highlight_query: Optional[str] = None,
+    start_index: Optional[int] = Query(None, ge=0),
+    end_index: Optional[int] = Query(None, ge=0)
+):
+    # Fetch conversation without messages first
     stmt = select(Conversation).options(
-        selectinload(Conversation.messages),
         selectinload(Conversation.category),
         selectinload(Conversation.tags)
     ).where(Conversation.id == conversation_id)
@@ -184,7 +190,50 @@ async def get_conversation(conversation_id: UUID, db: AsyncSession = Depends(get
     if not conv:
         raise HTTPException(status_code=404, detail="Conversation not found")
         
-    out = ConversationOut.model_validate(conv)
+    # Fetch messages separately based on range
+    msg_stmt = select(Message).where(Message.conversation_id == conversation_id)
+    if start_index is not None:
+        msg_stmt = msg_stmt.where(Message.message_index >= start_index)
+    if end_index is not None:
+        msg_stmt = msg_stmt.where(Message.message_index <= end_index)
+    msg_stmt = msg_stmt.order_by(Message.message_index)
+    
+    msg_result = await db.execute(msg_stmt)
+    messages = list(msg_result.scalars().all())
+
+    # Fully decouple from SQLAlchemy objects to prevent lazy-load checks in synchronous Pydantic validation
+    category_out = None
+    if conv.category:
+        category_out = {"id": conv.category.id, "name": conv.category.name}
+    
+    tags_out = [{"id": t.id, "name": t.name} for t in conv.tags]
+    
+    messages_out = []
+    for m in messages:
+        messages_out.append({
+            "id": m.id,
+            "role": m.role,
+            "message_index": m.message_index,
+            "content": m.content,
+            "created_at": m.created_at
+        })
+    
+    conv_data = {
+        "id": conv.id,
+        "title": conv.title,
+        "source_type": conv.source_type,
+        "external_id": conv.external_id,
+        "created_at": conv.created_at,
+        "imported_at": conv.imported_at,
+        "summary": conv.summary,
+        "category_id": conv.category_id,
+        "category": category_out,
+        "tags": tags_out,
+        "messages": messages_out,
+        "content_fingerprint": conv.content_fingerprint
+    }
+    
+    out = ConversationOut.model_validate(conv_data)
     if highlight_query and out.messages:
         import re
         terms = [re.escape(t) for t in highlight_query.split() if t]

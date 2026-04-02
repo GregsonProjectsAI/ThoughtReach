@@ -114,12 +114,16 @@ class SearchResultOut(BaseModel):
     conversation_id: UUID
     conversation_title: str
     conversation_summary: Optional[str] = None
+    conversation_source_type: str = "paste"
     category_id: Optional[UUID] = None
     category_name: Optional[str] = None
+    imported_at: datetime
     matched_chunk_text: str
     similarity_score: float
     message_start_index: int
     message_end_index: int
+    source_exchange_start_index: int
+    source_exchange_end_index: int
     surrounding_messages: Optional[List[dict]] = None
     source_user_message: Optional[str] = None
     source_assistant_message: Optional[str] = None
@@ -129,6 +133,7 @@ class SearchResultOut(BaseModel):
     previous_exchange_assistant_message: Optional[str] = None
     next_exchange_user_message: Optional[str] = None
     next_exchange_assistant_message: Optional[str] = None
+    message_count: int = 0
 
     @computed_field
     @property

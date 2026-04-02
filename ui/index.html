@@ -9,22 +9,136 @@
 <body>
     <div class="search-container">
         <header>
-            <h1>ThoughtReach Search</h1>
+            <div class="header-content">
+                <h1>ThoughtReach</h1>
+                <nav class="app-nav">
+                    <button id="nav-search-btn" class="nav-btn active">Search</button>
+                    <button id="nav-import-btn" class="nav-btn">Import</button>
+                    <button id="nav-library-btn" class="nav-btn">Library</button>
+                </nav>
+            </div>
         </header>
 
-        <section class="search-bar-section">
-            <form id="search-form" class="search-form">
-                <input type="text" id="search-input" placeholder="Search your conversations..." required />
-                <select id="category-select">
-                    <option value="">All Categories</option>
-                </select>
-                <button type="submit">Search</button>
-            </form>
-            <div id="status-message" class="status-message"></div>
+        <section id="search-view" class="view-section active">
+            <div class="search-bar-section">
+                <form id="search-form" class="search-form">
+                    <input type="text" id="search-input" placeholder="Search your conversations..." required />
+                    <select id="category-select">
+                        <option value="">All Categories</option>
+                    </select>
+                    <button type="submit">Search</button>
+                </form>
+                <div id="status-message" class="status-message"></div>
+            </div>
+
+            <div id="results-header-row" class="results-header-row hidden">
+                <div class="results-summary-container">
+                    <div id="search-summary" class="search-summary"></div>
+                    <div id="search-refinement-hint" class="search-refinement-hint hidden">Refine your search to narrow results</div>
+                </div>
+                <div class="result-display-controls">
+                    <label for="result-display-select">Show:</label>
+                    <select id="result-display-select">
+                        <option value="all">All Matches</option>
+                        <option value="top">Top Match Per Item</option>
+                    </select>
+                </div>
+                <div class="result-sort-controls">
+                    <label for="result-sort-select">Sort:</label>
+                    <select id="result-sort-select">
+                        <option value="relevant">Most Relevant</option>
+                        <option value="newest">Newest Import</option>
+                        <option value="oldest">Oldest Import</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="results-area" id="results-container">
+                <div class="empty-state">
+                    <h3>Nothing to search yet?</h3>
+                    <p>Import something first using the <strong>Import</strong> tab, then search for it here.</p>
+                </div>
+            </div>
         </section>
 
-        <section class="results-area" id="results-container">
-            <!-- Results will be injected here -->
+        <section id="import-view" class="view-section hidden">
+            <div class="import-container">
+                <h2>Import Conversation</h2>
+                <form id="import-form" class="import-form">
+                    <div class="form-group">
+                        <label for="import-project">Project</label>
+                        <div class="project-selector-wrapper">
+                            <select id="import-project" required>
+                                <option value="" disabled selected>Select a project...</option>
+                                <option value="new">+ Create New Project...</option>
+                            </select>
+                            <input type="text" id="new-project-input" class="hidden" placeholder="Enter new project name" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="import-title">Conversation Title</label>
+                        <input type="text" id="import-title" required placeholder="e.g. Planning Session Notes" autocomplete="off" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="import-mode">Import Mode</label>
+                        <div class="mode-toggles">
+                            <label class="mode-toggle">
+                                <input type="radio" name="import-mode" value="structured" checked>
+                                <span>Structured Conversation</span>
+                            </label>
+                            <label class="mode-toggle">
+                                <input type="radio" name="import-mode" value="raw">
+                                <span>Raw Imported Text</span>
+                            </label>
+                        </div>
+                        <p class="import-help">
+                            <strong>Structured:</strong> for chats with "User: / Assistant:" labels. 
+                            <strong>Raw:</strong> for notes, documents, or manual text imports.
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="import-text">Content</label>
+                        <textarea id="import-text" required placeholder="User: How do I build this?&#10;&#10;Assistant: You can follow these steps..."></textarea>
+                    </div>
+
+                    <div class="import-actions">
+                        <button type="submit" id="import-submit-btn">Import Conversation</button>
+                        <p class="import-memory-hint">Project and mode stay selected for faster repeated imports</p>
+                    </div>
+                    <div id="import-status" class="status-message"></div>
+                </form>
+            </div>
+        </section>
+
+        <section id="library-view" class="view-section hidden">
+            <div class="library-container">
+                <div class="library-header">
+                    <h2>Library</h2>
+                    <button id="library-refresh-btn" class="library-refresh-btn" title="Refresh">&#8635;</button>
+                </div>
+                <div id="library-content">
+                    <div class="library-empty">Loading library...</div>
+                </div>
+            </div>
+
+            <!-- Read-only open view (hidden by default) -->
+            <div id="library-open-view" class="hidden">
+                <div class="library-open-header">
+                    <button id="library-back-btn" class="library-back-btn">&larr; Back to Library</button>
+                    <div class="library-open-meta">
+                        <span id="library-open-title" class="library-open-title"></span>
+                        <span id="library-open-type-badge" class="library-open-type-badge"></span>
+                        <span id="library-open-project" class="library-open-project"></span>
+                        <span id="library-open-date" class="library-open-meta-date"></span>
+                    </div>
+                    <button id="library-back-to-search-btn" class="library-back-to-search-btn hidden" title="Return to Search Results">&larr; Back to Search Result</button>
+                    <button id="library-search-title-btn" class="library-search-btn" title="Search this title">Search This Title</button>
+                </div>
+                <div id="library-open-content" class="library-open-content"></div>
+            </div>
         </section>
     </div>
 

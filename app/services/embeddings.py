@@ -1,3 +1,4 @@
+import asyncio
 import openai
 from openai import AsyncOpenAI
 from app.core.config import settings
@@ -5,7 +6,7 @@ from app.core.config import settings
 client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
 
 async def generate_embeddings(texts: list[str]) -> list[list[float]]:
-    """Generates embeddings using text-embedding-3-small in batch."""
+    """Generates embeddings using text-embedding-3-small in bounded batches."""
     if not texts:
         return []
     
@@ -13,20 +14,27 @@ async def generate_embeddings(texts: list[str]) -> list[list[float]]:
     if is_placeholder:
         raise RuntimeError("Embedding generation failed: OpenAI API key is missing or is set to placeholder.")
         
+    BATCH_SIZE = 500  # Conservative batch size below the known 2048 cap
+    all_embeddings = []
+    
     try:
-        import asyncio
-        response = await asyncio.wait_for(
-            client.embeddings.create(
-                input=texts,
-                model="text-embedding-3-small"
-            ),
-            timeout=10.0 # Increased from 3.0 to be more robust for larger batches
-        )
-        # Ensure they are in correct order based on input array
-        response.data.sort(key=lambda x: x.index)
-        return [item.embedding for item in response.data]
+        # Process in safe request batches
+        for i in range(0, len(texts), BATCH_SIZE):
+            batch = texts[i : i + BATCH_SIZE]
+            response = await asyncio.wait_for(
+                client.embeddings.create(
+                    input=batch,
+                    model="text-embedding-3-small"
+                ),
+                timeout=12.0 # Slightly increased timeout for batch resilience
+            )
+            
+            # Sort batch items by their index (0-based for this batch) to guarantee order
+            batch_data = sorted(response.data, key=lambda x: x.index)
+            all_embeddings.extend([item.embedding for item in batch_data])
+            
+        return all_embeddings
     except Exception as e:
-        # No more silent fallback
         error_msg = f"Embedding provider error: {str(e)}"
         print(f"CRITICAL_EMB_ERROR: {error_msg}")
         raise RuntimeError(error_msg) from e

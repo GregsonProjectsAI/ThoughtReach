@@ -47,7 +47,40 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
         if conv_counts[conversation.id] < 2:
             deduped_rows.append((chunk, conversation, category, distance))
             conv_counts[conversation.id] += 1
-    
+
+    # 3. Lightweight lexical tie-break re-sort
+    # Primary: cosine similarity (descending).
+    # Secondary (tie-break only, within ±0.02 similarity): lexical term-coverage score.
+    # This ensures a chunk matching ALL query terms ranks above one matching only some,
+    # when their semantic scores are indistinguishable.
+    import math as _math
+    query_terms_lower = [t.lower() for t in query.split() if t]
+    query_phrase_lower = query.lower()
+
+    def lexical_score(chunk_text: str) -> float:
+        if not query_terms_lower:
+            return 0.0
+        text_lower = (chunk_text or "").lower()
+        term_hits = sum(1 for t in query_terms_lower if t in text_lower)
+        term_ratio = term_hits / len(query_terms_lower)
+        phrase_bonus = 0.5 if query_phrase_lower in text_lower else 0.0
+        return term_ratio + phrase_bonus
+
+    def sort_key(row):
+        chunk, conversation, category, distance = row
+        sim = 1.0 - distance if (distance is not None and not _math.isnan(distance)) else 0.0
+        # Only apply lexical tie-break for manual raw-text imports.
+        # Structured conversations retain pure cosine-similarity ordering.
+        if conversation.source_type == "raw":
+            lex = lexical_score(chunk.chunk_text or "")
+        else:
+            lex = 0.0
+        # Round sim to 2 decimal places to group near-ties, then use lex as tie-break
+        sim_bucket = round(sim, 2)
+        return (-sim_bucket, -lex)
+
+    deduped_rows.sort(key=sort_key)
+
     # Final truncation to requested limit
     rows = deduped_rows[:limit]
     
@@ -100,107 +133,115 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
             
         source_user_message = None
         source_assistant_message = None
-        
         l2_start_idx = s_idx
         l2_end_idx = e_idx
-
-        # Collect all messages covered by the chunk [s_idx, e_idx]
-        # We use a fresh query to ensure we have the full content and indices
-        stmt_chunk_msgs = (
-            select(Message)
-            .where(Message.conversation_id == conversation.id)
-            .where(Message.message_index >= s_idx)
-            .where(Message.message_index <= e_idx)
-            .order_by(Message.message_index)
-        )
-        chunk_msgs = (await db.execute(stmt_chunk_msgs)).scalars().all()
-        
-        user_parts = []
-        assistant_parts = []
-        for m in chunk_msgs:
-            if m.role == "user":
-                user_parts.append(m.content)
-            else:
-                assistant_parts.append(m.content)
-        
-        source_user_is_match = bool(user_parts)
-        source_assistant_is_match = bool(assistant_parts)
-
-        # Determine current state and fill gaps to form exactly one exchange
-        if user_parts:
-            source_user_message = "\n\n".join(user_parts)
-        if assistant_parts:
-            source_assistant_message = "\n\n".join(assistant_parts)
-            
-        # Ensure we have an Assistant response if we matched a User thought
-        if not source_assistant_message:
-            stmt_next_a = (
-                select(Message)
-                .where(Message.conversation_id == conversation.id)
-                .where(Message.message_index > e_idx)
-                .where(Message.role == "assistant")
-                .order_by(Message.message_index.asc())
-                .limit(1)
-            )
-            next_a = (await db.execute(stmt_next_a)).scalar()
-            if next_a:
-                source_assistant_message = next_a.content
-                l2_end_idx = next_a.message_index
-
-        # Ensure we have a User query if we matched an Assistant thought
-        if not source_user_message:
-            stmt_prev_u = (
-                select(Message)
-                .where(Message.conversation_id == conversation.id)
-                .where(Message.message_index < s_idx)
-                .where(Message.role == "user")
-                .order_by(Message.message_index.desc())
-                .limit(1)
-            )
-            prev_u = (await db.execute(stmt_prev_u)).scalar()
-            if prev_u:
-                source_user_message = prev_u.content
-                l2_start_idx = prev_u.message_index
-            
-        # Layer 3 Context - Previous Exchange
+        source_user_is_match = False
+        source_assistant_is_match = False
         prev_exchange_user_message = None
         prev_exchange_assistant_message = None
-        stmt_prev2 = (
-            select(Message)
-            .where(Message.conversation_id == conversation.id)
-            .where(Message.message_index < l2_start_idx)
-            .order_by(Message.message_index.desc())
-            .limit(2)
-        )
-        prev2_msgs = (await db.execute(stmt_prev2)).scalars().all()
-        if prev2_msgs:
-            m1 = prev2_msgs[0]
-            if m1.role == "assistant":
-                prev_exchange_assistant_message = m1.content
-                if len(prev2_msgs) > 1 and prev2_msgs[1].role == "user":
-                    prev_exchange_user_message = prev2_msgs[1].content
-            elif m1.role == "user":
-                prev_exchange_user_message = m1.content
-
-        # Layer 3 Context - Next Exchange
         next_exchange_user_message = None
         next_exchange_assistant_message = None
-        stmt_next2 = (
-            select(Message)
-            .where(Message.conversation_id == conversation.id)
-            .where(Message.message_index > l2_end_idx)
-            .order_by(Message.message_index.asc())
-            .limit(2)
-        )
-        next2_msgs = (await db.execute(stmt_next2)).scalars().all()
-        if next2_msgs:
-            n1 = next2_msgs[0]
-            if n1.role == "user":
-                next_exchange_user_message = n1.content
-                if len(next2_msgs) > 1 and next2_msgs[1].role == "assistant":
-                    next_exchange_assistant_message = next2_msgs[1].content
-            elif n1.role == "assistant":
-                next_exchange_assistant_message = n1.content
+
+        # Determine if we should perform Layer 2/3 exchange reconstruction
+        is_structured = (conversation.source_type == "structured")
+        
+        if is_structured:
+            # Collect all messages covered by the chunk [s_idx, e_idx]
+            # We use a fresh query to ensure we have the full content and indices
+            stmt_chunk_msgs = (
+                select(Message)
+                .where(Message.conversation_id == conversation.id)
+                .where(Message.message_index >= s_idx)
+                .where(Message.message_index <= e_idx)
+                .order_by(Message.message_index)
+            )
+            chunk_msgs = (await db.execute(stmt_chunk_msgs)).scalars().all()
+            
+            user_parts = []
+            assistant_parts = []
+            for m in chunk_msgs:
+                if m.role == "user":
+                    user_parts.append(m.content)
+                else:
+                    assistant_parts.append(m.content)
+            
+            source_user_is_match = bool(user_parts)
+            source_assistant_is_match = bool(assistant_parts)
+
+            # Determine current state and fill gaps to form exactly one exchange
+            if user_parts:
+                source_user_message = "\n\n".join(user_parts)
+            if assistant_parts:
+                source_assistant_message = "\n\n".join(assistant_parts)
+                
+            # Ensure we have an Assistant response if we matched a User thought
+            if not source_assistant_message:
+                stmt_next_a = (
+                    select(Message)
+                    .where(Message.conversation_id == conversation.id)
+                    .where(Message.message_index > e_idx)
+                    .where(Message.role == "assistant")
+                    .order_by(Message.message_index.asc())
+                    .limit(1)
+                )
+                next_a = (await db.execute(stmt_next_a)).scalar()
+                if next_a:
+                    source_assistant_message = next_a.content
+                    l2_end_idx = next_a.message_index
+
+            # Ensure we have a User query if we matched an Assistant thought
+            if not source_user_message:
+                stmt_prev_u = (
+                    select(Message)
+                    .where(Message.conversation_id == conversation.id)
+                    .where(Message.message_index < s_idx)
+                    .where(Message.role == "user")
+                    .order_by(Message.message_index.desc())
+                    .limit(1)
+                )
+                prev_u = (await db.execute(stmt_prev_u)).scalar()
+                if prev_u:
+                    source_user_message = prev_u.content
+                    l2_start_idx = prev_u.message_index
+                
+            # Layer 3 Context - Previous Exchange
+            stmt_prev2 = (
+                select(Message)
+                .where(Message.conversation_id == conversation.id)
+                .where(Message.message_index < l2_start_idx)
+                .order_by(Message.message_index.desc())
+                .limit(2)
+            )
+            prev2_msgs = (await db.execute(stmt_prev2)).scalars().all()
+            if prev2_msgs:
+                m1 = prev2_msgs[0]  # closest prior message (highest index, desc order)
+                if m1.role == "assistant":
+                    prev_exchange_assistant_message = m1.content
+                    if len(prev2_msgs) > 1 and prev2_msgs[1].role == "user":
+                        prev_exchange_user_message = prev2_msgs[1].content
+                elif m1.role == "user":
+                    prev_exchange_user_message = m1.content
+                    # Also check if the message before it is an assistant message
+                    if len(prev2_msgs) > 1 and prev2_msgs[1].role == "assistant":
+                        prev_exchange_assistant_message = prev2_msgs[1].content
+
+            # Layer 3 Context - Next Exchange
+            stmt_next2 = (
+                select(Message)
+                .where(Message.conversation_id == conversation.id)
+                .where(Message.message_index > l2_end_idx)
+                .order_by(Message.message_index.asc())
+                .limit(2)
+            )
+            next2_msgs = (await db.execute(stmt_next2)).scalars().all()
+            if next2_msgs:
+                n1 = next2_msgs[0]
+                if n1.role == "user":
+                    next_exchange_user_message = n1.content
+                    if len(next2_msgs) > 1 and next2_msgs[1].role == "assistant":
+                        next_exchange_assistant_message = next2_msgs[1].content
+                elif n1.role == "assistant":
+                    next_exchange_assistant_message = n1.content
             
         raw_text = chunk.chunk_text or ""
         highlighted_text = raw_text
@@ -225,12 +266,16 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
             "conversation_id": conversation.id,
             "conversation_title": conversation.title,
             "conversation_summary": conversation.summary,
+            "conversation_source_type": conversation.source_type,
             "category_id": conversation.category_id,
             "category_name": category.name if category else None,
+            "imported_at": conversation.imported_at,
             "matched_chunk_text": highlighted_text,
             "similarity_score": sim_score,
             "message_start_index": chunk.message_start_index,
             "message_end_index": chunk.message_end_index,
+            "source_exchange_start_index": l2_start_idx,
+            "source_exchange_end_index": l2_end_idx,
             "chunk_index": chunk.chunk_index,
             "message_count": total_msgs,
             "relative_position": rel_pos,
