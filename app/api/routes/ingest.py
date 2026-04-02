@@ -19,6 +19,7 @@ class PasteIngestResponse(BaseModel):
     status: str
     conversation_id: Optional[str] = None
     message: str
+    metrics: Optional[dict] = None
 
 
 @router.post("/paste", response_model=PasteIngestResponse)
@@ -30,7 +31,7 @@ async def ingest_paste(
         raise HTTPException(status_code=422, detail="raw_text cannot be empty")
 
     title = (request.title or "Untitled Conversation").strip() or "Untitled Conversation"
-    was_ingested, conversation_id = await ingest_paste_direct(
+    was_ingested, conversation_id, perf = await ingest_paste_direct(
         title=title, 
         raw_text=request.raw_text, 
         db=db,
@@ -42,11 +43,13 @@ async def ingest_paste(
         return PasteIngestResponse(
             status="skipped",
             conversation_id=None,
-            message="Duplicate content — ingestion skipped"
+            message="Duplicate content — ingestion skipped",
+            metrics=perf
         )
 
     return PasteIngestResponse(
         status="ingested",
         conversation_id=conversation_id,
-        message="Conversation ingested successfully"
+        message="Conversation ingested successfully",
+        metrics=perf
     )

@@ -1,11 +1,16 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, insert
 from app.models.models import ImportJob, Conversation, Message, Chunk, utcnow
 from app.schemas.api import PasteImportRequest
 from app.services.embeddings import generate_embeddings
 from typing import List
 import hashlib
+import logging
 import re as _re
+import time
+import uuid
+
+logger = logging.getLogger(__name__)
 
 
 def compute_fingerprint(raw_text: str) -> str:
@@ -112,27 +117,47 @@ async def ingest_paste_direct(
     db: AsyncSession,
     category_id: str | None = None,
     source_type: str = "structured"
-) -> tuple[bool, str | None]:
+) -> tuple[bool, str | None, dict | None]:
     """
     Synchronously ingest a single pasted conversation.
-    Returns (was_ingested: bool, conversation_id: str | None).
-    Returns (False, None) if the content is a duplicate.
+    Returns (was_ingested: bool, conversation_id: str | None, perf: dict | None).
+    Returns (False, None, None) if the content is a duplicate.
+    The perf dict contains per-stage timings and import size metrics;
+    all timing values are in seconds, rounded to 3 decimal places.
     """
-    fingerprint = compute_fingerprint(raw_text)
+    t_total_start = time.perf_counter()
 
-    # Duplicate check
+    # ── Stage 1: Fingerprint + duplicate check ────────────────────────────────
+    t0 = time.perf_counter()
+    fingerprint = compute_fingerprint(raw_text)
     existing = await db.execute(
         select(Conversation).where(Conversation.content_fingerprint == fingerprint)
     )
     if existing.scalars().first():
-        return False, None
+        t_total = time.perf_counter() - t_total_start
+        t_duplicate_check = time.perf_counter() - t0
+        perf = {
+            "import_size_chars": len(raw_text),
+            "total_s": round(t_total, 3),
+            "stages": {
+                "duplicate_check_s": round(t_duplicate_check, 3)
+            }
+        }
+        return False, None, perf
+    t_duplicate_check = time.perf_counter() - t0
 
-    # Parse messages
+    # ── Stage 2: Parse raw text into paragraph/message blocks ────────────────
+    t0 = time.perf_counter()
     messages = parse_raw_text_to_messages(raw_text, source_type)
     if not messages:
         messages = [{"role": "user", "content": raw_text.strip()}]
+    t_parse = time.perf_counter() - t0
+    paragraph_count = len(messages)
 
-    # Create conversation
+    # ── Stage 3: Create conversation + messages + build chunk list ────────────
+    # Note: per-message DB flushes are interleaved with chunking inside this
+    # stage because the current pipeline requires msg.id before building chunks.
+    t0 = time.perf_counter()
     conv = Conversation(
         title=title,
         source_type=source_type,
@@ -143,10 +168,9 @@ async def ingest_paste_direct(
     db.add(conv)
     await db.flush()
 
-    # Process messages → chunks → embeddings
     all_chunks_metadata = []
     flat_text_chunks = []
-    
+
     for idx, msg_data in enumerate(messages):
         msg = Message(
             conversation_id=conv.id,
@@ -160,7 +184,7 @@ async def ingest_paste_direct(
         text_chunks = split_message_into_chunks(msg.content)
         if not text_chunks:
             continue
-            
+
         for i, text_chunk in enumerate(text_chunks):
             flat_text_chunks.append(text_chunk)
             all_chunks_metadata.append({
@@ -168,24 +192,76 @@ async def ingest_paste_direct(
                 "chunk_position_sub": i,
                 "text_chunk": text_chunk
             })
+    t_msg_chunk_build = time.perf_counter() - t0
+    chunk_count = len(flat_text_chunks)
 
+    # ── Stage 4: Embedding generation ─────────────────────────────────────────
+    t_embed = 0.0
+    embedding_count = 0
     if flat_text_chunks:
+        t0 = time.perf_counter()
         embeddings = await generate_embeddings(flat_text_chunks)
-        
-        for chunk_index_counter, (meta, emb) in enumerate(zip(all_chunks_metadata, embeddings)):
-            chunk = Chunk(
-                conversation_id=conv.id,
-                message_start_index=meta["message_index"],
-                message_end_index=meta["message_index"],
-                chunk_index=chunk_index_counter,
-                chunk_position_sub=meta["chunk_position_sub"],
-                chunk_text=meta["text_chunk"],
-                embedding=emb,
-            )
-            db.add(chunk)
+        t_embed = time.perf_counter() - t0
+        embedding_count = len(embeddings)
 
-    await db.commit()
-    return True, str(conv.id)
+        # ── Stage 5: Chunk DB inserts + final commit ──────────────────────────
+        # Build all chunk rows as plain dicts and execute a single bulk INSERT.
+        # This eliminates N ORM object constructions and sends one round-trip
+        # to PostgreSQL instead of relying on the ORM flush to batch rows.
+        t0 = time.perf_counter()
+        chunk_rows = [
+            {
+                "id": uuid.uuid4(),
+                "conversation_id": conv.id,
+                "message_start_index": meta["message_index"],
+                "message_end_index": meta["message_index"],
+                "chunk_index": chunk_index_counter,
+                "chunk_position_sub": meta["chunk_position_sub"],
+                "chunk_text": meta["text_chunk"],
+                "embedding": emb,
+                "created_at": utcnow(),
+            }
+            for chunk_index_counter, (meta, emb) in enumerate(zip(all_chunks_metadata, embeddings))
+        ]
+        await db.execute(insert(Chunk).values(chunk_rows))
+        await db.commit()
+        t_db_write = time.perf_counter() - t0
+    else:
+        await db.commit()
+        t_db_write = 0.0
+
+    t_total = time.perf_counter() - t_total_start
+
+    perf: dict = {
+        "import_size_chars": len(raw_text),
+        "paragraph_count": paragraph_count,
+        "chunk_count": chunk_count,
+        "embedding_count": embedding_count,
+        "total_s": round(t_total, 3),
+        "stages": {
+            "duplicate_check_s": round(t_duplicate_check, 3),
+            "parse_s": round(t_parse, 3),
+            "msg_and_chunk_build_s": round(t_msg_chunk_build, 3),
+            "embed_s": round(t_embed, 3),
+            "db_write_s": round(t_db_write, 3),
+        },
+    }
+
+    logger.info(
+        "[ingest_paste] title=%r source_type=%s chars=%d paras=%d chunks=%d embeds=%d "
+        "total=%.3fs  [dup_check=%.3f parse=%.3f msg+chunk=%.3f embed=%.3f db_write=%.3f]",
+        title, source_type,
+        perf["import_size_chars"], perf["paragraph_count"],
+        perf["chunk_count"], perf["embedding_count"],
+        perf["total_s"],
+        perf["stages"]["duplicate_check_s"],
+        perf["stages"]["parse_s"],
+        perf["stages"]["msg_and_chunk_build_s"],
+        perf["stages"]["embed_s"],
+        perf["stages"]["db_write_s"],
+    )
+
+    return True, str(conv.id), perf
 
 def split_message_into_chunks(text: str) -> List[str]:
     """

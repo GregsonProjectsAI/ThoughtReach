@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultsContainer = document.getElementById('results-container');
     const statusMessage = document.getElementById('status-message');
     const submitBtn = searchForm.querySelector('button');
-    
+
     const searchView = document.getElementById('search-view');
     const importView = document.getElementById('import-view');
     const navSearchBtn = document.getElementById('nav-search-btn');
     const navImportBtn = document.getElementById('nav-import-btn');
-    
+
     const importProjectSelect = document.getElementById('import-project');
     const newProjectInput = document.getElementById('new-project-input');
     const importTitleInput = document.getElementById('import-title');
@@ -22,13 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let sessionStates = {};
     let activeSearchController = null;
-    let currentSearchResults = []; 
-    let searchReturnContext = null; 
-    let searchScrollPos = 0; 
+    let currentSearchResults = [];
+    let searchReturnContext = null;
+    let searchScrollPos = 0;
     let searchSelection = { start: 0, end: 0 };
     let searchInputScrollLeft = 0;
     const SEARCH_LIMIT = 50;
-    
+
     // Sync search state to session
     searchInput.addEventListener('input', () => {
         sessionStorage.setItem('thoughtreach_last_search_query', searchInput.value);
@@ -76,13 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
         importView.classList.add('hidden');
         navSearchBtn.classList.add('active');
         navImportBtn.classList.remove('active');
-        
+
         // Restore overall page scroll
         window.scrollTo(0, searchScrollPos);
-        
+
         // Restore caret/selection position
         searchInput.setSelectionRange(searchSelection.start, searchSelection.end);
-        
+
         // Restore input horizontal scroll
         searchInput.scrollLeft = searchInputScrollLeft;
     });
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
             searchSelection.end = searchInput.selectionEnd;
             searchInputScrollLeft = searchInput.scrollLeft;
         }
-        
+
         importView.classList.remove('hidden');
         searchView.classList.add('hidden');
         navImportBtn.classList.add('active');
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) throw new Error(`Server error: ${response.status}`);
 
             const results = await response.json();
-            
+
             const searchSummary = document.getElementById('search-summary');
             if (results.length === 0) {
                 searchSummary.classList.add('hidden'); // Hide if nothing found to keep focus on empty state
@@ -290,11 +290,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function findMatchedParagraphRange(paras, matchedChunkText) {
+        // Returns { start, end } in message_index space (not array index), so that
+        // the isMatched check in renderParagraphContext (which uses absIdx = p.message_index)
+        // correctly highlights the matched paragraph for mid-document results where
+        // message_index !== array position.
         const stripped = matchedChunkText.replace(/\[\[(.*?)\]\]/g, '$1').trim();
         for (let i = 0; i < paras.length; i++) {
-            if (paras[i].content.includes(stripped.slice(0, 60))) return { start: i, end: i };
+            if (paras[i].content.includes(stripped.slice(0, 60))) {
+                const mi = paras[i].message_index;
+                return { start: mi, end: mi };
+            }
         }
-        return { start: 0, end: 0 };
+        // Fallback: use the message_index of the first paragraph in the visible set.
+        const fallback = paras.length > 0 ? paras[0].message_index : 0;
+        return { start: fallback, end: fallback };
     }
 
     function renderParagraphContext(paras, fromPara, toPara, matchStart, matchEnd, lastAddedIdx = null) {
@@ -303,16 +312,16 @@ document.addEventListener('DOMContentLoaded', () => {
         paras.forEach(p => {
             const absIdx = p.message_index;
             if (absIdx < fromPara || absIdx > toPara) return;
-            
+
             const isMatched = (absIdx >= matchStart && absIdx <= matchEnd);
             const isNew = (absIdx === lastAddedIdx);
-            
+
             let pClass = 'para-block';
             if (isMatched) pClass += ' para-block-match';
             else pClass += ' para-block-revealed';
             if (isNew) pClass += ' newly-revealed';
-            
-            html += `<div class="${pClass}">${renderHighlightedText(p.content) || '&nbsp;'}</div>`;
+
+            html += `<div class="${pClass}">${renderParagraphText(p.content) || '&nbsp;'}</div>`;
         });
         if (!html) return '<em style="opacity:0.5">No surrounding context available.</em>';
         return html;
@@ -325,7 +334,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // or source_assistant_message is present, this is a structured conversation.
     // Otherwise it was a raw text import with alternating paragraph roles.
     function isStructuredConversation(result) {
-        return result.conversation_source_type === 'structured';
+        // A true structured conversation requires source_type === 'structured' AND
+        // evidence of actual assistant-role messages in the conversation.
+        //
+        // This guards against raw text accidentally imported with the default
+        // 'Structured' mode selected: those get source_type='structured' stored but
+        // have ONLY 'user' role messages. Without this guard they would enter the
+        // line-by-line structured rendering path and Next/Previous buttons would
+        // step through individual lines rather than full paragraph blocks.
+        if (result.conversation_source_type !== 'structured') return false;
+
+        // Presence of an assistant message in the Layer 2 result confirms real
+        // User/Assistant dialogue. Also check surrounding messages for assistant role
+        // as a secondary signal (handles edge cases near the end of a conversation).
+        const hasAssistantInL2 = result.source_assistant_message !== null &&
+                                  result.source_assistant_message !== undefined;
+        const hasAssistantInSurroundings = (result.surrounding_messages || [])
+                                            .some(m => m.role === 'assistant');
+        return hasAssistantInL2 || hasAssistantInSurroundings;
     }
 
     // ── Card rendering ────────────────────────────────────────────────────────
@@ -343,21 +369,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     visibleParaEnd: null,
                     totalMessages: result.message_count || 0,
                     fullThread: false,
-                    messages: null, 
+                    messages: null,
                     lineIndex: null,
                     matchedLineRange: null,
                     paragraphs: null,
                     matchedParaRange: null,
-                    paragraphs: null,
-                    matchedParaRange: null,
-                    lastAddedIdx: null // Tracks which item was just added for animation
+                    lastAddedIdx: null, // Tracks which item was just added for animation
+                    visited: false
                 };
             }
             const state = sessionStates[resultKey];
             const structured = isStructuredConversation(result);
 
             const card = document.createElement('div');
-            card.className = 'result-card';
+            card.className = 'result-card' + (state.visited ? ' visited' : '');
 
             const scorePercent = Math.round(result.similarity_score * 100) + '%';
             const categoryBadgeHtml = result.category_name
@@ -365,29 +390,65 @@ document.addEventListener('DOMContentLoaded', () => {
                 : '';
             const fullText = result.matched_chunk_text || '';
 
+            // For raw-text imports the matched chunk may be a line-level sub-chunk
+            // (produced when split_message_into_chunks line-splits content >400 chars).
+            // Show the FULL paragraph (message) that contains the matched chunk so that
+            // the "Matched Text" block reflects the true paragraph unit, not a fragment.
+            // We derive it from surrounding_messages[position=0] which carries the full
+            // Message.content for the matched message_index.  The surrounding_messages
+            // content is NOT pre-highlighted by the backend, so we apply the same
+            // query-term [[...]] wrapping here for visual consistency.
+            let rawMatchedParaText = fullText;
+            if (!structured) {
+                const surroundings = result.surrounding_messages || [];
+                const matchedMsg = surroundings.find(m => m.position === 0);
+                if (matchedMsg && matchedMsg.content && matchedMsg.content.trim()) {
+                    // Apply keyword highlighting inline (mirrors backend highlight_regex)
+                    const currentQuery = searchInput.value.trim();
+                    const queryTerms = currentQuery.split(/\s+/).filter(Boolean);
+                    let highlightedContent = matchedMsg.content;
+                    if (queryTerms.length > 0) {
+                        const termPattern = queryTerms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+                        const hlRe = new RegExp(`(${termPattern})`, 'gi');
+                        highlightedContent = highlightedContent.replace(hlRe, '[[$1]]');
+                    }
+                    rawMatchedParaText = highlightedContent;
+                }
+            }
+
             const contextTypeLabel = structured
                 ? 'Surrounding Context'
                 : 'Surrounding Text';
             const contextInitBadge = structured ? 'Showing ±10 lines' : 'Showing ±3 paragraphs';
             const provenance = structured ? '' : '<span class="provenance-label">Imported text</span>';
 
-            const expandControls = structured
+            const expandControlsTop = structured
+                ? ''
+                : `<div class="context-controls-top">
+                       <button class="ctx-expand-btn prev-para-btn">Previous Paragraph</button>
+                   </div>`;
+
+            const expandControlsBottom = structured
                 ? `<button class="ctx-expand-btn" data-radius="25">±25 lines</button>
                    <button class="ctx-expand-btn" data-radius="50">±50 lines</button>
                    <button class="full-conv-btn">Show Full Thread</button>`
-                : `<button class="full-conv-btn">Show Full Text</button>`;
+                : `<button class="ctx-expand-btn next-para-btn">Next Paragraph</button>
+                   <button class="full-conv-btn">Show Full Text</button>`;
 
             const importDateStr = formatLibraryDate(result.imported_at);
             const sourceBadgeCls = structured ? 'library-type-structured' : 'library-type-raw';
             const sourceBadgeText = structured ? 'Structured Conversation' : 'Raw Imported Text';
             const projectName = result.category_name || 'Uncategorised';
-            const provenanceLabel = structured 
-                ? '<span class="provenance-label">Structured Conversation</span>' 
+            const provenanceLabel = structured
+                ? '<span class="provenance-label">Structured Conversation</span>'
                 : '<span class="provenance-label">Imported Text</span>';
 
             card.innerHTML = `
                 <div class="result-header">
-                    <h3 class="result-title">${escapeHTML(result.conversation_title)}</h3>
+                    <div class="title-visited-row" style="display: flex; align-items: baseline; gap: 0.5rem; flex: 1;">
+                        <span class="visited-indicator">&#10003;</span>
+                        <h3 class="result-title">${escapeHTML(result.conversation_title)}</h3>
+                    </div>
                     <div class="result-meta">
                         ${provenanceLabel}
                         <span class="score-subtle" title="Similarity Score">${scorePercent}</span>
@@ -421,20 +482,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="expanded-content hidden">
                     <div class="section-label section-label-match">Matched Text</div>
                     <div class="matched-text-block">
-                        ${renderHighlightedText(fullText)}
+                        ${structured ? renderHighlightedText(fullText) : renderParagraphText(rawMatchedParaText)}
                     </div>
                     <div class="context-header">
                         <span class="section-label section-label-context">${contextTypeLabel}</span>
                         <span class="context-radius-badge" data-key="context-label">${contextInitBadge}</span>
                     </div>
                     <div class="context-position-label" data-key="context-position"></div>
-                    ${!structured ? `<button class="ctx-expand-btn prev-para-btn">Show Previous Paragraph</button>` : ''}
+                    ${expandControlsTop}
                     <div class="context-block" data-key="context-content">
                         <div class="context-loading">Loading context...</div>
                     </div>
-                    ${!structured ? `<button class="ctx-expand-btn next-para-btn">Show Next Paragraph</button>` : ''}
                     <div class="context-controls">
-                        ${expandControls}
+                        ${expandControlsBottom}
                     </div>
                     <div class="full-conversation-container hidden"></div>
                 </div>
@@ -452,16 +512,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     const { allLines, lineToMsgIndex } = state.lineIndex;
                     const { start: matchStart, end: matchEnd } = state.matchedLineRange;
                     const r = state.contextRadius;
-                    
+
                     const fromLine = Math.max(0, matchStart - r);
                     const toLine = Math.min(allLines.length - 1, matchEnd + r);
                     const vStartIdx = lineToMsgIndex[fromLine] + 1;
                     const vEndIdx = lineToMsgIndex[toLine] + 1;
                     const total = state.totalMessages;
-                    
+
                     html = renderContextLines(allLines, state.messages, lineToMsgIndex, fromLine, toLine, matchStart, matchEnd, state.lastAddedIdx);
                     label = `Showing ±${r} lines`;
-                    
+
                     if (vStartIdx === vEndIdx) {
                         posLabel = `Message ${vStartIdx} of ${total}`;
                     } else {
@@ -473,16 +533,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     const start = state.visibleParaStart;
                     const end = state.visibleParaEnd;
                     html = renderParagraphContext(state.paragraphs, start, end, mps, mpe, state.lastAddedIdx);
-                    
-                    const count = (end - start + 1);
-                    label = `Showing ${count} paragraph${count > 1 ? 's' : ''}`;
-                    
+
+                    // Count paragraphs actually visible (those whose message_index falls within
+                    // the [start, end] window). This is accurate even if message_index values
+                    // are not perfectly contiguous.
+                    const visibleParas = state.paragraphs.filter(
+                        p => p.message_index >= start && p.message_index <= end
+                    );
+                    const count = visibleParas.length;
+                    label = `Showing ${count} paragraph${count !== 1 ? 's' : ''}`;
+
+                    // Position: ordinal of first visible paragraph within the total set.
+                    // message_index is 0-based so add 1 for display.
                     if (start === end) {
                         posLabel = `Paragraph ${start + 1} of ${state.totalMessages}`;
                     } else {
                         posLabel = `Paragraphs ${start + 1}–${end + 1} of ${state.totalMessages}`;
                     }
-                    
+
                     // Update button states
                     const prevBtn = card.querySelector('.prev-para-btn');
                     const nextBtn = card.querySelector('.next-para-btn');
@@ -527,9 +595,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             function buildFullTextHtml() {
                 if (!state.paragraphs) return '';
-                return state.paragraphs.map((p, i) => {
-                    const isMatched = (i >= state.matchedParaRange.start && i <= state.matchedParaRange.end);
-                    return `<div class="${isMatched ? 'para-block para-block-match' : 'para-block'}">${renderHighlightedText(p.content)}</div>`;
+                return state.paragraphs.map(p => {
+                    // Use p.message_index (absolute DB index) for match detection.
+                    // Previously used array index i which is wrong when paragraphs
+                    // don't begin at message_index 0 in the current state.paragraphs set.
+                    const isMatched = (
+                        p.message_index >= state.matchedParaRange.start &&
+                        p.message_index <= state.matchedParaRange.end
+                    );
+                    return `<div class="${isMatched ? 'para-block para-block-match' : 'para-block'}">${renderParagraphText(p.content)}</div>`;
                 }).join('');
             }
 
@@ -547,7 +621,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     try {
                         const mStart = result.message_start_index;
                         const mEnd = result.message_end_index;
-                        
+
                         let initialMessages;
                         if (structured) {
                             // Fetch all for structured (existing behavior)
@@ -556,14 +630,18 @@ document.addEventListener('DOMContentLoaded', () => {
                             const conv = await res.json();
                             initialMessages = conv.messages || [];
                         } else {
-                            // Lazy fetch ±3 paragraphs for raw text
-                            const fetchStart = Math.max(0, mStart - 3);
-                            const fetchEnd = Math.min(state.totalMessages - 1, mEnd + 3);
+                            // Bias initial context backward: show 2 paragraphs of lead-in before
+                            // the match and 1 paragraph after. This gives the user immediate
+                            // coherence — they can read what led into the matched paragraph —
+                            // while keeping the initial window tight (2 + match + 1 = 4 max).
+                            // Previous/Next Paragraph buttons expand further in either direction.
+                            const fetchStart = Math.max(0, mStart - 2);
+                            const fetchEnd = Math.min(state.totalMessages - 1, mEnd + 1);
                             initialMessages = await fetchRange(fetchStart, fetchEnd);
                             state.visibleParaStart = fetchStart;
                             state.visibleParaEnd = fetchEnd;
                         }
-                        
+
                         state.messages = initialMessages.sort((a, b) => a.message_index - b.message_index);
 
                         if (structured) {
@@ -591,7 +669,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // ±N expansion buttons (Structured)
-            card.querySelectorAll('.ctx-expand-btn').forEach(btn => {
+            card.querySelectorAll('.ctx-expand-btn[data-radius]').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const r = parseInt(btn.dataset.radius, 10);
@@ -620,6 +698,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             } catch (err) { console.error(err); }
                         }
                         renderCardContext();
+
+                        // Auto-scroll to newly revealed content
+                        const newlyRevealed = card.querySelector('.newly-revealed');
+                        if (newlyRevealed) {
+                            newlyRevealed.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
                     }
                 });
 
@@ -637,6 +721,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             } catch (err) { console.error(err); }
                         }
                         renderCardContext();
+
+                        // Auto-scroll to newly revealed content
+                        const newlyRevealed = card.querySelector('.newly-revealed');
+                        if (newlyRevealed) {
+                            newlyRevealed.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
                     }
                 });
             }
@@ -673,6 +763,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isExpanding = !card.classList.contains('expanded');
                 state.expanded = isExpanding;
                 if (isExpanding) {
+                    state.visited = true;
+                    card.classList.add('visited');
                     expandCard(card);
                     onExpand();
                 } else {
@@ -686,6 +778,10 @@ document.addEventListener('DOMContentLoaded', () => {
             card.querySelector('.library-nav-btn').addEventListener('click', (e) => {
                 e.stopPropagation();
 
+                // Mark as visited when opening in Library
+                state.visited = true;
+                card.classList.add('visited');
+
                 // Store context for the Return path
                 searchReturnContext = {
                     query: searchInput.value,
@@ -697,9 +793,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const btn = e.currentTarget;
                 const anchor = {
-                    source:     btn.dataset.source,
-                    msgStart:   parseInt(btn.dataset.msgStart, 10),
-                    msgEnd:     parseInt(btn.dataset.msgEnd, 10),
+                    source: btn.dataset.source,
+                    msgStart: parseInt(btn.dataset.msgStart, 10),
+                    msgEnd: parseInt(btn.dataset.msgEnd, 10),
                     matchedText: btn.dataset.matchedText || ''
                 };
                 highlightLibraryItem(result.conversation_id, anchor);
@@ -734,6 +830,18 @@ document.addEventListener('DOMContentLoaded', () => {
         return escaped.replace(/\[\[(.*?)\]\]/g, '<span class="highlight">$1</span>');
     }
 
+    // ── Raw paragraph text renderer ───────────────────────────────────────────
+    // Used exclusively for raw-text import paragraph blocks.
+    // Identical to renderHighlightedText but also converts \n → <br> so that
+    // within-paragraph line breaks (poetry stanzas, multi-line prose) are
+    // preserved visually. Structured conversation paths use renderHighlightedText.
+    function renderParagraphText(text) {
+        if (!text) return '';
+        const escaped = escapeHTML(text);
+        const highlighted = escaped.replace(/\[\[(.*?)\]\]/g, '<span class="highlight">$1</span>');
+        return highlighted.replace(/\n/g, '<br>');
+    }
+
     function escapeHTML(str) {
         if (!str) return '';
         const div = document.createElement('div');
@@ -742,7 +850,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ── Import Flow ───────────────────────────────────────────────────────────
-    
+
     if (importProjectSelect) {
         importProjectSelect.addEventListener('change', () => {
             if (importProjectSelect.value === 'new') {
@@ -760,7 +868,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const modeRadios = document.querySelectorAll('input[name="import-mode"]');
-    
+
     // Restore mode
     const lastMode = sessionStorage.getItem('thoughtreach_last_import_mode');
     if (lastMode) {
@@ -770,7 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const importTextarea = document.getElementById('import-text');
-    
+
     // ── Success State Clearance ──────────────────────────────────────────────
     function clearImportStatus() {
         if (importStatusDiv) {
@@ -797,7 +905,7 @@ document.addEventListener('DOMContentLoaded', () => {
             importTextarea.placeholder = "Paste your raw text or notes here. Paragraphs will be preserved for retrieval.";
         }
     }
-    
+
     // Initial call for restored mode
     const currentMode = document.querySelector('input[name="import-mode"]:checked')?.value;
     if (currentMode) updatePlaceholder(currentMode);
@@ -808,15 +916,15 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const importBtn = document.getElementById('import-submit-btn');
             const statusDiv = importStatusDiv;
-            
+
             const title = importTitleInput.value.trim();
             const text = importTextarea.value.trim();
             const mode = document.querySelector('input[name="import-mode"]:checked')?.value || 'paste';
             let projectId = importProjectSelect.value;
             let projectName = '';
-            
+
             if (!title || !text || !projectId) return;
-            
+
             importBtn.disabled = true;
             importStatusDiv.classList.add('status-stable');
             statusDiv.style.color = 'inherit';
@@ -851,28 +959,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     const newName = newProjectInput.value.trim();
                     if (!newName) throw new Error('Project name is required');
                     projectName = newName;
-                    
+
                     const catRes = await fetch(`${BASE_URL}/categories`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ name: newName })
                     });
-                    
+
                     if (!catRes.ok) {
                         const errText = await catRes.text();
                         if (catRes.status === 409) throw new Error('A project with that name already exists');
                         throw new Error('Failed to create project: ' + errText);
                     }
-                    
+
                     const catData = await catRes.json();
                     projectId = catData.id;
-                    
+
                     // Add to dropdowns locally
                     const opt1 = new Option(newName, projectId);
                     const opt2 = new Option(newName, projectId);
                     importProjectSelect.add(opt2, importProjectSelect.options[importProjectSelect.options.length - 1]);
                     categorySelect.appendChild(opt1);
-                    
+
                     // Keep the newly created project selected and save to session
                     importProjectSelect.value = projectId;
                     sessionStorage.setItem('thoughtreach_last_project_id', projectId);
@@ -882,32 +990,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     projectName = importProjectSelect.options[importProjectSelect.selectedIndex].text;
                 }
-                
+
                 const payload = {
                     title: title,
                     raw_text: text,
                     category_id: projectId,
                     source_type: mode
                 };
-                
+
                 const res = await fetch(`${BASE_URL}/ingest/paste`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                
+
                 if (!res.ok) throw new Error('Import failed completely');
                 const data = await res.json();
-                
+
                 if (data.status === 'skipped') {
                     clearInterval(importTicker);
+                    const metricsHtml = renderImportMetricsHtml(data.metrics, true);
+
                     importStatusDiv.classList.add('status-stable');
-                    statusDiv.textContent = 'Duplicate content detected — ingestion skipped.';
-                    statusDiv.style.color = 'orange';
+                    statusDiv.innerHTML = `
+                        <div class="import-duplicate-panel">
+                            <div class="import-duplicate-header">
+                                <span style="font-size: 1.1rem;">&#9888;</span>
+                                Duplicate content detected — ingestion skipped.
+                            </div>
+                            ${metricsHtml}
+                        </div>
+                    `.trim();
+                    statusDiv.style.color = 'inherit';
                 } else {
                     clearInterval(importTicker);
                     const sourceTypeLabel = mode === 'structured' ? 'Structured Conversation' : 'Raw Imported Text';
-                    
+                    const metricsHtml = renderImportMetricsHtml(data.metrics, false);
+
                     importStatusDiv.classList.add('status-stable');
                     statusDiv.innerHTML = `
                         <div class="import-success-panel">
@@ -920,6 +1039,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span><strong>Title:</strong> ${escapeHTML(title)}</span>
                                 <span><strong>Type:</strong> ${sourceTypeLabel}</span>
                             </div>
+                            ${metricsHtml}
                             <div class="import-success-actions">
                                 <button class="import-success-btn" id="import-open-library-btn">Open in Library</button>
                                 <button class="import-success-btn" id="import-search-now-btn">Search Now</button>
@@ -938,14 +1058,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     importTitleInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
                     // Attach action listeners
-                    document.getElementById('import-open-library-btn').addEventListener('click', () => {
-                        highlightLibraryItem(data.conversation_id);
-                    });
-                    document.getElementById('import-search-now-btn').addEventListener('click', () => {
-                        navSearchBtn.click();
-                        searchInput.value = title;
-                        searchInput.focus();
-                    });
+                    const openLibBtn = document.getElementById('import-open-library-btn');
+                    if (openLibBtn) {
+                        openLibBtn.addEventListener('click', () => {
+                            highlightLibraryItem(data.conversation_id);
+                        });
+                    }
+                    const searchNowBtn = document.getElementById('import-search-now-btn');
+                    if (searchNowBtn) {
+                        searchNowBtn.addEventListener('click', () => {
+                            navSearchBtn.click();
+                            searchInput.value = title;
+                            searchInput.focus();
+                        });
+                    }
+
+                    // Metrics copy functionality
+                    attachMetricsListeners(data.metrics, title);
                 }
             } catch (err) {
                 clearInterval(importTicker);
@@ -962,7 +1091,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── Library View ──────────────────────────────────────────────────────────
 
     const navLibraryBtn = document.getElementById('nav-library-btn');
-    const libraryView   = document.getElementById('library-view');
+    const libraryView = document.getElementById('library-view');
 
     navLibraryBtn.addEventListener('click', () => {
         // Track Search results scroll before leaving
@@ -1047,8 +1176,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 group.items.forEach(item => {
                     const isRaw = (item.source_type === 'raw');
                     const typeLabel = isRaw ? 'Raw Imported Text' : 'Structured Conversation';
-                    const typeCls   = isRaw ? 'library-type-raw' : 'library-type-structured';
-                    const dateStr   = formatLibraryDate(item.imported_at);
+                    const typeCls = isRaw ? 'library-type-raw' : 'library-type-structured';
+                    const dateStr = formatLibraryDate(item.imported_at);
 
                     const row = document.createElement('div');
                     row.className = 'library-item';
@@ -1076,9 +1205,9 @@ document.addEventListener('DOMContentLoaded', () => {
             container.querySelectorAll('.library-open-btn').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     e.stopPropagation();
-                    const id      = btn.dataset.id;
-                    const title   = btn.dataset.title;
-                    const source  = btn.dataset.source;
+                    const id = btn.dataset.id;
+                    const title = btn.dataset.title;
+                    const source = btn.dataset.source;
                     const project = btn.dataset.project;
                     await openLibraryItem(id, title, source, project);
                 });
@@ -1091,10 +1220,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function openLibraryItem(id, title, source, project, anchor = null) {
-        const libraryContent  = document.getElementById('library-content');
-        const libraryHeader   = libraryContent.previousElementSibling; // .library-header
-        const openView        = document.getElementById('library-open-view');
-        const openContent     = document.getElementById('library-open-content');
+        const libraryContent = document.getElementById('library-content');
+        const libraryHeader = libraryContent.previousElementSibling; // .library-header
+        const openView = document.getElementById('library-open-view');
+        const openContent = document.getElementById('library-open-content');
 
         // Update header meta
         document.getElementById('library-open-title').textContent = title;
@@ -1136,7 +1265,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 openContent.innerHTML = messages.map((m, i) => {
                     const isMatch = anchor && anchor.matchedText &&
                         m.content.includes(anchor.matchedText.substring(0, 80));
-                    return `<div class="para-block para-block-revealed${isMatch ? ' lib-anchor-target' : ''}" data-msg-idx="${i}">${escapeHTML(m.content)}</div>`;
+                    return `<div class="para-block para-block-revealed${isMatch ? ' lib-anchor-target' : ''}" data-msg-idx="${i}">${renderParagraphText(m.content)}</div>`;
                 }).join('');
             } else {
                 // Structured: render user/assistant messages, mark by index range
@@ -1178,11 +1307,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const librarySearchTitleBtn = document.getElementById('library-search-title-btn');
-        if (librarySearchTitleBtn) {
+    if (librarySearchTitleBtn) {
         librarySearchTitleBtn.addEventListener('click', () => {
             const title = document.getElementById('library-open-title').textContent;
             if (!title) return;
-            
+
             // Clear return context as this is a fresh manual search
             searchReturnContext = null;
             const backBtn = document.getElementById('library-back-to-search-btn');
@@ -1191,11 +1320,11 @@ document.addEventListener('DOMContentLoaded', () => {
             navSearchBtn.click();
             searchInput.value = title;
             sessionStorage.setItem('thoughtreach_last_search_query', title);
-            
+
             // Reset filters to "All" for new broad-scoped library-origin search
             categorySelect.value = '';
             sessionStorage.setItem('thoughtreach_last_category_id', '');
-            
+
             // Reset sort to "Most Relevant"
             const sortSelect = document.getElementById('result-sort-select');
             if (sortSelect) {
@@ -1209,19 +1338,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 displaySelect.value = 'all';
                 sessionStorage.setItem('thoughtreach_last_display_mode', 'all');
             }
-            
+
             searchInput.focus();
         });
     }
 
     async function highlightLibraryItem(id, anchor = null) {
         navLibraryBtn.click();
-        
+
         // Polling wait if library content isn't fully rendered after tab click
         const maxWait = 3000;
         const startWait = Date.now();
         while ((!libraryView.dataset.loaded || !libraryView.querySelector(`.library-open-btn`)) && (Date.now() - startWait < maxWait)) {
-             await new Promise(r => setTimeout(r, 100));
+            await new Promise(r => setTimeout(r, 100));
         }
 
         const openBtn = libraryView.querySelector(`.library-open-btn[data-id="${id}"]`);
@@ -1230,7 +1359,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const group = row.closest('.library-project-group');
             const toggle = group.querySelector('.library-project-toggle');
             const list = group.querySelector('.library-item-list');
-            
+
             // Expand project if hidden
             if (list.classList.contains('hidden') || !toggle.classList.contains('open')) {
                 toggle.click();
@@ -1238,15 +1367,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // If coming from search with anchor, open the item directly at the matched location.
             if (anchor) {
-                const title   = openBtn.dataset.title;
-                const source  = anchor.source || openBtn.dataset.source;
+                const title = openBtn.dataset.title;
+                const source = anchor.source || openBtn.dataset.source;
                 const project = openBtn.dataset.project;
                 await openLibraryItem(id, title, source, project, anchor);
             } else {
                 // Fallback: just scroll and flash the library list row 
                 row.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 row.classList.remove('item-highlight');
-                void row.offsetWidth; 
+                void row.offsetWidth;
                 row.classList.add('item-highlight');
             }
         }
@@ -1269,10 +1398,10 @@ document.addEventListener('DOMContentLoaded', () => {
             sessionStorage.setItem('thoughtreach_last_search_query', searchReturnContext.query);
             categorySelect.value = searchReturnContext.categoryId;
             sessionStorage.setItem('thoughtreach_last_category_id', searchReturnContext.categoryId);
-            
+
             document.getElementById('result-sort-select').value = searchReturnContext.sortMode;
             sessionStorage.setItem('thoughtreach_last_sort_mode', searchReturnContext.sortMode);
-            
+
             document.getElementById('result-display-select').value = searchReturnContext.displayMode;
             sessionStorage.setItem('thoughtreach_last_display_mode', searchReturnContext.displayMode);
 
@@ -1300,7 +1429,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (targetCard) {
             targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
+
             // Add flash highlight style
             targetCard.classList.remove('item-highlight');
             void targetCard.offsetWidth; // Trigger reflow 
@@ -1317,10 +1446,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentSearchResults.length) return;
 
         const displayMode = document.getElementById('result-display-select').value;
-        const sortMode    = document.getElementById('result-sort-select').value;
+        const sortMode = document.getElementById('result-sort-select').value;
         const searchSummary = document.getElementById('search-summary');
-        const searchHint    = document.getElementById('search-refinement-hint');
-        const headerRow     = document.getElementById('results-header-row');
+        const searchHint = document.getElementById('search-refinement-hint');
+        const headerRow = document.getElementById('results-header-row');
 
         if (headerRow) headerRow.classList.remove('hidden');
 
@@ -1337,19 +1466,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 2. Update Summary & Capping Feedack
         const isCapped = (currentSearchResults.length === SEARCH_LIMIT);
-        const resCount  = processed.length;
+        const resCount = processed.length;
         const itemCount = new Set(processed.map(r => r.conversation_id)).size;
         const categoryId = categorySelect.value;
-        const projectText = (categoryId && categorySelect.selectedIndex > 0) 
-            ? ` in Project: <strong>${escapeHTML(categorySelect.options[categorySelect.selectedIndex].text)}</strong>` 
+        const projectText = (categoryId && categorySelect.selectedIndex > 0)
+            ? ` in Project: <strong>${escapeHTML(categorySelect.options[categorySelect.selectedIndex].text)}</strong>`
             : '';
-        
+
         const countPrefix = isCapped ? 'Showing first ' : '';
-        const resWord = (displayMode === 'top') 
+        const resWord = (displayMode === 'top')
             ? (resCount === 1 ? 'top match' : 'top matches')
             : (resCount === 1 ? 'result' : 'results');
         const itemWord = itemCount === 1 ? 'imported item' : 'imported items';
-        
+
         searchSummary.innerHTML = `${countPrefix}<strong>${resCount}</strong> ${resWord} across <strong>${itemCount}</strong> ${itemWord}${projectText}`;
         searchSummary.classList.remove('hidden');
 
@@ -1365,10 +1494,125 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (sortMode === 'oldest') {
             processed.sort((a, b) => new Date(a.imported_at) - new Date(b.imported_at));
         }
-        
+
         renderResults(processed);
     }
 
     document.getElementById('result-display-select').addEventListener('change', processAndRenderResults);
     document.getElementById('result-sort-select').addEventListener('change', processAndRenderResults);
+
+    // ── Metrics Rendering Helpers ────────────────────────────────────────────
+
+    function renderImportMetricsHtml(metrics, isDuplicate = false) {
+        if (!metrics || !metrics.stages) return '';
+
+        let innerContent = '';
+        if (isDuplicate) {
+            innerContent = `
+                <div class="metrics-row">
+                    <span><strong>Size Checked:</strong> ${metrics.import_size_chars.toLocaleString()} chars</span>
+                </div>
+                <div class="metrics-row">
+                    <span class="metrics-label" style="color: #c2410c;">Duplicate Check:</span> ${metrics.stages.duplicate_check_s}s
+                </div>
+            `;
+        } else {
+            const stages = metrics.stages;
+            const keys = ['parse_s', 'msg_and_chunk_build_s', 'embed_s', 'db_write_s'];
+            let slowest = '';
+            let maxVal = -1;
+            keys.forEach(k => {
+                if (stages[k] > maxVal) {
+                    maxVal = stages[k];
+                    slowest = k;
+                }
+            });
+
+            const fmt = (k, label, val) => {
+                const isSlowest = (k === slowest);
+                const cls = isSlowest ? 'class="slowest-stage-highlight"' : '';
+                const hint = isSlowest ? ' (slowest)' : '';
+                return `<span ${cls}>${label}: ${val}s${hint}</span>`;
+            };
+
+            innerContent = `
+                <div class="metrics-header-row">
+                    <span style="font-weight: 700; opacity: 0.9;">Import Performance</span>
+                    <button class="metrics-copy-btn" id="metrics-copy-btn" title="Copy metrics to clipboard">Copy</button>
+                </div>
+                <div class="metrics-row">
+                    <span><strong>Import stats:</strong> ${metrics.import_size_chars.toLocaleString()} chars | ${metrics.paragraph_count} paras | ${metrics.chunk_count} chunks | ${metrics.embedding_count} embeddings</span>
+                </div>
+                <div class="metrics-row">
+                    <span class="metrics-label">Total Duration:</span> ${metrics.total_s}s
+                </div>
+                <div class="metrics-row" style="font-size: 0.68rem; opacity: 0.8;">
+                    <span><strong>Stages:</strong> 
+                        ${fmt('parse_s', 'Parse', stages.parse_s)} | 
+                        ${fmt('msg_and_chunk_build_s', 'Build', stages.msg_and_chunk_build_s)} | 
+                        ${fmt('embed_s', 'Embed', stages.embed_s)} | 
+                        ${fmt('db_write_s', 'DB Write', stages.db_write_s)}
+                    </span>
+                </div>
+            `;
+        }
+
+        const panelClass = isDuplicate ? 'import-duplicate-metrics' : 'import-performance-metrics';
+
+        return `
+            <div class="metrics-toggle-container">
+                <button class="metrics-view-toggle" id="metrics-view-toggle" data-expanded="false">Show diagnostics</button>
+                <div id="metrics-content-wrapper" class="hidden">
+                    <div class="${panelClass}">
+                        ${innerContent}
+                    </div>
+                </div>
+            </div>
+        `.trim();
+    }
+
+    function attachMetricsListeners(metrics, title) {
+        const toggleBtn = document.getElementById('metrics-view-toggle');
+        const contentWrapper = document.getElementById('metrics-content-wrapper');
+        if (toggleBtn && contentWrapper) {
+            toggleBtn.addEventListener('click', () => {
+                const isExpanded = toggleBtn.getAttribute('data-expanded') === 'true';
+                const nextExpanded = !isExpanded;
+                toggleBtn.setAttribute('data-expanded', nextExpanded);
+                toggleBtn.textContent = nextExpanded ? 'Hide diagnostics' : 'Show diagnostics';
+                contentWrapper.classList.toggle('hidden', !nextExpanded);
+            });
+        }
+
+        const copyBtn = document.getElementById('metrics-copy-btn');
+        if (!copyBtn || !metrics) return;
+
+        copyBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const m = metrics;
+            const s = m.stages;
+            const text = [
+                `Import Performance Summary:`,
+                `Title: ${title}`,
+                `Total Time: ${m.total_s}s`,
+                `Stats: ${m.import_size_chars.toLocaleString()} chars | ${m.paragraph_count} paras | ${m.chunk_count} chunks | ${m.embedding_count} embeddings`,
+                `Stages: Parse: ${s.parse_s}s | Build: ${s.msg_and_chunk_build_s}s | Embed: ${s.embed_s}s | DB Write: ${s.db_write_s}s`
+            ].join('\n');
+
+            try {
+                await navigator.clipboard.writeText(text);
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                copyBtn.classList.add('success');
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.classList.remove('success');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy metrics:', err);
+                copyBtn.textContent = 'Failed';
+                setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
+            }
+        });
+    }
 });
