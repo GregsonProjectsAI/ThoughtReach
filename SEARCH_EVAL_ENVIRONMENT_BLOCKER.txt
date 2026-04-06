@@ -1,0 +1,8 @@
+- The search evaluation runner structurally supports live-search result capture.
+- evaluate_search_quality.py entry point handles pre-existing event loops.
+- actual_results, summary, and warnings bindings are structurally correct.
+- No remaining code defects are known in the search validation pipeline.
+- Current blocker: the execution environment cannot access the host Docker daemon.
+- The db service for ThoughtReach is not currently available for live search queries.
+- Therefore, full persistence validation is pending real host execution.
+- Next validation step: run 'docker-compose up -d db' then 'venv\Scripts\python.exe evaluate_search_quality.py' in a host terminal.
