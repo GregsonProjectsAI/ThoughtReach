@@ -12,6 +12,8 @@
             <div class="header-content">
                 <h1>ThoughtReach</h1>
                 <nav class="app-nav">
+                    <button id="nav-back-btn" class="nav-btn hidden">Back</button>
+                    <button id="nav-home-btn" class="nav-btn">Home</button>
                     <button id="nav-search-btn" class="nav-btn active">Search</button>
                     <button id="nav-import-btn" class="nav-btn">Import</button>
                     <button id="nav-library-btn" class="nav-btn">Library</button>
@@ -136,7 +138,17 @@
                     </div>
                     <button id="library-back-to-search-btn" class="library-back-to-search-btn hidden" title="Return to Search Results">&larr; Back to Search Result</button>
                     <button id="library-search-title-btn" class="library-search-btn" title="Search this title">Search This Title</button>
+                    <button id="library-delete-btn" class="library-delete-btn" title="Delete this conversation">Delete</button>
                 </div>
+                
+                <div id="library-delete-confirm" class="library-delete-confirm hidden">
+                    <span class="delete-warning">Are you sure you want to permanently delete this? This cannot be undone.</span>
+                    <div class="delete-confirm-actions">
+                        <button id="library-delete-cancel-btn" class="delete-cancel-btn">Cancel</button>
+                        <button id="library-delete-proceed-btn" class="delete-proceed-btn">Delete Permanently</button>
+                    </div>
+                </div>
+
                 <div id="library-open-content" class="library-open-content"></div>
             </div>
         </section>

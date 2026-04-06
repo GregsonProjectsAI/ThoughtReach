@@ -332,3 +332,16 @@ async def generate_conversation_summary(conversation_id: UUID, force: bool = Fal
     await db.refresh(conv)
     
     return conv
+
+@router.delete("/{conversation_id}", status_code=204)
+async def delete_conversation(conversation_id: UUID, db: AsyncSession = Depends(get_db)):
+    stmt = select(Conversation).where(Conversation.id == conversation_id)
+    result = await db.execute(stmt)
+    conv = result.scalars().first()
+    
+    if not conv:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+        
+    await db.delete(conv)
+    await db.commit()
+    return None

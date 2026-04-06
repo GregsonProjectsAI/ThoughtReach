@@ -12,8 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const searchView = document.getElementById('search-view');
     const importView = document.getElementById('import-view');
+    const libraryView = document.getElementById('library-view');
     const navSearchBtn = document.getElementById('nav-search-btn');
     const navImportBtn = document.getElementById('nav-import-btn');
+    const navHomeBtn = document.getElementById('nav-home-btn');
+    const navLibraryBtn = document.getElementById('nav-library-btn');
+    const navBackBtn = document.getElementById('nav-back-btn');
 
     const importProjectSelect = document.getElementById('import-project');
     const newProjectInput = document.getElementById('new-project-input');
@@ -21,12 +25,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const importStatusDiv = document.getElementById('import-status');
 
     let sessionStates = {};
+    let visitedResults = new Set();
     let activeSearchController = null;
     let currentSearchResults = [];
     let searchReturnContext = null;
     let searchScrollPos = 0;
     let searchSelection = { start: 0, end: 0 };
     let searchInputScrollLeft = 0;
+    let currentLibraryId = null;
+    let viewStack = []; // Simple stack for browser-style back navigation
     const SEARCH_LIMIT = 50;
 
     // Sync search state to session
@@ -68,23 +75,71 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     searchInput.focus();
+    navHomeBtn.classList.add('hidden');
     searchForm.addEventListener('submit', handleSearch);
 
     // ── Navigation Toggles ────────────────────────────────────────────────────
     navSearchBtn.addEventListener('click', () => {
         searchView.classList.remove('hidden');
         importView.classList.add('hidden');
+        libraryView.classList.add('hidden');
         navSearchBtn.classList.add('active');
         navImportBtn.classList.remove('active');
+        navLibraryBtn.classList.remove('active');
+        navHomeBtn.classList.add('hidden');
+        viewStack.push('search');
+        updateNavVisibility();
 
         // Restore overall page scroll
         window.scrollTo(0, searchScrollPos);
 
         // Restore caret/selection position
-        searchInput.setSelectionRange(searchSelection.start, searchSelection.end);
+        if (searchInput) searchInput.setSelectionRange(searchSelection.start, searchSelection.end);
 
         // Restore input horizontal scroll
-        searchInput.scrollLeft = searchInputScrollLeft;
+        if (searchInput) searchInput.scrollLeft = searchInputScrollLeft;
+    });
+
+    function updateNavVisibility() {
+        const isSearch = !searchView.classList.contains('hidden');
+        navHomeBtn.classList.toggle('hidden', isSearch);
+        navBackBtn.classList.toggle('hidden', isSearch);
+    }
+
+    navBackBtn.addEventListener('click', () => {
+        const openView = document.getElementById('library-open-view');
+        if (openView && !openView.classList.contains('hidden')) {
+            const backToSearchBtn = document.getElementById('library-back-to-search-btn');
+            if (backToSearchBtn && !backToSearchBtn.classList.contains('hidden')) {
+                backToSearchBtn.click();
+            } else {
+                document.getElementById('library-back-btn').click();
+            }
+        } else if (viewStack.length > 0) {
+            const prevView = viewStack.pop();
+            // If the popped view is the current one, pop again
+            const currentView = !searchView.classList.contains('hidden') ? 'search' :
+                                (!importView.classList.contains('hidden') ? 'import' : 'library');
+            
+            let target = prevView;
+            if (target === currentView && viewStack.length > 0) {
+                target = viewStack.pop();
+            }
+
+            if (target === 'import') navImportBtn.click();
+            else if (target === 'library') navLibraryBtn.click();
+            else navSearchBtn.click();
+            
+            // Pop the one we just added via the click listener
+            viewStack.pop();
+        } else {
+            navSearchBtn.click();
+        }
+    });
+
+    navHomeBtn.addEventListener('click', () => {
+        viewStack = [];
+        navSearchBtn.click();
     });
 
     navImportBtn.addEventListener('click', () => {
@@ -98,8 +153,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         importView.classList.remove('hidden');
         searchView.classList.add('hidden');
+        libraryView.classList.add('hidden');
         navImportBtn.classList.add('active');
         navSearchBtn.classList.remove('active');
+        navLibraryBtn.classList.remove('active');
+        navHomeBtn.classList.remove('hidden');
+        viewStack.push('import');
+        updateNavVisibility();
     });
 
     async function loadCategories() {
@@ -348,457 +408,356 @@ document.addEventListener('DOMContentLoaded', () => {
         // User/Assistant dialogue. Also check surrounding messages for assistant role
         // as a secondary signal (handles edge cases near the end of a conversation).
         const hasAssistantInL2 = result.source_assistant_message !== null &&
-                                  result.source_assistant_message !== undefined;
+            result.source_assistant_message !== undefined;
         const hasAssistantInSurroundings = (result.surrounding_messages || [])
-                                            .some(m => m.role === 'assistant');
+            .some(m => m.role === 'assistant');
         return hasAssistantInL2 || hasAssistantInSurroundings;
     }
 
     // ── Card rendering ────────────────────────────────────────────────────────
 
-    function renderResults(results) {
+    function renderResults(groups) {
         resultsContainer.innerHTML = '';
-        results.forEach(result => {
-            const resultKey = `r:${result.conversation_id}:${result.message_start_index}:${result.message_end_index}`;
+        groups.forEach(group => {
+            const resultKey = `group:${group.conversation_id}`;
             if (!sessionStates[resultKey]) {
                 sessionStates[resultKey] = {
                     expanded: false,
-                    contextRadius: 10,
-                    paraRadius: 3,
-                    visibleParaStart: null,
-                    visibleParaEnd: null,
-                    totalMessages: result.message_count || 0,
-                    fullThread: false,
-                    messages: null,
-                    lineIndex: null,
-                    matchedLineRange: null,
-                    paragraphs: null,
-                    matchedParaRange: null,
-                    lastAddedIdx: null, // Tracks which item was just added for animation
-                    visited: false
+                    excerpts: group.excerpts.map(ex => ({
+                        message_start_index: ex.message_start_index,
+                        message_end_index: ex.message_end_index,
+                        expanded: false,
+                        lineContextBefore: 10,
+                        lineContextAfter: 10,
+                        paraRadius: 3,
+                        visibleParaStart: null,
+                        visibleParaEnd: null,
+                        totalMessages: group.results[0].message_count || 0,
+                        fullThread: false,
+                        messages: null,
+                        lineIndex: null,
+                        matchedLineRange: null,
+                        paragraphs: null,
+                        matchedParaRange: null,
+                        lastAddedIdx: null,
+                        visited: false
+                    }))
                 };
             }
-            const state = sessionStates[resultKey];
-            const structured = isStructuredConversation(result);
+            const groupState = sessionStates[resultKey];
+            const structured = isStructuredConversation(group.results[0]);
 
             const card = document.createElement('div');
-            card.className = 'result-card' + (state.visited ? ' visited' : '');
+            card.className = 'result-card' + (visitedResults.has(group.conversation_id) ? ' visited' : '');
 
-            const scorePercent = Math.round(result.similarity_score * 100) + '%';
-            const categoryBadgeHtml = result.category_name
-                ? `<span class="badge category">${escapeHTML(result.category_name)}</span>`
-                : '';
-            const fullText = result.matched_chunk_text || '';
-
-            // For raw-text imports the matched chunk may be a line-level sub-chunk
-            // (produced when split_message_into_chunks line-splits content >400 chars).
-            // Show the FULL paragraph (message) that contains the matched chunk so that
-            // the "Matched Text" block reflects the true paragraph unit, not a fragment.
-            // We derive it from surrounding_messages[position=0] which carries the full
-            // Message.content for the matched message_index.  The surrounding_messages
-            // content is NOT pre-highlighted by the backend, so we apply the same
-            // query-term [[...]] wrapping here for visual consistency.
-            let rawMatchedParaText = fullText;
-            if (!structured) {
-                const surroundings = result.surrounding_messages || [];
-                const matchedMsg = surroundings.find(m => m.position === 0);
-                if (matchedMsg && matchedMsg.content && matchedMsg.content.trim()) {
-                    // Apply keyword highlighting inline (mirrors backend highlight_regex)
-                    const currentQuery = searchInput.value.trim();
-                    const queryTerms = currentQuery.split(/\s+/).filter(Boolean);
-                    let highlightedContent = matchedMsg.content;
-                    if (queryTerms.length > 0) {
-                        const termPattern = queryTerms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
-                        const hlRe = new RegExp(`(${termPattern})`, 'gi');
-                        highlightedContent = highlightedContent.replace(hlRe, '[[$1]]');
-                    }
-                    rawMatchedParaText = highlightedContent;
-                }
-            }
-
-            const contextTypeLabel = structured
-                ? 'Surrounding Context'
-                : 'Surrounding Text';
-            const contextInitBadge = structured ? 'Showing ±10 lines' : 'Showing ±3 paragraphs';
-            const provenance = structured ? '' : '<span class="provenance-label">Imported text</span>';
-
-            const expandControlsTop = structured
-                ? ''
-                : `<div class="context-controls-top">
-                       <button class="ctx-expand-btn prev-para-btn">Previous Paragraph</button>
-                   </div>`;
-
-            const expandControlsBottom = structured
-                ? `<button class="ctx-expand-btn" data-radius="25">±25 lines</button>
-                   <button class="ctx-expand-btn" data-radius="50">±50 lines</button>
-                   <button class="full-conv-btn">Show Full Thread</button>`
-                : `<button class="ctx-expand-btn next-para-btn">Next Paragraph</button>
-                   <button class="full-conv-btn">Show Full Text</button>`;
-
-            const importDateStr = formatLibraryDate(result.imported_at);
+            const maxScorePercent = Math.round(group.max_score * 100) + '%';
+            const importDateStr = formatLibraryDate(group.imported_at);
             const sourceBadgeCls = structured ? 'library-type-structured' : 'library-type-raw';
             const sourceBadgeText = structured ? 'Structured Conversation' : 'Raw Imported Text';
-            const projectName = result.category_name || 'Uncategorised';
-            const provenanceLabel = structured
-                ? '<span class="provenance-label">Structured Conversation</span>'
-                : '<span class="provenance-label">Imported Text</span>';
+
+            let excerptsHtml = group.excerpts.map((ex, i) => {
+                const exState = groupState.excerpts[i];
+                const fullText = ex.matched_chunk_text || '';
+
+                const expandControlsTop = structured
+                    ? `<div class="context-controls-top">
+                           <button class="ctx-expand-btn prev-line-btn">Previous Line</button>
+                           <button class="ctx-expand-btn prev-para-btn">Previous Message</button>
+                       </div>`
+                    : `<div class="context-controls-top">
+                           <button class="ctx-expand-btn prev-line-btn">Previous Line</button>
+                           <button class="ctx-expand-btn prev-para-btn">Previous Paragraph</button>
+                       </div>`;
+
+                const expandControlsBottom = structured
+                    ? `<div class="context-controls">
+                           <button class="ctx-expand-btn next-line-btn">Next Line</button>
+                           <button class="ctx-expand-btn next-para-btn">Next Message</button>
+                           <button class="full-conv-btn">Full Thread</button>
+                       </div>`
+                    : `<div class="context-controls">
+                           <button class="ctx-expand-btn next-line-btn">Next Line</button>
+                           <button class="ctx-expand-btn next-para-btn">Next Paragraph</button>
+                           <button class="full-conv-btn">Full Text</button>
+                       </div>`;
+
+                return `
+                    <div class="excerpt-wrapper" data-index="${i}">
+                        <div class="section-label section-label-match">Match ${i + 1}</div>
+                        <div class="snippet-container snippet-preview${exState.expanded ? ' hidden' : ''}">
+                            ${renderHighlightedText(fullText)}
+                        </div>
+                        <div class="expanded-content${exState.expanded ? '' : ' hidden'}">
+                            <div class="matched-text-block">
+                                ${renderHighlightedText(fullText)}
+                            </div>
+                            <div class="context-header">
+                                <span class="section-label section-label-context">Context</span>
+                                <span class="context-radius-badge" data-key="context-label">Loading...</span>
+                            </div>
+                            <div class="context-position-label" data-key="context-position"></div>
+                            ${expandControlsTop}
+                            <div class="context-block" data-key="context-content">
+                                <div class="context-loading">Loading context...</div>
+                            </div>
+                            ${expandControlsBottom}
+                            <div class="full-conversation-container hidden"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
 
             card.innerHTML = `
                 <div class="result-header">
                     <div class="title-visited-row" style="display: flex; align-items: baseline; gap: 0.5rem; flex: 1;">
                         <span class="visited-indicator">&#10003;</span>
-                        <h3 class="result-title">${escapeHTML(result.conversation_title)}</h3>
+                        <h3 class="result-title">${escapeHTML(group.conversation_title)}</h3>
                     </div>
-                    <div class="result-meta">
-                        ${provenanceLabel}
-                        <span class="score-subtle" title="Similarity Score">${scorePercent}</span>
-                        <button class="toggle-btn">Expand</button>
-                        <button class="library-nav-btn" 
-                            data-id="${result.conversation_id}"
-                            data-source="${result.conversation_source_type}"
-                            data-msg-start="${result.message_start_index}"
-                            data-msg-end="${result.message_end_index}"
-                            data-matched-text="${escapeHTML(result.matched_chunk_text || '')}"
-                        >Open in Library</button>
+                    <div class="result-actions">
+                        <button class="toggle-btn">${groupState.expanded ? 'Collapse' : 'Expand'}</button>
+                        <button class="library-nav-btn" data-id="${group.conversation_id}">Open in Library</button>
                     </div>
                 </div>
-                <div class="result-provenance-row">
-                    <div class="result-provenance-item">
-                        <span class="result-provenance-title">${escapeHTML(projectName)}</span>
-                    </div>
-                    <div class="result-provenance-item">
-                        <span class="library-type-badge ${sourceBadgeCls}">${sourceBadgeText}</span>
-                    </div>
-                    <div class="result-provenance-item">
-                        <span>${importDateStr}</span>
-                    </div>
-                    <div class="result-provenance-item" style="opacity:0.6; margin-left:auto;">
-                        <span class="result-provenance-title" style="font-size: 0.65rem;">${escapeHTML(result.conversation_title)}</span>
-                    </div>
+                <div class="result-meta-row">
+                    <span class="meta-item badge category" title="Project">${escapeHTML(group.category_name || 'Uncategorised')}</span>
+                    <span class="meta-item badge ${sourceBadgeCls}" title="Type">${sourceBadgeText}</span>
+                    <span class="meta-item meta-date" title="Original Date">${importDateStr || 'Date unknown'}</span>
+                    <span class="meta-item score-subtle" title="Relevance Score">${maxScorePercent} Match</span>
                 </div>
-                <div class="snippet-container snippet-preview collapsed-snippet">
-                    ${renderHighlightedText(fullText)}
+                <div class="result-why-matched">
+                    ${group.excerpts.length === 1 
+                        ? `Matched 1 excerpt in this ${structured ? 'conversation' : 'imported item'}.`
+                        : `Matched ${group.excerpts.length} excerpts in this ${structured ? 'conversation' : 'imported item'}.`}
                 </div>
-                <div class="expanded-content hidden">
-                    <div class="section-label section-label-match">Matched Text</div>
-                    <div class="matched-text-block">
-                        ${structured ? renderHighlightedText(fullText) : renderParagraphText(rawMatchedParaText)}
-                    </div>
-                    <div class="context-header">
-                        <span class="section-label section-label-context">${contextTypeLabel}</span>
-                        <span class="context-radius-badge" data-key="context-label">${contextInitBadge}</span>
-                    </div>
-                    <div class="context-position-label" data-key="context-position"></div>
-                    ${expandControlsTop}
-                    <div class="context-block" data-key="context-content">
-                        <div class="context-loading">Loading context...</div>
-                    </div>
-                    <div class="context-controls">
-                        ${expandControlsBottom}
-                    </div>
-                    <div class="full-conversation-container hidden"></div>
+                <div class="excerpts-container${groupState.expanded ? '' : ' hidden'}">
+                    ${excerptsHtml}
                 </div>
             `;
 
-            // ── Rendering helpers scoped to this card ─────────────────────────
+            group.excerpts.forEach((ex, i) => {
+                const exState = groupState.excerpts[i];
+                const wrapper = card.querySelector(`.excerpt-wrapper[data-index="${i}"]`);
 
-            function renderCardContext() {
-                if (!state.messages) return;
-                let html = '';
-                let label = '';
-                let posLabel = '';
-                if (structured) {
-                    if (!state.lineIndex) return;
-                    const { allLines, lineToMsgIndex } = state.lineIndex;
-                    const { start: matchStart, end: matchEnd } = state.matchedLineRange;
-                    const r = state.contextRadius;
+                function renderExcerptContext() {
+                    if (!exState.messages) return;
+                    let html = '';
+                    let label = '';
+                    let posLabel = '';
 
-                    const fromLine = Math.max(0, matchStart - r);
-                    const toLine = Math.min(allLines.length - 1, matchEnd + r);
-                    const vStartIdx = lineToMsgIndex[fromLine] + 1;
-                    const vEndIdx = lineToMsgIndex[toLine] + 1;
-                    const total = state.totalMessages;
+                    const { allLines, lineToMsgIndex } = exState.lineIndex;
+                    const { start: matchStart, end: matchEnd } = exState.matchedLineRange;
+                    const rBefore = exState.lineContextBefore;
+                    const rAfter = exState.lineContextAfter;
+                    
+                    // Asymmetric line boundaries
+                    let fromLine = Math.max(0, matchStart - rBefore);
+                    let toLine = Math.min(allLines.length - 1, matchEnd + rAfter);
+                    
+                    // Outer union with message/paragraph boundaries
+                    const pStart = exState.visibleParaStart;
+                    const pEnd = exState.visibleParaEnd;
+                    
+                    let firstLineOfP = fromLine;
+                    let lastLineOfP = toLine;
 
-                    html = renderContextLines(allLines, state.messages, lineToMsgIndex, fromLine, toLine, matchStart, matchEnd, state.lastAddedIdx);
-                    label = `Showing ±${r} lines`;
-
-                    if (vStartIdx === vEndIdx) {
-                        posLabel = `Message ${vStartIdx} of ${total}`;
-                    } else {
-                        posLabel = `Messages ${vStartIdx}–${vEndIdx} of ${total}`;
+                    if (pStart !== null) {
+                        for (let i = 0; i < lineToMsgIndex.length; i++) {
+                            if (lineToMsgIndex[i] === pStart) { firstLineOfP = i; break; }
+                        }
                     }
-                } else {
-                    if (!state.paragraphs) return;
-                    const { start: mps, end: mpe } = state.matchedParaRange;
-                    const start = state.visibleParaStart;
-                    const end = state.visibleParaEnd;
-                    html = renderParagraphContext(state.paragraphs, start, end, mps, mpe, state.lastAddedIdx);
-
-                    // Count paragraphs actually visible (those whose message_index falls within
-                    // the [start, end] window). This is accurate even if message_index values
-                    // are not perfectly contiguous.
-                    const visibleParas = state.paragraphs.filter(
-                        p => p.message_index >= start && p.message_index <= end
-                    );
-                    const count = visibleParas.length;
-                    label = `Showing ${count} paragraph${count !== 1 ? 's' : ''}`;
-
-                    // Position: ordinal of first visible paragraph within the total set.
-                    // message_index is 0-based so add 1 for display.
-                    if (start === end) {
-                        posLabel = `Paragraph ${start + 1} of ${state.totalMessages}`;
-                    } else {
-                        posLabel = `Paragraphs ${start + 1}–${end + 1} of ${state.totalMessages}`;
+                    if (pEnd !== null) {
+                        for (let i = lineToMsgIndex.length - 1; i >= 0; i--) {
+                            if (lineToMsgIndex[i] === pEnd) { lastLineOfP = i; break; }
+                        }
                     }
 
-                    // Update button states
-                    const prevBtn = card.querySelector('.prev-para-btn');
-                    const nextBtn = card.querySelector('.next-para-btn');
-                    if (prevBtn) prevBtn.disabled = (start <= 0);
-                    if (nextBtn) nextBtn.disabled = (end >= state.totalMessages - 1);
+                    const effectiveFrom = Math.min(fromLine, firstLineOfP);
+                    const effectiveTo = Math.max(toLine, lastLineOfP);
+
+                    html = renderContextLines(allLines, exState.messages, lineToMsgIndex, effectiveFrom, effectiveTo, matchStart, matchEnd, exState.lastAddedIdx);
+
+                    if (structured) {
+                        const vStartIdx = lineToMsgIndex[effectiveFrom] + 1;
+                        const vEndIdx = lineToMsgIndex[effectiveTo] + 1;
+                        const msgCount = vEndIdx - vStartIdx + 1;
+                        label = `${msgCount} msgs | -${rBefore}/+${rAfter} lines`;
+                        posLabel = vStartIdx === vEndIdx ? `Message ${vStartIdx}` : `Messages ${vStartIdx}–${vEndIdx}`;
+                    } else {
+                        const count = exState.paragraphs.filter(p => p.message_index >= pStart && p.message_index <= pEnd).length;
+                        label = `${count} paras | -${rBefore}/+${rAfter} lines`;
+                        posLabel = pStart === pEnd ? `Paragraph ${pStart + 1}` : `Paragraphs ${pStart + 1}–${pEnd + 1}`;
+                    }
+
+                    wrapper.querySelector('[data-key="context-content"]').innerHTML = html;
+                    wrapper.querySelector('[data-key="context-label"]').textContent = label;
+                    wrapper.querySelector('[data-key="context-position"]').textContent = posLabel;
                 }
-                card.querySelector('[data-key="context-content"]').innerHTML = html;
-                card.querySelector('[data-key="context-label"]').textContent = label;
-                card.querySelector('[data-key="context-position"]').textContent = posLabel;
 
-                // Sync Full Thread visibility
-                const threadContainer = card.querySelector('.full-conversation-container');
-                const fullConvBtn = card.querySelector('.full-conv-btn');
-                if (threadContainer && fullConvBtn) {
-                    if (state.fullThread) {
-                        const dividerLabel = structured ? 'Full Chronological Conversation' : 'Full Imported Text';
-                        const bodyHtml = structured ? buildFullThreadHtml() : buildFullTextHtml();
-                        const wrapClass = structured ? 'surrounding-messages' : 'para-context-block';
-                        threadContainer.innerHTML = `<div class="exchange-divider">${dividerLabel}</div><div class="${wrapClass}">${bodyHtml}</div>`;
-                        threadContainer.classList.remove('hidden');
-                        fullConvBtn.textContent = structured ? 'Collapse Full Thread' : 'Collapse Full Text';
-                    } else {
-                        threadContainer.classList.add('hidden');
-                        fullConvBtn.textContent = structured ? 'Show Full Thread' : 'Show Full Text';
-                    }
+                function scrollToNewContent(direction) {
+                    const ctxBlock = wrapper.querySelector('.context-block');
+                    const newlyRevealed = ctxBlock.querySelectorAll('.newly-revealed');
+                    if (newlyRevealed.length === 0) return;
+                    const target = direction === 'up' ? newlyRevealed[0] : newlyRevealed[newlyRevealed.length - 1];
+                    target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
-            }
 
-            function buildFullThreadHtml() {
-                return state.messages.map(msg => {
-                    const roleClass = msg.role === 'user' ? 'user' : 'assistant';
-                    const roleLabel = msg.role === 'user' ? 'User' : 'Assistant';
-                    const isMatched = (msg.message_index >= result.message_start_index && msg.message_index <= result.message_end_index);
-                    return `
-                        <div class="message ${roleClass}${isMatched ? ' highlight-message' : ''}">
-                            <div class="message-role">${roleLabel}</div>
-                            <div class="message-content">${renderHighlightedText(msg.content)}</div>
-                        </div>
-                    `;
-                }).join('');
-            }
+                wrapper.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (e.target.closest('button')) return;
+                    exState.expanded = !exState.expanded;
+                    wrapper.querySelector('.snippet-preview').classList.toggle('hidden', exState.expanded);
+                    wrapper.querySelector('.expanded-content').classList.toggle('hidden', !exState.expanded);
+                    if (exState.expanded) onOpenExcerpt(ex, exState);
+                });
 
-            function buildFullTextHtml() {
-                if (!state.paragraphs) return '';
-                return state.paragraphs.map(p => {
-                    // Use p.message_index (absolute DB index) for match detection.
-                    // Previously used array index i which is wrong when paragraphs
-                    // don't begin at message_index 0 in the current state.paragraphs set.
-                    const isMatched = (
-                        p.message_index >= state.matchedParaRange.start &&
-                        p.message_index <= state.matchedParaRange.end
-                    );
-                    return `<div class="${isMatched ? 'para-block para-block-match' : 'para-block'}">${renderParagraphText(p.content)}</div>`;
-                }).join('');
-            }
+                wrapper.querySelector('.prev-line-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    exState.lineContextBefore++;
+                    const { start: matchStart } = exState.matchedLineRange;
+                    const newFromLine = Math.max(0, matchStart - exState.lineContextBefore);
+                    exState.lastAddedIdx = exState.lineIndex.lineToMsgIndex[newFromLine];
+                    renderExcerptContext();
+                    scrollToNewContent('up');
+                });
 
-            async function fetchRange(start, end) {
-                const currentQuery = searchInput.value.trim();
-                const url = `${BASE_URL}/conversations/${result.conversation_id}?highlight_query=${encodeURIComponent(currentQuery)}&start_index=${start}&end_index=${end}`;
-                const res = await fetch(url);
-                if (!res.ok) throw new Error('API error');
-                const conv = await res.json();
-                return conv.messages || [];
-            }
-
-            async function onExpand() {
-                if (!state.messages) {
-                    try {
-                        const mStart = result.message_start_index;
-                        const mEnd = result.message_end_index;
-
-                        let initialMessages;
-                        if (structured) {
-                            // Fetch all for structured (existing behavior)
-                            const currentQuery = searchInput.value.trim();
-                            const res = await fetch(`${BASE_URL}/conversations/${result.conversation_id}?highlight_query=${encodeURIComponent(currentQuery)}`);
+                wrapper.querySelector('.prev-para-btn').addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    if (exState.visibleParaStart > 0) {
+                        exState.visibleParaStart--;
+                        const idx = exState.visibleParaStart;
+                        exState.lastAddedIdx = idx;
+                        if (!exState.messages.some(m => m.message_index === idx)) {
+                            const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?start_index=${idx}&end_index=${idx}`);
                             const conv = await res.json();
-                            initialMessages = conv.messages || [];
-                        } else {
-                            // Bias initial context backward: show 2 paragraphs of lead-in before
-                            // the match and 1 paragraph after. This gives the user immediate
-                            // coherence — they can read what led into the matched paragraph —
-                            // while keeping the initial window tight (2 + match + 1 = 4 max).
-                            // Previous/Next Paragraph buttons expand further in either direction.
-                            const fetchStart = Math.max(0, mStart - 2);
-                            const fetchEnd = Math.min(state.totalMessages - 1, mEnd + 1);
-                            initialMessages = await fetchRange(fetchStart, fetchEnd);
-                            state.visibleParaStart = fetchStart;
-                            state.visibleParaEnd = fetchEnd;
+                            exState.messages = [...exState.messages, ...(conv.messages || [])].sort((a, b) => a.message_index - b.message_index);
+                            exState.paragraphs = buildParagraphIndex(exState.messages);
                         }
+                        renderExcerptContext();
+                        scrollToNewContent('up');
+                    }
+                });
 
-                        state.messages = initialMessages.sort((a, b) => a.message_index - b.message_index);
+                wrapper.querySelector('.next-line-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    exState.lineContextAfter++;
+                    const { end: matchEnd } = exState.matchedLineRange;
+                    const newToLine = Math.min(exState.lineIndex.allLines.length - 1, matchEnd + exState.lineContextAfter);
+                    exState.lastAddedIdx = exState.lineIndex.lineToMsgIndex[newToLine];
+                    renderExcerptContext();
+                    scrollToNewContent('down');
+                });
 
+                wrapper.querySelector('.next-para-btn').addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    if (exState.visibleParaEnd < exState.totalMessages - 1) {
+                        exState.visibleParaEnd++;
+                        const idx = exState.visibleParaEnd;
+                        exState.lastAddedIdx = idx;
+                        if (!exState.messages.some(m => m.message_index === idx)) {
+                            const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?start_index=${idx}&end_index=${idx}`);
+                            const conv = await res.json();
+                            exState.messages = [...exState.messages, ...(conv.messages || [])].sort((a, b) => a.message_index - b.message_index);
+                            exState.paragraphs = buildParagraphIndex(exState.messages);
+                        }
+                        renderExcerptContext();
+                        scrollToNewContent('down');
+                    }
+                });
+
+                async function onOpenExcerpt(targetEx, targetExState) {
+                    if (targetExState.messages || targetExState.loading) return;
+                    targetExState.loading = true;
+
+                    const mStart = targetEx.message_start_index;
+                    const mEnd = targetEx.message_end_index;
+                    const currentQuery = searchInput.value.trim();
+                    const snippetContainer = wrapper.querySelector('[data-key="context-content"]');
+
+                    try {
+                        let conv;
                         if (structured) {
-                            state.lineIndex = buildLineIndex(state.messages);
-                            state.matchedLineRange = findMatchedLineRange(state.lineIndex.allLines, fullText);
+                            const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?highlight_query=${encodeURIComponent(currentQuery)}`);
+                            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                            conv = await res.json();
                         } else {
-                            state.paragraphs = buildParagraphIndex(state.messages);
-                            state.matchedParaRange = findMatchedParagraphRange(state.paragraphs, fullText);
+                            // If totalMessages was 0 initialized, we use a large fallback so fEnd is at least mEnd + 1
+                            const total = targetExState.totalMessages || 10000;
+                            const fStart = Math.max(0, mStart - 2);
+                            const fEnd = Math.min(total - 1, mEnd + 1);
+                            const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?highlight_query=${encodeURIComponent(currentQuery)}&start_index=${fStart}&end_index=${fEnd}`);
+                            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                            conv = await res.json();
                         }
-                    } catch (err) {
-                        console.error(err);
-                        card.querySelector('[data-key="context-content"]').innerHTML = '<em style="color:red">Failed to load content.</em>';
-                        return;
-                    }
-                }
-                renderCardContext();
-            }
 
-            if (state.expanded) {
-                card.classList.add('expanded');
-                card.querySelector('.expanded-content').classList.remove('hidden');
-                card.querySelector('.collapsed-snippet').classList.add('hidden');
-                card.querySelector('.toggle-btn').textContent = 'Collapse';
-                onExpand();
-            }
-
-            // ±N expansion buttons (Structured)
-            card.querySelectorAll('.ctx-expand-btn[data-radius]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const r = parseInt(btn.dataset.radius, 10);
-                    state.contextRadius = r;
-                    state.lastAddedIdx = null; // No single specific new item for fixed jumps
-                    renderCardContext();
-                });
-            });
-
-            // Paragraph Expansion (Raw)
-            if (!structured) {
-                const prevBtn = card.querySelector('.prev-para-btn');
-                const nextBtn = card.querySelector('.next-para-btn');
-
-                prevBtn.addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    if (state.visibleParaStart > 0) {
-                        state.visibleParaStart--;
-                        const idx = state.visibleParaStart;
-                        state.lastAddedIdx = idx;
-                        if (!state.messages.some(m => m.message_index === idx)) {
-                            try {
-                                const newMsgs = await fetchRange(idx, idx);
-                                state.messages = [...state.messages, ...newMsgs].sort((a, b) => a.message_index - b.message_index);
-                                state.paragraphs = buildParagraphIndex(state.messages);
-                            } catch (err) { console.error(err); }
-                        }
-                        renderCardContext();
-
-                        // Auto-scroll to newly revealed content
-                        const newlyRevealed = card.querySelector('.newly-revealed');
-                        if (newlyRevealed) {
-                            newlyRevealed.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                        }
-                    }
-                });
-
-                nextBtn.addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    if (state.visibleParaEnd < state.totalMessages - 1) {
-                        state.visibleParaEnd++;
-                        const idx = state.visibleParaEnd;
-                        state.lastAddedIdx = idx;
-                        if (!state.messages.some(m => m.message_index === idx)) {
-                            try {
-                                const newMsgs = await fetchRange(idx, idx);
-                                state.messages = [...state.messages, ...newMsgs].sort((a, b) => a.message_index - b.message_index);
-                                state.paragraphs = buildParagraphIndex(state.messages);
-                            } catch (err) { console.error(err); }
-                        }
-                        renderCardContext();
-
-                        // Auto-scroll to newly revealed content
-                        const newlyRevealed = card.querySelector('.newly-revealed');
-                        if (newlyRevealed) {
-                            newlyRevealed.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                        }
-                    }
-                });
-            }
-
-            // Full thread / full text toggle
-            const fullConvBtn = card.querySelector('.full-conv-btn');
-            fullConvBtn.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                const container = card.querySelector('.full-conversation-container');
-                const isHidden = container.classList.contains('hidden');
-                if (isHidden) {
-                    // In raw text mode, ensure we have everything if showing full text
-                    if (!structured && state.messages.length < state.totalMessages) {
-                        try {
-                            const currentQuery = searchInput.value.trim();
-                            const res = await fetch(`${BASE_URL}/conversations/${result.conversation_id}?highlight_query=${encodeURIComponent(currentQuery)}`);
-                            if (res.ok) {
-                                const conv = await res.json();
-                                state.messages = (conv.messages || []).sort((a, b) => a.message_index - b.message_index);
-                                state.paragraphs = buildParagraphIndex(state.messages);
+                        if (conv) {
+                            targetExState.messages = (conv.messages || []).sort((a, b) => a.message_index - b.message_index);
+                            
+                            // Capture actual count from server if available
+                            if (conv.message_count !== undefined) {
+                                targetExState.totalMessages = conv.message_count;
                             }
-                        } catch (err) { console.error(err); }
+
+                            if (structured) {
+                                targetExState.lineIndex = buildLineIndex(targetExState.messages);
+                                targetExState.matchedLineRange = findMatchedLineRange(targetExState.lineIndex.allLines, targetEx.matched_chunk_text);
+                                targetExState.visibleParaStart = targetEx.message_start_index;
+                                targetExState.visibleParaEnd = targetEx.message_end_index;
+                                targetExState.paragraphs = buildParagraphIndex(targetExState.messages);
+                            } else {
+                                targetExState.paragraphs = buildParagraphIndex(targetExState.messages);
+                                targetExState.matchedParaRange = findMatchedParagraphRange(targetExState.paragraphs, targetEx.matched_chunk_text);
+                                targetExState.visibleParaStart = conv.messages && conv.messages.length ? conv.messages[0].message_index : 0;
+                                targetExState.visibleParaEnd = conv.messages && conv.messages.length ? conv.messages[conv.messages.length - 1].message_index : 0;
+
+                                // Index lines for raw text navigation
+                                targetExState.lineIndex = buildLineIndex(targetExState.messages);
+                                targetExState.matchedLineRange = findMatchedLineRange(targetExState.lineIndex.allLines, targetEx.matched_chunk_text);
+                            }
+                        }
+                        renderExcerptContext();
+                    } catch (err) {
+                        console.error('Excerpt context load failed:', err);
+                        if (snippetContainer) {
+                            snippetContainer.innerHTML = `<div class="context-error">Failed to load context. <button class="retry-btn" style="font-size:0.7rem; padding: 2px 4px;">Retry</button></div>`;
+                            snippetContainer.querySelector('.retry-btn').onclick = (e) => {
+                                e.stopPropagation();
+                                targetExState.loading = false;
+                                onOpenExcerpt(targetEx, targetExState);
+                            };
+                        }
+                    } finally {
+                        targetExState.loading = false;
                     }
-                    state.fullThread = true;
-                    renderCardContext();
-                } else {
-                    state.fullThread = false;
-                    renderCardContext();
                 }
             });
 
             function toggleExpand(e) {
                 if (e) e.stopPropagation();
-                const isExpanding = !card.classList.contains('expanded');
-                state.expanded = isExpanding;
-                if (isExpanding) {
-                    state.visited = true;
+                groupState.expanded = !groupState.expanded;
+                card.classList.toggle('expanded', groupState.expanded);
+                card.querySelector('.excerpts-container').classList.toggle('hidden', !groupState.expanded);
+                card.querySelector('.toggle-btn').textContent = groupState.expanded ? 'Collapse' : 'Expand';
+                
+                // Mark viewed on any expansion or interaction
+                if (groupState.expanded || !visitedResults.has(group.conversation_id)) {
+                    visitedResults.add(group.conversation_id);
                     card.classList.add('visited');
-                    expandCard(card);
-                    onExpand();
-                } else {
-                    collapseCard(card);
+                    if (groupState.expanded && group.excerpts.length > 0 && !groupState.excerpts[0].expanded) {
+                        const firstEx = card.querySelector('.excerpt-wrapper');
+                        if (firstEx) firstEx.click();
+                    }
                 }
             }
-
             card.querySelector('.toggle-btn').addEventListener('click', toggleExpand);
-            card.addEventListener('click', toggleExpand);
-
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.toggle-btn')) return;
+                toggleExpand(e);
+            });
             card.querySelector('.library-nav-btn').addEventListener('click', (e) => {
                 e.stopPropagation();
-
-                // Mark as visited when opening in Library
-                state.visited = true;
+                visitedResults.add(group.conversation_id);
                 card.classList.add('visited');
-
-                // Store context for the Return path
-                searchReturnContext = {
-                    query: searchInput.value,
-                    categoryId: categorySelect.value,
-                    sortMode: document.getElementById('result-sort-select').value,
-                    displayMode: document.getElementById('result-display-select').value,
-                    conversationId: result.conversation_id
-                };
-
-                const btn = e.currentTarget;
-                const anchor = {
-                    source: btn.dataset.source,
-                    msgStart: parseInt(btn.dataset.msgStart, 10),
-                    msgEnd: parseInt(btn.dataset.msgEnd, 10),
-                    matchedText: btn.dataset.matchedText || ''
-                };
-                highlightLibraryItem(result.conversation_id, anchor);
+                highlightLibraryItem(group.conversation_id);
             });
 
             resultsContainer.appendChild(card);
@@ -1090,8 +1049,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ── Library View ──────────────────────────────────────────────────────────
 
-    const navLibraryBtn = document.getElementById('nav-library-btn');
-    const libraryView = document.getElementById('library-view');
 
     navLibraryBtn.addEventListener('click', () => {
         // Track Search results scroll before leaving
@@ -1105,6 +1062,9 @@ document.addEventListener('DOMContentLoaded', () => {
         navLibraryBtn.classList.add('active');
         navSearchBtn.classList.remove('active');
         navImportBtn.classList.remove('active');
+        navHomeBtn.classList.remove('hidden');
+        viewStack.push('library');
+        updateNavVisibility();
         // Load lazily on first visit; after that use refresh button
         if (!libraryView.dataset.loaded) {
             loadLibrary();
@@ -1115,8 +1075,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('library-back-btn').addEventListener('click', () => {
         document.getElementById('library-open-view').classList.add('hidden');
+        document.getElementById('library-delete-confirm').classList.add('hidden');
         document.getElementById('library-content').parentElement.querySelector('.library-header').classList.remove('hidden');
         document.getElementById('library-content').classList.remove('hidden');
+        currentLibraryId = null;
+    });
+
+    const libraryDeleteBtn = document.getElementById('library-delete-btn');
+    const libraryDeleteConfirm = document.getElementById('library-delete-confirm');
+    const libraryDeleteCancelBtn = document.getElementById('library-delete-cancel-btn');
+    const libraryDeleteProceedBtn = document.getElementById('library-delete-proceed-btn');
+
+    libraryDeleteBtn.addEventListener('click', () => {
+        libraryDeleteConfirm.classList.remove('hidden');
+    });
+
+    libraryDeleteCancelBtn.addEventListener('click', () => {
+        libraryDeleteConfirm.classList.add('hidden');
+    });
+
+    libraryDeleteProceedBtn.addEventListener('click', async () => {
+        if (!currentLibraryId) return;
+        libraryDeleteProceedBtn.disabled = true;
+        const originalText = libraryDeleteProceedBtn.textContent;
+        libraryDeleteProceedBtn.textContent = 'Deleting...';
+        try {
+            const res = await fetch(`${BASE_URL}/conversations/${currentLibraryId}`, {
+                method: 'DELETE'
+            });
+            if (!res.ok) throw new Error('Failed to delete conversation');
+
+            // Clean up search state if this ID is there
+            if (currentSearchResults && currentSearchResults.length > 0) {
+                currentSearchResults = currentSearchResults.filter(r => r.conversation_id !== currentLibraryId);
+                processAndRenderResults();
+            }
+
+            // Return to list and refresh
+            libraryDeleteConfirm.classList.add('hidden');
+            document.getElementById('library-back-btn').click();
+            loadLibrary();
+        } catch (err) {
+            console.error(err);
+            alert('Failed to delete: ' + err.message);
+        } finally {
+            libraryDeleteProceedBtn.disabled = false;
+            libraryDeleteProceedBtn.textContent = originalText;
+        }
     });
 
     async function loadLibrary() {
@@ -1185,8 +1190,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="library-item-title" title="${escapeHTML(item.title)}">${escapeHTML(item.title)}</span>
                         <span class="library-type-badge ${typeCls}" style="font-size: 0.6rem;">${typeLabel}</span>
                         <span class="library-item-date">${dateStr}</span>
-                        <button class="library-open-btn" data-id="${item.id}" data-title="${escapeHTML(item.title)}" data-source="${item.source_type}" data-project="${escapeHTML(group.label)}">Open</button>
+                        <div class="library-item-actions">
+                            <button class="library-open-btn" data-id="${item.id}" data-title="${escapeHTML(item.title)}" data-source="${item.source_type}" data-project="${escapeHTML(group.label)}">Open</button>
+                            <button class="library-row-delete-btn" data-id="${item.id}" title="Delete this conversation">Delete</button>
+                        </div>
                     `;
+                    row.addEventListener('click', (e) => {
+                        if (e.target.closest('button')) return;
+                        const openBtn = row.querySelector('.library-open-btn');
+                        if (openBtn) openBtn.click();
+                    });
                     list.appendChild(row);
                 });
 
@@ -1213,6 +1226,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
+            // Row-level delete buttons
+            container.querySelectorAll('.library-row-delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    currentLibraryId = btn.dataset.id;
+                    // Show confirmation UI (which is shared)
+                    document.getElementById('library-delete-confirm').classList.remove('hidden');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+
         } catch (err) {
             console.error(err);
             container.innerHTML = `<div class="library-empty">Failed to load library. Is the backend running?</div>`;
@@ -1220,6 +1244,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function openLibraryItem(id, title, source, project, anchor = null) {
+        currentLibraryId = id;
+
         const libraryContent = document.getElementById('library-content');
         const libraryHeader = libraryContent.previousElementSibling; // .library-header
         const openView = document.getElementById('library-open-view');
@@ -1445,7 +1471,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function processAndRenderResults() {
         if (!currentSearchResults.length) return;
 
-        const displayMode = document.getElementById('result-display-select').value;
         const sortMode = document.getElementById('result-sort-select').value;
         const searchSummary = document.getElementById('search-summary');
         const searchHint = document.getElementById('search-refinement-hint');
@@ -1453,33 +1478,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (headerRow) headerRow.classList.remove('hidden');
 
-        // 1. Filter (Deduplicate / Top Match)
-        let processed = [...currentSearchResults];
-        if (displayMode === 'top') {
-            const seen = new Set();
-            processed = processed.filter(r => {
-                if (seen.has(r.conversation_id)) return false;
-                seen.add(r.conversation_id);
-                return true;
-            });
-        }
+        // Group by conversation_id
+        const groupMap = new Map();
+        currentSearchResults.forEach(res => {
+            if (!groupMap.has(res.conversation_id)) {
+                groupMap.set(res.conversation_id, {
+                    conversation_id: res.conversation_id,
+                    conversation_title: res.conversation_title,
+                    category_name: res.category_name,
+                    conversation_source_type: res.conversation_source_type,
+                    imported_at: res.imported_at,
+                    max_score: res.similarity_score,
+                    results: []
+                });
+            }
+            const group = groupMap.get(res.conversation_id);
+            group.results.push(res);
+            if (res.similarity_score > group.max_score) {
+                group.max_score = res.similarity_score;
+            }
+        });
 
-        // 2. Update Summary & Capping Feedack
+        const groups = Array.from(groupMap.values());
+
+        // Process each group's results into merged excerpts
+        groups.forEach(group => {
+            // Sort by message position
+            group.results.sort((a, b) => a.message_start_index - b.message_start_index);
+
+            const merged = [];
+            group.results.forEach(res => {
+                if (merged.length > 0) {
+                    const last = merged[merged.length - 1];
+                    // Overlap or adjacency merging
+                    if (res.message_start_index <= last.message_end_index + 1) {
+                        last.message_start_index = Math.min(last.message_start_index, res.message_start_index);
+                        last.message_end_index = Math.max(last.message_end_index, res.message_end_index);
+                        return;
+                    }
+                }
+                merged.push({
+                    message_start_index: res.message_start_index,
+                    message_end_index: res.message_end_index,
+                    matched_chunk_text: res.matched_chunk_text
+                });
+            });
+            group.excerpts = merged;
+        });
+
+        // 2. Update Summary
         const isCapped = (currentSearchResults.length === SEARCH_LIMIT);
-        const resCount = processed.length;
-        const itemCount = new Set(processed.map(r => r.conversation_id)).size;
+        const itemCount = groups.length;
+        const resCount = currentSearchResults.length;
         const categoryId = categorySelect.value;
         const projectText = (categoryId && categorySelect.selectedIndex > 0)
             ? ` in Project: <strong>${escapeHTML(categorySelect.options[categorySelect.selectedIndex].text)}</strong>`
             : '';
 
         const countPrefix = isCapped ? 'Showing first ' : '';
-        const resWord = (displayMode === 'top')
-            ? (resCount === 1 ? 'top match' : 'top matches')
-            : (resCount === 1 ? 'result' : 'results');
         const itemWord = itemCount === 1 ? 'imported item' : 'imported items';
 
-        searchSummary.innerHTML = `${countPrefix}<strong>${resCount}</strong> ${resWord} across <strong>${itemCount}</strong> ${itemWord}${projectText}`;
+        searchSummary.innerHTML = `${countPrefix}<strong>${resCount}</strong> matches across <strong>${itemCount}</strong> ${itemWord}${projectText}`;
         searchSummary.classList.remove('hidden');
 
         if (isCapped) {
@@ -1488,14 +1547,16 @@ document.addEventListener('DOMContentLoaded', () => {
             searchHint.classList.add('hidden');
         }
 
-        // 3. Sort the (possibly deduplicated) set
-        if (sortMode === 'newest') {
-            processed.sort((a, b) => new Date(b.imported_at) - new Date(a.imported_at));
+        // 3. Sort groups
+        if (sortMode === 'relevant') {
+            groups.sort((a, b) => b.max_score - a.max_score);
+        } else if (sortMode === 'newest') {
+            groups.sort((a, b) => new Date(b.imported_at) - new Date(a.imported_at));
         } else if (sortMode === 'oldest') {
-            processed.sort((a, b) => new Date(a.imported_at) - new Date(b.imported_at));
+            groups.sort((a, b) => new Date(a.imported_at) - new Date(b.imported_at));
         }
 
-        renderResults(processed);
+        renderResults(groups);
     }
 
     document.getElementById('result-display-select').addEventListener('change', processAndRenderResults);

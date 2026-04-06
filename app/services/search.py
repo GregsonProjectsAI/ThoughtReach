@@ -44,7 +44,7 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
     conv_counts = defaultdict(int)
     deduped_rows = []
     for chunk, conversation, category, distance in rows:
-        if conv_counts[conversation.id] < 2:
+        if conv_counts[conversation.id] < 50:
             deduped_rows.append((chunk, conversation, category, distance))
             conv_counts[conversation.id] += 1
 
@@ -270,6 +270,7 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
             "category_id": conversation.category_id,
             "category_name": category.name if category else None,
             "imported_at": conversation.imported_at,
+            "conversation_created_at": conversation.created_at,
             "matched_chunk_text": highlighted_text,
             "similarity_score": sim_score,
             "message_start_index": chunk.message_start_index,

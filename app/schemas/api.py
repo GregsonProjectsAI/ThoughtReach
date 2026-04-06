@@ -118,6 +118,7 @@ class SearchResultOut(BaseModel):
     category_id: Optional[UUID] = None
     category_name: Optional[str] = None
     imported_at: datetime
+    conversation_created_at: Optional[datetime] = None
     matched_chunk_text: str
     similarity_score: float
     message_start_index: int

@@ -1,0 +1,153 @@
+{
+  "dataset_version": "1.0",
+  "entries": [
+    {
+      "query_id": "EXAMPLE-001",
+      "category": "lookup",
+      "query_text": "Placeholder lookup query",
+      "expected_target_description": "Description of the specific artifact or conversation expected for this search.",
+      "expected_target_identifier": "TR-ID-PLACEHOLDER",
+      "notes": "THIS IS A PLACEHOLDER ENTRY ONLY. DO NOT USE FOR EVALUATION."
+    },
+    {
+      "query_id": "EXAMPLE-002",
+      "category": "recall",
+      "query_text": "Placeholder recall query",
+      "expected_target_description": "Description of the theme or content set that should be retrieved.",
+      "expected_target_identifier": "TR-ID-PLACEHOLDER-RECALL",
+      "notes": "THIS IS A PLACEHOLDER ENTRY ONLY. DO NOT USE FOR EVALUATION."
+    },
+    {
+      "query_id": "EVAL-001",
+      "category": "lookup",
+      "query_text": "pirate poetry we wrote",
+      "expected_target_description": "The specific conversation or imported item containing the Pirate Jingles / pirate-themed poetry composed during a ThoughtReach brainstorming session.",
+      "expected_target_identifier": "conv:pirate-poetry-session",
+      "notes": "Highly specific known artefact. Should return the pirate poetry conversation as the top result.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-002",
+      "category": "lookup",
+      "query_text": "AG execution protocol",
+      "expected_target_description": "The conversation or authority document where the Antigravity Execution Protocol was first defined or discussed.",
+      "expected_target_identifier": "conv:ag-execution-protocol",
+      "notes": "Acronym query. Must resolve to the execution protocol discussion, not generic process discussions.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-003",
+      "category": "recall",
+      "query_text": "visited results viewed state marking",
+      "expected_target_description": "Any and all conversations where the ThoughtReach viewed-state (visitedResults) mechanism was discussed, designed, or patched.",
+      "expected_target_identifier": "topic:visited-results-design",
+      "notes": "Should surface multiple results across the search-result interaction design conversations.",
+      "difficulty": "medium",
+      "expected_precision": "narrow_set",
+      "expected_min_results": 3
+    },
+    {
+      "query_id": "EVAL-004",
+      "category": "recall",
+      "query_text": "search result card visual hierarchy polish",
+      "expected_target_description": "Conversations covering the visual design and styling refinements to result cards, including the why-this-matched line and metadata header separation.",
+      "expected_target_identifier": "topic:result-card-visual-polish",
+      "notes": "Should surface Step 255 and related design conversations. Tests thematic recall.",
+      "difficulty": "medium",
+      "expected_precision": "narrow_set",
+      "expected_min_results": 3
+    },
+    {
+      "query_id": "EVAL-005",
+      "category": "navigation",
+      "query_text": "where did we decide to use conversation_id as the result grouping key",
+      "expected_target_description": "The specific conversation where the decision to group search results by conversation_id was discussed and finalised.",
+      "expected_target_identifier": "conv:grouping-key-decision",
+      "notes": "Navigation query targeting a design decision point. Tests ability to locate decision provenance.",
+      "difficulty": "hard",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-006",
+      "category": "navigation",
+      "query_text": "where we first renamed ThoughtReach from its original name",
+      "expected_target_description": "The conversation where the project name was established or changed to ThoughtReach.",
+      "expected_target_identifier": "conv:thoughtreach-naming",
+      "notes": "Tests navigation to a unique historical event in the project timeline.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-007",
+      "category": "collection",
+      "query_text": "all discussions about search authority files",
+      "expected_target_description": "All conversations referencing the design, creation, or integration of the ThoughtReach Search Authority document.",
+      "expected_target_identifier": "topic:search-authority-files",
+      "notes": "Collection query — should return multiple distinct conversations. Tests breadth of recall, not single-item precision.",
+      "difficulty": "hard",
+      "expected_precision": "broad_set",
+      "expected_min_results": 5
+    },
+    {
+      "query_id": "EVAL-008",
+      "category": "collection",
+      "query_text": "every time we discussed embedding or semantic search implementation",
+      "expected_target_description": "All conversations where embedding generation, vector similarity search, or retrieval tuning were discussed.",
+      "expected_target_identifier": "topic:embedding-semanticsearch",
+      "notes": "Collection query. Wide recall test — expect 5+ results across multiple imported conversations.",
+      "difficulty": "hard",
+      "expected_precision": "broad_set",
+      "expected_min_results": 8
+    },
+    {
+      "query_id": "EVAL-009",
+      "category": "synthesis_preparation",
+      "query_text": "what have we said about search quality and result ranking",
+      "expected_target_description": "All conversations covering search result quality, ranking logic, similarity scoring, and evaluation approaches in ThoughtReach.",
+      "expected_target_identifier": "topic:search-quality-ranking",
+      "notes": "Synthesis-preparation query. Should surface a spread of relevant conversations for the user to review before making ranking decisions.",
+      "difficulty": "hard",
+      "expected_precision": "broad_set",
+      "expected_min_results": 8
+    },
+    {
+      "query_id": "EVAL-010",
+      "category": "synthesis_preparation",
+      "query_text": "what are all the ways we discussed handling duplicate or overlapping results",
+      "expected_target_description": "Conversations discussing deduplication, excerpt merging, result grouping, and adjacency logic in the search results pipeline.",
+      "expected_target_identifier": "topic:duplicate-overlap-handling",
+      "notes": "Synthesis-preparation query. Tests ability to surface distributed discussion about a technical design theme.",
+      "difficulty": "hard",
+      "expected_precision": "narrow_set",
+      "expected_min_results": 3
+    },
+    {
+      "query_id": "EVAL-011",
+      "category": "lookup",
+      "query_text": "context radius line expansion behaviour",
+      "expected_target_description": "The conversation(s) where the contextRadius / lineContextBefore / lineContextAfter expansion mechanism was designed or patched.",
+      "expected_target_identifier": "conv:context-radius-line-expansion",
+      "notes": "Tests retrieval of a specific technical implementation discussion using domain-specific terminology.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-012",
+      "category": "navigation",
+      "query_text": "first time we discussed importing raw text as opposed to structured conversations",
+      "expected_target_description": "The earliest conversation where raw-text import mode was distinguished from structured conversation import in ThoughtReach.",
+      "expected_target_identifier": "conv:raw-vs-structured-import-decision",
+      "notes": "Navigation to a design branch point. Expected result is a single early conversation, not a broad set.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    }
+  ]
+}
