@@ -57,14 +57,31 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
     query_terms_lower = [t.lower() for t in query.split() if t]
     query_phrase_lower = query.lower()
 
-    def lexical_score(chunk_text: str) -> float:
+    def lexical_score(row) -> float:
         if not query_terms_lower:
             return 0.0
-        text_lower = (chunk_text or "").lower()
-        term_hits = sum(1 for t in query_terms_lower if t in text_lower)
-        term_ratio = term_hits / len(query_terms_lower)
-        phrase_bonus = 0.5 if query_phrase_lower in text_lower else 0.0
-        return term_ratio + phrase_bonus
+            
+        chunk, conversation, category, distance = row
+        
+        def field_score(text: str, weight: float) -> float:
+            if not text:
+                return 0.0
+            text_lower = str(text).lower()
+            term_hits = sum(1 for t in query_terms_lower if t in text_lower)
+            term_ratio = term_hits / len(query_terms_lower)
+            phrase_bonus = 0.5 if query_phrase_lower in text_lower else 0.0
+            return (term_ratio + phrase_bonus) * weight
+
+        score = 0.0
+        score += field_score(getattr(conversation, 'title', ''), 4.0)
+        score += field_score(getattr(conversation, 'summary', ''), 2.0)
+        score += field_score(getattr(chunk, 'chunk_text', ''), 1.0)
+        
+        if category:
+            score += field_score(getattr(category, 'name', ''), 0.5)
+            
+        
+        return score
 
     def sort_key(row):
         chunk, conversation, category, distance = row
@@ -72,7 +89,7 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
         # Only apply lexical tie-break for manual raw-text imports.
         # Structured conversations retain pure cosine-similarity ordering.
         if conversation.source_type == "raw":
-            lex = lexical_score(chunk.chunk_text or "")
+            lex = lexical_score(row)
         else:
             lex = 0.0
         # Round sim to 2 decimal places to group near-ties, then use lex as tie-break
@@ -143,7 +160,7 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
         next_exchange_assistant_message = None
 
         # Determine if we should perform Layer 2/3 exchange reconstruction
-        is_structured = (conversation.source_type == "structured")
+        is_structured = (conversation.source_type != "raw")
         
         if is_structured:
             # Collect all messages covered by the chunk [s_idx, e_idx]
@@ -175,12 +192,13 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
                 source_assistant_message = "\n\n".join(assistant_parts)
                 
             # Ensure we have an Assistant response if we matched a User thought
-            if not source_assistant_message:
+            if source_user_is_match and not source_assistant_message:
                 stmt_next_a = (
                     select(Message)
                     .where(Message.conversation_id == conversation.id)
                     .where(Message.message_index > e_idx)
-                    .where(Message.role == "assistant")
+                    .where(Message.message_index <= e_idx + 10)
+                    .where(Message.role != "user")
                     .order_by(Message.message_index.asc())
                     .limit(1)
                 )
@@ -190,11 +208,12 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
                     l2_end_idx = next_a.message_index
 
             # Ensure we have a User query if we matched an Assistant thought
-            if not source_user_message:
+            if source_assistant_is_match and not source_user_message:
                 stmt_prev_u = (
                     select(Message)
                     .where(Message.conversation_id == conversation.id)
                     .where(Message.message_index < s_idx)
+                    .where(Message.message_index >= s_idx - 10)
                     .where(Message.role == "user")
                     .order_by(Message.message_index.desc())
                     .limit(1)
@@ -215,14 +234,14 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
             prev2_msgs = (await db.execute(stmt_prev2)).scalars().all()
             if prev2_msgs:
                 m1 = prev2_msgs[0]  # closest prior message (highest index, desc order)
-                if m1.role == "assistant":
+                if m1.role != "user":
                     prev_exchange_assistant_message = m1.content
                     if len(prev2_msgs) > 1 and prev2_msgs[1].role == "user":
                         prev_exchange_user_message = prev2_msgs[1].content
                 elif m1.role == "user":
                     prev_exchange_user_message = m1.content
                     # Also check if the message before it is an assistant message
-                    if len(prev2_msgs) > 1 and prev2_msgs[1].role == "assistant":
+                    if len(prev2_msgs) > 1 and prev2_msgs[1].role != "user":
                         prev_exchange_assistant_message = prev2_msgs[1].content
 
             # Layer 3 Context - Next Exchange
@@ -238,9 +257,9 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
                 n1 = next2_msgs[0]
                 if n1.role == "user":
                     next_exchange_user_message = n1.content
-                    if len(next2_msgs) > 1 and next2_msgs[1].role == "assistant":
+                    if len(next2_msgs) > 1 and next2_msgs[1].role != "user":
                         next_exchange_assistant_message = next2_msgs[1].content
-                elif n1.role == "assistant":
+                elif n1.role != "user":
                     next_exchange_assistant_message = n1.content
             
         raw_text = chunk.chunk_text or ""

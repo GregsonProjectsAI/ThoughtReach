@@ -403,16 +403,21 @@ document.addEventListener('DOMContentLoaded', () => {
         // have ONLY 'user' role messages. Without this guard they would enter the
         // line-by-line structured rendering path and Next/Previous buttons would
         // step through individual lines rather than full paragraph blocks.
-        if (result.conversation_source_type !== 'structured') return false;
+        if (result.conversation_source_type === 'raw') return false;
 
         // Presence of an assistant message in the Layer 2 result confirms real
         // User/Assistant dialogue. Also check surrounding messages for assistant role
         // as a secondary signal (handles edge cases near the end of a conversation).
         const hasAssistantInL2 = result.source_assistant_message !== null &&
             result.source_assistant_message !== undefined;
+        const hasPrevAssistant = result.previous_exchange_assistant_message !== null &&
+            result.previous_exchange_assistant_message !== undefined;
+        const hasNextAssistant = result.next_exchange_assistant_message !== null &&
+            result.next_exchange_assistant_message !== undefined;
         const hasAssistantInSurroundings = (result.surrounding_messages || [])
-            .some(m => m.role === 'assistant');
-        return hasAssistantInL2 || hasAssistantInSurroundings;
+            .some(m => m.role !== 'user');
+            
+        return hasAssistantInL2 || hasPrevAssistant || hasNextAssistant || hasAssistantInSurroundings;
     }
 
     // ── Card rendering ────────────────────────────────────────────────────────
@@ -446,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
             const groupState = sessionStates[resultKey];
-            const structured = isStructuredConversation(group.results[0]);
+            const structured = group.results.some(res => isStructuredConversation(res));
 
             const card = document.createElement('div');
             card.className = 'result-card' + (visitedResults.has(group.conversation_id) ? ' visited' : '');
@@ -609,8 +614,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Compute line-driven para boundaries
                         const lineFrom = Math.max(0, matchStart - rBefore);
                         const lineTo = Math.min(allLines.length - 1, matchEnd + rAfter);
-                        const lineDrivenParaStart = lineToMsgIndex[lineFrom];
-                        const lineDrivenParaEnd = lineToMsgIndex[lineTo];
+                        const lineDrivenParaStart = exState.messages[lineToMsgIndex[lineFrom]].message_index;
+                        const lineDrivenParaEnd = exState.messages[lineToMsgIndex[lineTo]].message_index;
 
                         // Clamp within the paragraph-level window: use union so the
                         // line-driven slice can only EXPAND pStart/pEnd, never shrink it.
@@ -669,6 +674,22 @@ document.addEventListener('DOMContentLoaded', () => {
                             exState.messages = [...exState.messages, ...(conv.messages || [])].sort((a, b) => a.message_index - b.message_index);
                             exState.paragraphs = buildParagraphIndex(exState.messages);
                         }
+                        // If the newly revealed paragraph is short, also pull in the next adjacent block
+                        // (treats tightly-related short blocks as one readable section).
+                        if (!structured && exState.visibleParaStart > 0) {
+                            const revealedMsg = exState.messages.find(m => m.message_index === idx);
+                            const isShort = revealedMsg && revealedMsg.content.replace(/\s/g, '').length <= 80;
+                            if (isShort) {
+                                exState.visibleParaStart--;
+                                const idx2 = exState.visibleParaStart;
+                                if (!exState.messages.some(m => m.message_index === idx2)) {
+                                    const res2 = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?start_index=${idx2}&end_index=${idx2}`);
+                                    const conv2 = await res2.json();
+                                    exState.messages = [...exState.messages, ...(conv2.messages || [])].sort((a, b) => a.message_index - b.message_index);
+                                    exState.paragraphs = buildParagraphIndex(exState.messages);
+                                }
+                            }
+                        }
                         renderExcerptContext();
                         scrollToNewContent('up');
                     }
@@ -695,6 +716,22 @@ document.addEventListener('DOMContentLoaded', () => {
                             const conv = await res.json();
                             exState.messages = [...exState.messages, ...(conv.messages || [])].sort((a, b) => a.message_index - b.message_index);
                             exState.paragraphs = buildParagraphIndex(exState.messages);
+                        }
+                        // If the newly revealed paragraph is short, also pull in the next adjacent block
+                        // (treats tightly-related short blocks as one readable section).
+                        if (!structured && exState.visibleParaEnd < exState.totalMessages - 1) {
+                            const revealedMsg = exState.messages.find(m => m.message_index === idx);
+                            const isShort = revealedMsg && revealedMsg.content.replace(/\s/g, '').length <= 80;
+                            if (isShort) {
+                                exState.visibleParaEnd++;
+                                const idx2 = exState.visibleParaEnd;
+                                if (!exState.messages.some(m => m.message_index === idx2)) {
+                                    const res2 = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?start_index=${idx2}&end_index=${idx2}`);
+                                    const conv2 = await res2.json();
+                                    exState.messages = [...exState.messages, ...(conv2.messages || [])].sort((a, b) => a.message_index - b.message_index);
+                                    exState.paragraphs = buildParagraphIndex(exState.messages);
+                                }
+                            }
                         }
                         renderExcerptContext();
                         scrollToNewContent('down');
