@@ -224,6 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('results-header-row').classList.add('hidden');
         sessionStates = {};
         currentSearchResults = [];
+        visitedResults.clear();
 
         try {
             const payload = { query, limit: SEARCH_LIMIT };
@@ -455,6 +456,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const sourceBadgeCls = structured ? 'library-type-structured' : 'library-type-raw';
             const sourceBadgeText = structured ? 'Structured Conversation' : 'Raw Imported Text';
 
+            let whyMatchedSuffix = '';
+            if (structured && group.results && group.results.length > 0) {
+                const topResult = group.results[0];
+                if (topResult.source_assistant_is_match && !topResult.source_user_is_match) {
+                    whyMatchedSuffix = ' Strongest match in assistant response.';
+                } else if (topResult.source_user_is_match && !topResult.source_assistant_is_match) {
+                    whyMatchedSuffix = ' Strongest match in user prompt.';
+                } else if (topResult.source_user_is_match && topResult.source_assistant_is_match) {
+                    whyMatchedSuffix = ' Strongest match in user prompt and assistant response.';
+                }
+            }
+
             let excerptsHtml = group.excerpts.map((ex, i) => {
                 const exState = groupState.excerpts[i];
                 const fullText = ex.matched_chunk_text || '';
@@ -526,8 +539,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="result-why-matched">
                     ${group.excerpts.length === 1 
-                        ? `Matched 1 excerpt in this ${structured ? 'conversation' : 'imported item'}.`
-                        : `Matched ${group.excerpts.length} excerpts in this ${structured ? 'conversation' : 'imported item'}.`}
+                        ? `Matched 1 excerpt in this ${structured ? 'conversation' : 'imported item'}.${whyMatchedSuffix}`
+                        : `Matched ${group.excerpts.length} excerpts in this ${structured ? 'conversation' : 'imported item'}.${whyMatchedSuffix}`}
                 </div>
                 <div class="excerpts-container${groupState.expanded ? '' : ' hidden'}">
                     ${excerptsHtml}
@@ -544,48 +557,72 @@ document.addEventListener('DOMContentLoaded', () => {
                     let label = '';
                     let posLabel = '';
 
-                    const { allLines, lineToMsgIndex } = exState.lineIndex;
-                    const { start: matchStart, end: matchEnd } = exState.matchedLineRange;
-                    const rBefore = exState.lineContextBefore;
-                    const rAfter = exState.lineContextAfter;
-                    
-                    // Asymmetric line boundaries
-                    let fromLine = Math.max(0, matchStart - rBefore);
-                    let toLine = Math.min(allLines.length - 1, matchEnd + rAfter);
-                    
-                    // Outer union with message/paragraph boundaries
                     const pStart = exState.visibleParaStart;
                     const pEnd = exState.visibleParaEnd;
-                    
-                    let firstLineOfP = fromLine;
-                    let lastLineOfP = toLine;
-
-                    if (pStart !== null) {
-                        for (let i = 0; i < lineToMsgIndex.length; i++) {
-                            if (lineToMsgIndex[i] === pStart) { firstLineOfP = i; break; }
-                        }
-                    }
-                    if (pEnd !== null) {
-                        for (let i = lineToMsgIndex.length - 1; i >= 0; i--) {
-                            if (lineToMsgIndex[i] === pEnd) { lastLineOfP = i; break; }
-                        }
-                    }
-
-                    const effectiveFrom = Math.min(fromLine, firstLineOfP);
-                    const effectiveTo = Math.max(toLine, lastLineOfP);
-
-                    html = renderContextLines(allLines, exState.messages, lineToMsgIndex, effectiveFrom, effectiveTo, matchStart, matchEnd, exState.lastAddedIdx);
 
                     if (structured) {
+                        // ── Structured conversation: line-based rendering ──
+                        const { allLines, lineToMsgIndex } = exState.lineIndex;
+                        const { start: matchStart, end: matchEnd } = exState.matchedLineRange;
+                        const rBefore = exState.lineContextBefore;
+                        const rAfter = exState.lineContextAfter;
+
+                        let fromLine = Math.max(0, matchStart - rBefore);
+                        let toLine = Math.min(allLines.length - 1, matchEnd + rAfter);
+
+                        let firstLineOfP = fromLine;
+                        let lastLineOfP = toLine;
+
+                        if (pStart !== null) {
+                            for (let i = 0; i < lineToMsgIndex.length; i++) {
+                                if (lineToMsgIndex[i] === pStart) { firstLineOfP = i; break; }
+                            }
+                        }
+                        if (pEnd !== null) {
+                            for (let i = lineToMsgIndex.length - 1; i >= 0; i--) {
+                                if (lineToMsgIndex[i] === pEnd) { lastLineOfP = i; break; }
+                            }
+                        }
+
+                        const effectiveFrom = Math.min(fromLine, firstLineOfP);
+                        const effectiveTo = Math.max(toLine, lastLineOfP);
+
+                        html = renderContextLines(allLines, exState.messages, lineToMsgIndex, effectiveFrom, effectiveTo, matchStart, matchEnd, exState.lastAddedIdx);
+
                         const vStartIdx = lineToMsgIndex[effectiveFrom] + 1;
                         const vEndIdx = lineToMsgIndex[effectiveTo] + 1;
                         const msgCount = vEndIdx - vStartIdx + 1;
                         label = `${msgCount} msgs | -${rBefore}/+${rAfter} lines`;
                         posLabel = vStartIdx === vEndIdx ? `Message ${vStartIdx}` : `Messages ${vStartIdx}–${vEndIdx}`;
                     } else {
-                        const count = exState.paragraphs.filter(p => p.message_index >= pStart && p.message_index <= pEnd).length;
-                        label = `${count} paras | -${rBefore}/+${rAfter} lines`;
-                        posLabel = pStart === pEnd ? `Paragraph ${pStart + 1}` : `Paragraphs ${pStart + 1}–${pEnd + 1}`;
+                        // ── Raw-text import: paragraph-based rendering ──
+                        // Use the line counters to compute how many paragraphs to show
+                        // within the outer pStart/pEnd window. Each "Next Line" click
+                        // widens lineContextAfter by 1, which we translate to the
+                        // message_index of that line via the line index, then clamp to
+                        // [pStart, pEnd] so paragraph-level boundaries remain the hard limit.
+                        const { allLines, lineToMsgIndex } = exState.lineIndex;
+                        const { start: matchStart, end: matchEnd } = exState.matchedLineRange;
+                        const rBefore = exState.lineContextBefore;
+                        const rAfter = exState.lineContextAfter;
+
+                        // Compute line-driven para boundaries
+                        const lineFrom = Math.max(0, matchStart - rBefore);
+                        const lineTo = Math.min(allLines.length - 1, matchEnd + rAfter);
+                        const lineDrivenParaStart = lineToMsgIndex[lineFrom];
+                        const lineDrivenParaEnd = lineToMsgIndex[lineTo];
+
+                        // Clamp within the paragraph-level window: use union so the
+                        // line-driven slice can only EXPAND pStart/pEnd, never shrink it.
+                        const effectiveParaStart = Math.min(pStart, lineDrivenParaStart);
+                        const effectiveParaEnd = Math.max(pEnd, lineDrivenParaEnd);
+
+                        const { start: matchParaStart, end: matchParaEnd } = exState.matchedParaRange || { start: pStart, end: pEnd };
+                        html = renderParagraphContext(exState.paragraphs, effectiveParaStart, effectiveParaEnd, matchParaStart, matchParaEnd, exState.lastAddedIdx);
+
+                        const count = exState.paragraphs.filter(p => p.message_index >= effectiveParaStart && p.message_index <= effectiveParaEnd).length;
+                        label = `${count} para${count !== 1 ? 's' : ''} | -${rBefore}/+${rAfter} lines`;
+                        posLabel = effectiveParaStart === effectiveParaEnd ? `Paragraph ${effectiveParaStart + 1}` : `Paragraphs ${effectiveParaStart + 1}–${effectiveParaEnd + 1}`;
                     }
 
                     wrapper.querySelector('[data-key="context-content"]').innerHTML = html;
@@ -738,21 +775,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.querySelector('.excerpts-container').classList.toggle('hidden', !groupState.expanded);
                 card.querySelector('.toggle-btn').textContent = groupState.expanded ? 'Collapse' : 'Expand';
                 
-                // Mark viewed on any expansion or interaction
-                if (groupState.expanded || !visitedResults.has(group.conversation_id)) {
+                // Mark viewed on any expansion
+                if (groupState.expanded) {
                     visitedResults.add(group.conversation_id);
                     card.classList.add('visited');
-                    if (groupState.expanded && group.excerpts.length > 0 && !groupState.excerpts[0].expanded) {
-                        const firstEx = card.querySelector('.excerpt-wrapper');
-                        if (firstEx) firstEx.click();
-                    }
+                }
+
+                // If expanding for the first time in this session, auto-expand the first excerpt
+                if (groupState.expanded && group.excerpts.length > 0 && !groupState.excerpts[0].expanded) {
+                    const firstEx = card.querySelector('.excerpt-wrapper');
+                    if (firstEx) firstEx.click();
                 }
             }
             card.querySelector('.toggle-btn').addEventListener('click', toggleExpand);
-            card.addEventListener('click', (e) => {
-                if (e.target.closest('.toggle-btn')) return;
-                toggleExpand(e);
-            });
+            card.addEventListener('click', toggleExpand);
             card.querySelector('.library-nav-btn').addEventListener('click', (e) => {
                 e.stopPropagation();
                 visitedResults.add(group.conversation_id);
