@@ -511,12 +511,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <div class="context-header">
                                 <span class="section-label section-label-context">Context</span>
-                                <span class="context-radius-badge" data-key="context-label">Loading...</span>
+                                <span class="context-radius-badge" data-key="context-label">Click to load</span>
                             </div>
                             <div class="context-position-label" data-key="context-position"></div>
                             ${expandControlsTop}
                             <div class="context-block" data-key="context-content">
-                                <div class="context-loading">Loading context...</div>
+                                <div class="context-loading" style="cursor: pointer;">Load context</div>
                             </div>
                             ${expandControlsBottom}
                             <div class="full-conversation-container hidden"></div>
@@ -742,10 +742,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (targetExState.messages || targetExState.loading) return;
                     targetExState.loading = true;
 
+                    const snippetContainer = wrapper.querySelector('[data-key="context-content"]');
+                    const labelContainer = wrapper.querySelector('[data-key="context-label"]');
+                    if (snippetContainer) snippetContainer.innerHTML = '<div class="context-loading">Loading context...</div>';
+                    if (labelContainer) labelContainer.textContent = 'Loading...';
+
                     const mStart = targetEx.message_start_index;
                     const mEnd = targetEx.message_end_index;
                     const currentQuery = searchInput.value.trim();
-                    const snippetContainer = wrapper.querySelector('[data-key="context-content"]');
 
                     try {
                         let conv;
