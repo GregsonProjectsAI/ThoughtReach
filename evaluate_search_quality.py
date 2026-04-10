@@ -1,9 +1,10 @@
 import json
 import os
+import re
+import traceback
 import asyncio
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from app.services.search import search_chunks
 from app.models.models import Base
 
@@ -23,8 +24,8 @@ async def run_evaluation(dataset_obj):
     
     # Database Setup
     DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/thoughtreach")
-    engine = create_async_engine(DATABASE_URL)
-    async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    engine = create_async_engine(DATABASE_URL, echo=False, connect_args={"ssl": False})
+    async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
     
     version = dataset_obj.get('dataset_version', 'unknown')
     entries = dataset_obj.get('entries', [])
@@ -104,6 +105,8 @@ async def run_evaluation(dataset_obj):
         "total_real_entries": len(real_entries),
         "expected_target_complete_count": 0,
         "expected_target_incomplete_count": 0,
+        "evaluation_pass_count": 0,
+        "evaluation_fail_count": 0,
         "category_counts": {},
         "difficulty_counts": {},
         "expected_precision_counts": {}
@@ -143,17 +146,74 @@ async def run_evaluation(dataset_obj):
                         "similarity_score": res.get("similarity_score")
                     })
             except Exception as e:
-                evaluation_status = f"execution_failed: {str(e)}"
+                evaluation_status = f"execution_failed: {str(e)}\n{traceback.format_exc()}"
                 issues.append("search_execution_error")
 
         print(f"[{entry.get('query_id')}] Query: {query_text}")
         print(f"Results Count: {len(actual_results)}")
         print(f"Status:        {evaluation_status}")
+
+        # Scoring Layer
+        evaluation_pass = False
+        evaluation_reason = "Skipped"
+        matched_rank = None
+        distinct_result_count = None
+        
+        if is_complete and evaluation_status == "executed":
+            def slugify(text):
+                text = str(text).lower()
+                text = re.sub(r'[^a-z0-9\s-]', '', text)
+                return re.sub(r'[-\s]+', '-', text).strip('-')
+
+            prec = entry.get("expected_precision", "")
+            if prec == "exact":
+                target_id = entry.get("expected_target_identifier", "")
+                expected_slug = target_id.replace("conv:", "").replace("topic:", "").strip()
+                
+                # Check top 3
+                for idx, res in enumerate(actual_results[:3]):
+                    res_slug = slugify(res.get("conversation_title", ""))
+                    if res_slug == expected_slug:
+                        matched_rank = idx + 1
+                        evaluation_pass = True
+                        break
+                
+                if evaluation_pass:
+                    evaluation_reason = f"Expected target found at rank {matched_rank}"
+                else:
+                    evaluation_reason = "Expected target not found in top 3 results"
+            
+            elif prec in ["narrow_set", "broad_set"]:
+                min_res = entry.get("expected_min_results", 1)
+                # Count distinct conversations in top 10
+                distinct_convs = set(res.get("conversation_id") for res in actual_results[:10])
+                distinct_result_count = len(distinct_convs)
+                
+                if distinct_result_count >= min_res:
+                    evaluation_pass = True
+                    evaluation_reason = f"Found {distinct_result_count} distinct conversations, meeting minimum of {min_res}"
+                else:
+                    evaluation_pass = False
+                    evaluation_reason = f"Found only {distinct_result_count} distinct conversations, needed {min_res}"
+            
+            if evaluation_pass:
+                summary["evaluation_pass_count"] += 1
+            else:
+                summary["evaluation_fail_count"] += 1
+
+        print(f"Pass:          {evaluation_pass}")
+        print(f"Reason:        {evaluation_reason}")
         print("-" * 40)
 
         entry["actual_results"] = actual_results
         entry["evaluation_status"] = evaluation_status
         entry["expected_target_complete"] = is_complete
+        entry["evaluation_pass"] = evaluation_pass
+        entry["evaluation_reason"] = evaluation_reason
+        if matched_rank is not None:
+            entry["matched_rank"] = matched_rank
+        if distinct_result_count is not None:
+            entry["distinct_result_count"] = distinct_result_count
 
         if issues:
             warnings.append({"query_id": entry.get('query_id'), "issues": issues})
@@ -195,13 +255,4 @@ if __name__ == "__main__":
     dataset_path = 'search_evaluation_dataset.json'
     dataset = load_evaluation_dataset(dataset_path)
     if dataset:
-        try:
-            loop = asyncio.get_event_loop()
-            if loop.is_running():
-                # For environments where an event loop is already active (IPython, etc.)
-                asyncio.ensure_future(run_evaluation(dataset))
-            else:
-                loop.run_until_complete(run_evaluation(dataset))
-        except RuntimeError:
-            # Fallback if get_event_loop() fails or isn't appropriate
-            asyncio.run(run_evaluation(dataset))
+        asyncio.run(run_evaluation(dataset))
