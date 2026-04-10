@@ -254,16 +254,16 @@ button[type="submit"]:hover {
 }
 
 .result-card.visited {
-    background-color: #f8fafc; /* Slate-50: very subtle but distinct background */
-    border-color: #cbd5e1; /* Slate-300: clearly defined border */
-    border-left: 6px solid #94a3b8; /* Slate-400: strong 'past' state accent */
-    box-shadow: none;
-    opacity: 0.8; /* Subtle overall pull-back to de-emphasize */
+    background-color: #f1f5f9; /* Slate-100: noticeably tinted background for 'viewed' state */
+    border-color: #cbd5e1; /* Slate-300: more defined outline */
+    border-left: 6px solid #94a3b8; /* Slate-400: strong left accent bar remains */
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); /* Subtle inner shadow to help distinguish from unviewed cards */
+    opacity: 0.9; /* Slightly less transparent than before for better readability while still feeling 'secondary' */
 }
 
 .result-card.visited:hover {
     border-color: #94a3b8;
-    background-color: #f1f5f9;
+    background-color: #e2e8f0; /* Slate-200: darker hover for the already-tinted visited state */
 }
 
 .result-why-matched {
