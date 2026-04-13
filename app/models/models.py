@@ -47,6 +47,7 @@ class Conversation(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     title = Column(String, nullable=False)
     source_type = Column(String, nullable=False)
+    source_family = Column(String, nullable=True)
     external_id = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), nullable=True)
     imported_at = Column(DateTime(timezone=True), default=utcnow)

@@ -1,6 +1,6 @@
 {
-  "dataset_version": "2.0-corpus-aligned",
-  "notes": "Corpus-aligned evaluation dataset targeting the 33-conversation corpus. Targets re-grounded in Step 414 against actual content-to-conversation mapping. Original dev-corpus dataset preserved as search_evaluation_dataset_dev_corpus.json.",
+  "dataset_version": "3.3-real-world-anchors",
+  "notes": "Extended evaluation dataset adding entries C028-C031 for real-world pain points like vague memory, anchor selection, and broad term frequency.",
   "entries": [
     {
       "query_id": "EXAMPLE-001",
@@ -141,6 +141,215 @@
       "difficulty": "medium",
       "expected_precision": "narrow_set",
       "expected_min_results": 2
+    },
+    {
+      "query_id": "EVAL-C013",
+      "category": "lookup",
+      "query_text": "Pirate Pack Build Plan",
+      "expected_target_description": "Exact title match. The query is the literal title of a conversation. With phrase-matching boost, this should rank at position 1.",
+      "expected_target_identifier": "conv:pirate-pack-build-plan",
+      "notes": "Step 448 EXACT PHRASE test. The query is identical to a conversation title. Tests that the phrase bonus in title field_score pushes this to rank 1.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C014",
+      "category": "lookup",
+      "query_text": "Target Audience Selection",
+      "expected_target_description": "Exact title match for Target Audience Selection conversation. With phrase-matching boost on title, this should rank at position 1.",
+      "expected_target_identifier": "conv:target-audience-selection",
+      "notes": "Step 448 EXACT PHRASE test. Literal title query. Should benefit from the strong phrase bonus in title scoring.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C015",
+      "category": "lookup",
+      "query_text": "treasure hunt system design",
+      "expected_target_description": "Near-exact title match for Treasure Hunt System Design conversation. All four terms appear in the title, and the full phrase matches.",
+      "expected_target_identifier": "conv:treasure-hunt-system-design",
+      "notes": "Step 448 COVERAGE + PHRASE test. All query terms present in the title field. Tests that full-term coverage bonus and phrase bonus together push the correct conversation to rank 1.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C016",
+      "category": "lookup",
+      "query_text": "treasure",
+      "expected_target_description": "Single-word query. Should return AI Treasure Hunt Dev or other treasure-related conversations via pure semantic similarity, unaffected by multi-word boosts.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "Step 448 SINGLE-WORD STABILITY test. Multi-word phrase/coverage/proximity bonuses should have zero effect on single-word queries. Confirms no regression from the new logic.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C017",
+      "category": "lookup",
+      "query_text": "Hyperliquid Perps Tutorial",
+      "expected_target_description": "Exact title match for the Hyperliquid Perps Tutorial conversation. Completely unrelated to treasure hunt content. Tests that phrase matching correctly isolates non-treasure-hunt content.",
+      "expected_target_identifier": "conv:hyperliquid-perps-tutorial",
+      "notes": "Step 448 STRUCTURED UPLIFT test. This conversation exists in the corpus. The exact phrase in the title should strongly boost it to rank 1, even though it is semantically distant from the dominant treasure hunt corpus.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C018",
+      "category": "recall",
+      "query_text": "fragment map bedroom pirate",
+      "expected_target_description": "A multi-term query with all four terms scattered across the AI Treasure Hunt Dev conversation. Tests that high term-coverage in one chunk boosts it above results with only partial term overlap.",
+      "expected_target_identifier": "topic:fragment-map-overlap",
+      "notes": "Step 448 COVERAGE test. Four distinct terms that individually appear in many conversations but all co-occur specifically in AI Treasure Hunt Dev chunks. Tests the coverage bonus for full-term hits.",
+      "difficulty": "medium",
+      "expected_precision": "narrow_set",
+      "expected_min_results": 2
+    },
+    {
+      "query_id": "EVAL-C019",
+      "category": "recall",
+      "query_text": "location sheets volcano jungle lagoon",
+      "expected_target_description": "Tight proximity query. All four terms appear close together in AI Treasure Hunt Dev where Location Sheets are described with their landmark names (volcano, jungle, lagoon, rocks).",
+      "expected_target_identifier": "topic:location-sheets-detail",
+      "notes": "Step 448 PROXIMITY test. These terms co-occur within a small region of the AI Treasure Hunt Dev text. Tests that the proximity bonus favours chunks where all terms appear together over chunks where they are scattered.",
+      "difficulty": "medium",
+      "expected_precision": "narrow_set",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C020",
+      "category": "synthesis_preparation",
+      "query_text": "how should we approach the overall game experience",
+      "expected_target_description": "Deliberately vague/ambiguous query with no exact phrase match in any conversation. Should surface multiple treasure-hunt planning conversations via semantic similarity without being distorted by lexical boosts.",
+      "expected_target_identifier": "topic:game-experience-broad",
+      "notes": "Step 448 AMBIGUITY GUARD test. No conversation title or chunk contains this exact phrase. Confirms that lexical uplift does not overpower semantic search for genuinely ambiguous queries. Should still find relevant treasure-hunt-related conversations.",
+      "difficulty": "hard",
+      "expected_precision": "broad_set",
+      "expected_min_results": 3
+    },
+    {
+      "query_id": "EVAL-C021",
+      "category": "lookup",
+      "query_text": "AI Party Game Plan",
+      "expected_target_description": "Exact title match for the AI Party Game Plan conversation. Tests whether title relevance correctly outranks conversations with higher body-term frequency for the same keywords.",
+      "expected_target_identifier": "conv:ai-party-game-plan",
+      "notes": "TITLE-VS-BODY CONFLICT test. Keywords 'AI', 'Game', 'Plan' are extremely frequent in the massive AI Treasure Hunt Dev file, but this query is the literal title of a smaller document. Title weighting should ensure the specific plan ranks first.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C022",
+      "category": "lookup",
+      "query_text": "Grab Dinner Inspiration",
+      "expected_target_description": "Targeted search for the Grab Dinner Inspiration conversation. Tests whether a specific intent can overcome the broad frequency burial risk from the dominant treasure hunt corpus.",
+      "expected_target_identifier": "conv:grab-dinner-inspiration",
+      "notes": "BROAD-FREQUENCY BURIAL test. Semantic and lexical match for a niche topic ('dinner') should prevail even when the corpus is dominated by another high-frequency topic ('treasure hunt').",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C023",
+      "category": "lookup",
+      "query_text": "bedroom fragment and Smuggler's Mark",
+      "expected_target_description": "Query combining two distinct game elements discussed in different parts of the AI Treasure Hunt Dev conversation. Tests whether multi-cluster relevance rewards the combined footprint.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "MULTI-CLUSTER RELEVANCE test. 'Bedroom' and 'Smuggler's Mark' are separate clusters within AI Treasure Hunt Dev. The system should reward the document for containing both distinct matching regions.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C024",
+      "category": "lookup",
+      "query_text": "treasure hunt puzzle design",
+      "expected_target_description": "Broad topical query about puzzle design. Tests whether a conversation with high topical density (many relevant chunks) outranks one with a single isolated strong match.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "CONVERSATION-LEVEL TOPICALITY test. AI Treasure Hunt Dev has massive density of 'puzzle design' content. This should win over a document that has one locally high-scoring paragraph about puzzles.",
+      "difficulty": "hard",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C025",
+      "category": "lookup",
+      "query_text": "hosting an outdoor pirate party",
+      "expected_target_description": "General concepts around hosting an outdoor pirate party.",
+      "expected_target_identifier": "conv:ai-party-game-plan",
+      "notes": "ADVERSARIAL: Mode 1/2 (Distributed vs Isolated). AI Party Game Plan is holistically about hosting the party (many distributed matches), but the massive AI Treasure Hunt Dev might contain one isolated dense chunk about an 'outdoor pirate party' and incorrectly win rank 1 under a max-chunk model.",
+      "difficulty": "hard",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C026",
+      "category": "recall",
+      "query_text": "that one time we talked about fixing the dead-end branch",
+      "expected_target_description": "Recall the discussion where the dead-end branch flaw was fixed.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "ADVERSARIAL: Mode 3 (Memory-style wording). Users often query using preamble words ('that one time we talked about'). A literal max-chunk ranker might find those exact common words in a completely unrelated document, outscoring the actual semantic target.",
+      "difficulty": "hard",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C027",
+      "category": "lookup",
+      "query_text": "printing physical maps and cutting map fragments",
+      "expected_target_description": "Instructions for printing and assembling physical materials.",
+      "expected_target_identifier": "conv:pirate-pack-build-plan",
+      "notes": "ADVERSARIAL: Mode 4 (Large-file partial match bloat). The Pirate Pack Build Plan is definitively about this topic, but the massive 'AI Treasure Hunt Dev' file might string together enough hits for 'printing', 'maps', and 'fragments' in a single dense paragraph to steal rank 1.",
+      "difficulty": "hard",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C028",
+      "category": "recall",
+      "query_text": "can we make the pirate clues rhyme like poetry",
+      "expected_target_description": "Discussion about pirate verse and rhyming clues.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "VAGUE-MEMORY test. Simulates 'Pirate Poetry' vague recall. Should succeed via semantic match without an exact phrase.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C029",
+      "category": "navigation",
+      "query_text": "the fix where branch paths yield clues instead of map fragments",
+      "expected_target_description": "The particular excerpt where the branch path structural flaw was resolved.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "ANCHOR-SELECTION test. This exact phrase occurs deep in the file. Will verify that the UI opens this optimal deep excerpt instead of the chronologically first excerpt.",
+      "difficulty": "hard",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C030",
+      "category": "lookup",
+      "query_text": "document about target audience selection",
+      "expected_target_description": "Target Audience Selection conversation",
+      "expected_target_identifier": "conv:target-audience-selection",
+      "notes": "TITLE-VS-BODY CONFLICT test. Lexical match in title should elevate this document despite its low relative term frequency compared to the main corpus.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1
+    },
+    {
+      "query_id": "EVAL-C031",
+      "category": "lookup",
+      "query_text": "combining the captain's code cipher with the bedroom fragment",
+      "expected_target_description": "Query combining distinct game elements.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "MULTI-CLUSTER test. Validates combo of elements that exist inside the same conversation but far apart.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1
     }
   ]
 }

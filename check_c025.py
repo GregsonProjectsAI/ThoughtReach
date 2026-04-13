@@ -1,0 +1,15 @@
+import json
+d = json.load(open('search_evaluation_dataset.json'))
+o = json.load(open('search_evaluation_output.json'))
+tc = next((e for e in d.get('entries', []) if e['query_id'] == 'EVAL-C025'), None)
+oc = next((e for e in o.get('entries', []) if e['query_id'] == 'EVAL-C025'), None)
+res = oc.get('actual_results', [])
+target_id = oc['expected_target_identifier'].replace('conv:', '')
+
+print(f"Query: {oc['query_text']}")
+print(f"Expected: {oc['expected_target_identifier']}")
+print(f"Top 3: {[r.get('conversation_title') for r in res[:3]]}")
+found_in_res = any(r.get('conversation_id') == target_id for r in res)
+found_in_top3 = any(r.get('conversation_id') == target_id for r in res[:3])
+print(f"Found in results: {found_in_res}")
+print(f"Found in top 3: {found_in_top3}")

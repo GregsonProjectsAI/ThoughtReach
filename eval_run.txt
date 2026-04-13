@@ -1,0 +1,88 @@
+C:\Users\alexg\Documents\Antigravity Projects\ThoughtReach V1\evaluate_search_quality.py:198: DeprecationWarning: There is no current event loop
+  loop = asyncio.get_event_loop()
+--- ThoughtReach Search Evaluation Runner ---
+Executing live searches against local database...
+
+Dataset Version: 1.0
+[EVAL-001] Query: pirate poetry we wrote
+Results Count: 0
+Status:        execution_failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+----------------------------------------
+[EVAL-002] Query: AG execution protocol
+Results Count: 0
+Status:        execution_failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+----------------------------------------
+[EVAL-003] Query: visited results viewed state marking
+Results Count: 0
+Status:        execution_failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+----------------------------------------
+[EVAL-004] Query: search result card visual hierarchy polish
+Results Count: 0
+Status:        execution_failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+----------------------------------------
+[EVAL-005] Query: where did we decide to use conversation_id as the result grouping key
+Results Count: 0
+Status:        execution_failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+----------------------------------------
+[EVAL-006] Query: where we first renamed ThoughtReach from its original name
+Results Count: 0
+Status:        execution_failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+----------------------------------------
+[EVAL-007] Query: all discussions about search authority files
+Results Count: 0
+Status:        execution_failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+----------------------------------------
+[EVAL-008] Query: every time we discussed embedding or semantic search implementation
+Results Count: 0
+Status:        execution_failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+----------------------------------------
+[EVAL-009] Query: what have we said about search quality and result ranking
+Results Count: 0
+Status:        execution_failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+----------------------------------------
+[EVAL-010] Query: what are all the ways we discussed handling duplicate or overlapping results
+Results Count: 0
+Status:        execution_failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+----------------------------------------
+[EVAL-011] Query: context radius line expansion behaviour
+Results Count: 0
+Status:        execution_failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+----------------------------------------
+[EVAL-012] Query: first time we discussed importing raw text as opposed to structured conversations
+Results Count: 0
+Status:        execution_failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+----------------------------------------
+
+--- Evaluation Summary ---
+{
+  "summary": {
+    "total_real_entries": 12,
+    "expected_target_complete_count": 12,
+    "expected_target_incomplete_count": 0,
+    "category_counts": {
+      "lookup": 3,
+      "recall": 2,
+      "navigation": 3,
+      "collection": 2,
+      "synthesis_preparation": 2
+    },
+    "difficulty_counts": {
+      "easy": 2,
+      "medium": 5,
+      "hard": 5
+    },
+    "expected_precision_counts": {
+      "exact": 6,
+      "narrow_set": 3,
+      "broad_set": 3
+    },
+    "category_coverage_complete": true,
+    "missing_categories": [],
+    "dataset_ready_for_execution": false,
+    "readiness_failure_reasons": [
+      "warnings_present"
+    ]
+  }
+}
+
+Evaluation output persisted to search_evaluation_output.json

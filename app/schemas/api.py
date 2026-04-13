@@ -78,6 +78,7 @@ class ConversationOut(BaseModel):
     id: UUID
     title: str
     source_type: str
+    source_family: Optional[str] = None
     external_id: Optional[str]
     created_at: Optional[datetime]
     imported_at: datetime
@@ -110,15 +111,7 @@ class SearchRequest(BaseModel):
     limit: int = Field(default=10, le=50)
     category_id: Optional[UUID] = None
 
-class SearchResultOut(BaseModel):
-    conversation_id: UUID
-    conversation_title: str
-    conversation_summary: Optional[str] = None
-    conversation_source_type: str = "paste"
-    category_id: Optional[UUID] = None
-    category_name: Optional[str] = None
-    imported_at: datetime
-    conversation_created_at: Optional[datetime] = None
+class SearchResultExcerptOut(BaseModel):
     matched_chunk_text: str
     similarity_score: float
     message_start_index: int
@@ -135,6 +128,20 @@ class SearchResultOut(BaseModel):
     next_exchange_user_message: Optional[str] = None
     next_exchange_assistant_message: Optional[str] = None
     message_count: int = 0
+    ranking_flags: Optional[dict] = None
+
+class SearchResultOut(BaseModel):
+    conversation_id: UUID
+    conversation_title: str
+    conversation_summary: Optional[str] = None
+    conversation_source_type: str = "paste"
+    source_type: str = "raw_text_chat"
+    category_id: Optional[UUID] = None
+    category_name: Optional[str] = None
+    imported_at: datetime
+    conversation_created_at: Optional[datetime] = None
+    match_summary: Optional[str] = None
+    excerpts: List[SearchResultExcerptOut] = Field(default_factory=list)
 
     @computed_field
     @property

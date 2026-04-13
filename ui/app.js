@@ -119,8 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const prevView = viewStack.pop();
             // If the popped view is the current one, pop again
             const currentView = !searchView.classList.contains('hidden') ? 'search' :
-                                (!importView.classList.contains('hidden') ? 'import' : 'library');
-            
+                (!importView.classList.contains('hidden') ? 'import' : 'library');
+
             let target = prevView;
             if (target === currentView && viewStack.length > 0) {
                 target = viewStack.pop();
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (target === 'import') navImportBtn.click();
             else if (target === 'library') navLibraryBtn.click();
             else navSearchBtn.click();
-            
+
             // Pop the one we just added via the click listener
             viewStack.pop();
         } else {
@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return { start: startIdx, end: startIdx + chunkLines.length - 1 };
     }
 
-    function renderContextLines(allLines, messages, lineToMsgIndex, fromLine, toLine, matchStart, matchEnd, lastAddedMsgIdx = null) {
+    function renderContextLines(allLines, messages, lineToMsgIndex, fromLine, toLine, matchStart, matchEnd, lastAddedMsgIdx = null, isRaw = false) {
         fromLine = Math.max(0, fromLine);
         toLine = Math.min(allLines.length - 1, toLine);
         if (fromLine > toLine) return '<em style="opacity:0.5">No surrounding context available.</em>';
@@ -323,17 +323,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const mi = lineToMsgIndex[i];
             const msg = messages[mi];
             if (mi !== lastMsgIdx) {
+                if (isRaw && lastMsgIdx !== -1) html += '</div>';
                 lastMsgIdx = mi;
-                const roleLabel = msg.role === 'user' ? 'User' : 'Assistant';
-                const roleClass = msg.role === 'user' ? 'ctx-role-user' : 'ctx-role-assistant';
-                const isNew = (mi === lastAddedMsgIdx);
-                html += `<div class="ctx-role-label ${roleClass}${isNew ? ' newly-revealed' : ''}">${roleLabel}</div>`;
+                if (!isRaw) {
+                    const roleLabel = (msg.role === 'user' || msg.role === 'assistant')
+                        ? (msg.role.charAt(0).toUpperCase() + msg.role.slice(1))
+                        : msg.role;
+                    const roleClass = msg.role === 'user' ? 'ctx-role-user' : 'ctx-role-assistant';
+                    const isNew = (mi === lastAddedMsgIdx);
+                    html += `<div class="ctx-role-label ${roleClass}${isNew ? ' newly-revealed' : ''}">${roleLabel}</div>`;
+                } else {
+                    html += `<div class="para-block para-block-revealed">`;
+                }
             }
             const isInMatch = (i >= matchStart && i <= matchEnd);
             const lineHtml = renderHighlightedText(allLines[i]) || '&nbsp;';
-            const isNewLine = (mi === lastAddedMsgIdx);
+            const isNewLine = (lastAddedMsgIdx !== null && mi === lastAddedMsgIdx);
             html += `<div class="ctx-line${isInMatch ? ' ctx-line-match' : ''}${isNewLine ? ' newly-revealed' : ''}">${lineHtml}</div>`;
         }
+        if (isRaw && lastMsgIdx !== -1) html += '</div>';
         return html;
     }
 
@@ -389,35 +397,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ── Source-type detection ─────────────────────────────────────────────────
-    // The system uses "paste" for all imports currently. We distinguish structured
-    // (explicit user/assistant messages) from raw-text imports by whether the
-    // search result includes role-attributed source messages. If source_user_message
-    // or source_assistant_message is present, this is a structured conversation.
-    // Otherwise it was a raw text import with alternating paragraph roles.
-    function isStructuredConversation(result) {
-        // A true structured conversation requires source_type === 'structured' AND
-        // evidence of actual assistant-role messages in the conversation.
-        //
-        // This guards against raw text accidentally imported with the default
-        // 'Structured' mode selected: those get source_type='structured' stored but
-        // have ONLY 'user' role messages. Without this guard they would enter the
-        // line-by-line structured rendering path and Next/Previous buttons would
-        // step through individual lines rather than full paragraph blocks.
-        if (result.conversation_source_type === 'raw') return false;
-
-        // Presence of an assistant message in the Layer 2 result confirms real
-        // User/Assistant dialogue. Also check surrounding messages for assistant role
-        // as a secondary signal (handles edge cases near the end of a conversation).
-        const hasAssistantInL2 = result.source_assistant_message !== null &&
-            result.source_assistant_message !== undefined;
-        const hasPrevAssistant = result.previous_exchange_assistant_message !== null &&
-            result.previous_exchange_assistant_message !== undefined;
-        const hasNextAssistant = result.next_exchange_assistant_message !== null &&
-            result.next_exchange_assistant_message !== undefined;
-        const hasAssistantInSurroundings = (result.surrounding_messages || [])
-            .some(m => m.role !== 'user');
-            
-        return hasAssistantInL2 || hasPrevAssistant || hasNextAssistant || hasAssistantInSurroundings;
+    // The source classification is now deterministically resolved at import time
+    // into DB field `source_type`. We simply read it directly from the search group.
+    function isStructuredConversation(ex, group) {
+        return group.source_type === "structured_conversation";
     }
 
     // ── Card rendering ────────────────────────────────────────────────────────
@@ -429,16 +412,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!sessionStates[resultKey]) {
                 sessionStates[resultKey] = {
                     expanded: false,
-                    excerpts: group.excerpts.map(ex => ({
+                    excerpts: group.excerpts.map((ex, i) => ({
                         message_start_index: ex.message_start_index,
                         message_end_index: ex.message_end_index,
-                        expanded: false,
+                        expanded: (ex.is_best_match === true),
                         lineContextBefore: 10,
                         lineContextAfter: 10,
                         paraRadius: 3,
                         visibleParaStart: null,
                         visibleParaEnd: null,
-                        totalMessages: group.results[0].message_count || 0,
+                        visibleParaEnd: null,
+                        totalMessages: ex.message_count || 0,
                         fullThread: false,
                         messages: null,
                         lineIndex: null,
@@ -451,27 +435,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
             const groupState = sessionStates[resultKey];
-            const structured = group.results.some(res => isStructuredConversation(res));
+            const structured = group.excerpts.some(ex => isStructuredConversation(ex, group));
 
             const card = document.createElement('div');
             card.className = 'result-card' + (visitedResults.has(group.conversation_id) ? ' visited' : '');
 
-            const maxScorePercent = Math.round(group.max_score * 100) + '%';
+            const maxScore = group.excerpts.reduce((max, ex) => Math.max(max, ex.similarity_score || 0), 0);
+            const maxScorePercent = Math.round(maxScore * 100) + '%';
             const importDateStr = formatLibraryDate(group.imported_at);
             const sourceBadgeCls = structured ? 'library-type-structured' : 'library-type-raw';
-            const sourceBadgeText = structured ? 'Structured Conversation' : 'Raw Imported Text';
+            const sourceBadgeText = structured ? 'Structured Conversation (AG)' : 'Raw Imported Text (AG)';
 
-            let whyMatchedSuffix = '';
-            if (structured && group.results && group.results.length > 0) {
-                const topResult = group.results[0];
-                if (topResult.source_assistant_is_match && !topResult.source_user_is_match) {
-                    whyMatchedSuffix = ' Strongest match in assistant response.';
-                } else if (topResult.source_user_is_match && !topResult.source_assistant_is_match) {
-                    whyMatchedSuffix = ' Strongest match in user prompt.';
-                } else if (topResult.source_user_is_match && topResult.source_assistant_is_match) {
-                    whyMatchedSuffix = ' Strongest match in user prompt and assistant response.';
-                }
-            }
+            const cardSummary = group.match_summary || '';
 
             let excerptsHtml = group.excerpts.map((ex, i) => {
                 const exState = groupState.excerpts[i];
@@ -499,25 +474,27 @@ document.addEventListener('DOMContentLoaded', () => {
                            <button class="full-conv-btn">Full Text</button>
                        </div>`;
 
+                const rankingFlags = ex.ranking_flags || {};
+                let reasonBadges = '';
+                if (rankingFlags.exact_phrase) reasonBadges += '<span class="meta-item badge reason">Exact phrase</span>';
+                if (rankingFlags.all_terms) reasonBadges += '<span class="meta-item badge reason">All words found</span>';
+                if (rankingFlags.high_proximity) reasonBadges += '<span class="meta-item badge reason">High proximity</span>';
+                const reasonHtml = reasonBadges ? `<div class="ranking-reasons">${reasonBadges}</div>` : '';
+
                 return `
                     <div class="excerpt-wrapper" data-index="${i}">
-                        <div class="section-label section-label-match">Match ${i + 1}</div>
-                        <div class="snippet-container snippet-preview${exState.expanded ? ' hidden' : ''}">
-                            ${renderHighlightedText(fullText)}
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem;">
+                            <div class="section-label section-label-match">Match ${i + 1}</div>
+                            ${reasonHtml}
                         </div>
-                        <div class="expanded-content${exState.expanded ? '' : ' hidden'}">
-                            <div class="matched-text-block">
-                                ${renderHighlightedText(fullText)}
-                            </div>
-                            <div class="context-header">
-                                <span class="section-label section-label-context">Context</span>
-                                <span class="context-radius-badge" data-key="context-label">Click to load</span>
-                            </div>
+                        <div class="context-controls-top${exState.expanded ? '' : ' hidden'}">
                             <div class="context-position-label" data-key="context-position"></div>
                             ${expandControlsTop}
-                            <div class="context-block" data-key="context-content">
-                                <div class="context-loading" style="cursor: pointer;">Load context</div>
-                            </div>
+                        </div>
+                        <div class="snippet-container context-block" data-key="context-content">
+                            ${exState.expanded ? '<div class="context-loading">Loading context...</div>' : renderHighlightedText(fullText)}
+                        </div>
+                        <div class="context-controls-bottom${exState.expanded ? '' : ' hidden'}">
                             ${expandControlsBottom}
                             <div class="full-conversation-container hidden"></div>
                         </div>
@@ -543,97 +520,169 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="meta-item score-subtle" title="Relevance Score">${maxScorePercent} Match</span>
                 </div>
                 <div class="result-why-matched">
-                    ${group.excerpts.length === 1 
-                        ? `Matched 1 excerpt in this ${structured ? 'conversation' : 'imported item'}.${whyMatchedSuffix}`
-                        : `Matched ${group.excerpts.length} excerpts in this ${structured ? 'conversation' : 'imported item'}.${whyMatchedSuffix}`}
+                    ${escapeHTML(cardSummary)}
                 </div>
                 <div class="excerpts-container${groupState.expanded ? '' : ' hidden'}">
                     ${excerptsHtml}
                 </div>
             `;
 
+            function renderExcerptContext(i) {
+                const ex = group.excerpts[i];
+                const exState = groupState.excerpts[i];
+                const wrapper = card.querySelector(`.excerpt-wrapper[data-index="${i}"]`);
+                if (!wrapper || !exState.messages || !exState.expanded) return;
+
+                let html = '';
+                let posLabel = '';
+
+                const pStart = exState.visibleParaStart;
+                const pEnd = exState.visibleParaEnd;
+
+                if (structured) {
+                    const { allLines, lineToMsgIndex } = exState.lineIndex;
+                    const { start: matchStart, end: matchEnd } = exState.matchedLineRange;
+                    const rBefore = exState.lineContextBefore;
+                    const rAfter = exState.lineContextAfter;
+
+                    let fromLine = Math.max(0, matchStart - rBefore);
+                    let toLine = Math.min(allLines.length - 1, matchEnd + rAfter);
+
+                    let firstLineOfP = fromLine;
+                    let lastLineOfP = toLine;
+
+                    if (pStart !== null) {
+                        for (let k = 0; k < lineToMsgIndex.length; k++) {
+                            if (lineToMsgIndex[k] === pStart) { firstLineOfP = k; break; }
+                        }
+                    }
+                    if (pEnd !== null) {
+                        for (let k = lineToMsgIndex.length - 1; k >= 0; k--) {
+                            if (lineToMsgIndex[k] === pEnd) { lastLineOfP = k; break; }
+                        }
+                    }
+
+                    const effectiveFrom = Math.min(fromLine, firstLineOfP);
+                    const effectiveTo = Math.max(toLine, lastLineOfP);
+
+                    html = renderContextLines(allLines, exState.messages, lineToMsgIndex, effectiveFrom, effectiveTo, matchStart, matchEnd, exState.lastAddedIdx);
+
+                    const vStartIdx = lineToMsgIndex[effectiveFrom] + 1;
+                    const vEndIdx = lineToMsgIndex[effectiveTo] + 1;
+                    posLabel = vStartIdx === vEndIdx ? `Message ${vStartIdx}` : `Messages ${vStartIdx}–${vEndIdx}`;
+                } else {
+                    const { allLines, lineToMsgIndex } = exState.lineIndex;
+                    const { start: matchStart, end: matchEnd } = exState.matchedLineRange;
+                    const rBefore = exState.lineContextBefore;
+                    const rAfter = exState.lineContextAfter;
+
+                    const lineFrom = Math.max(0, matchStart - rBefore);
+                    const lineTo = Math.min(allLines.length - 1, matchEnd + rAfter);
+
+                    let firstLineOfP = lineFrom;
+                    if (pStart !== null) {
+                        for (let k = 0; k < lineToMsgIndex.length; k++) {
+                            if (exState.messages[lineToMsgIndex[k]].message_index === pStart) {
+                                firstLineOfP = k;
+                                break;
+                            }
+                        }
+                    }
+                    let lastLineOfP = lineTo;
+                    if (pEnd !== null) {
+                        for (let k = lineToMsgIndex.length - 1; k >= 0; k--) {
+                            if (exState.messages[lineToMsgIndex[k]].message_index === pEnd) {
+                                lastLineOfP = k;
+                                break;
+                            }
+                        }
+                    }
+
+                    const extraBefore = Math.max(0, rBefore - 10);
+                    const extraAfter = Math.max(0, rAfter - 10);
+                    const effectiveFrom = Math.max(0, Math.min(lineFrom, firstLineOfP - extraBefore));
+                    const effectiveTo = Math.min(allLines.length - 1, Math.max(lineTo, lastLineOfP + extraAfter));
+
+                    const { start: matchParaStart, end: matchParaEnd } = exState.matchedParaRange || { start: pStart, end: pEnd };
+
+                    html = renderContextLines(allLines, exState.messages, lineToMsgIndex, effectiveFrom, effectiveTo, matchStart, matchEnd, exState.lastAddedIdx, true);
+
+                    const lineDrivenParaStart = exState.messages[lineToMsgIndex[effectiveFrom]].message_index;
+                    const lineDrivenParaEnd = exState.messages[lineToMsgIndex[effectiveTo]].message_index;
+                    posLabel = lineDrivenParaStart === lineDrivenParaEnd ? `Paragraph ${lineDrivenParaStart + 1}` : `Paragraphs ${lineDrivenParaStart + 1}–${lineDrivenParaEnd + 1}`;
+                }
+
+                wrapper.querySelector('[data-key="context-content"]').innerHTML = html;
+                wrapper.querySelector('[data-key="context-position"]').textContent = posLabel;
+            }
+
+            async function onOpenExcerpt(i) {
+                const ex = group.excerpts[i];
+                const exState = groupState.excerpts[i];
+                const wrapper = card.querySelector(`.excerpt-wrapper[data-index="${i}"]`);
+                if (!wrapper || exState.messages || exState.loading) return;
+
+                exState.loading = true;
+                const snippetContainer = wrapper.querySelector('[data-key="context-content"]');
+                if (snippetContainer) snippetContainer.innerHTML = '<div class="context-loading">Loading context...</div>';
+
+                const mStart = ex.message_start_index;
+                const mEnd = ex.message_end_index;
+                const currentQuery = searchInput.value.trim();
+
+                try {
+                    let conv;
+                    if (structured) {
+                        const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?highlight_query=${encodeURIComponent(currentQuery)}`);
+                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                        conv = await res.json();
+                    } else {
+                        const total = exState.totalMessages || 10000;
+                        const fStart = Math.max(0, mStart - 2);
+                        const fEnd = Math.min(total - 1, mEnd + 1);
+                        const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?highlight_query=${encodeURIComponent(currentQuery)}&start_index=${fStart}&end_index=${fEnd}`);
+                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                        conv = await res.json();
+                    }
+
+                    if (conv) {
+                        exState.messages = (conv.messages || []).sort((a, b) => a.message_index - b.message_index);
+                        if (conv.message_count !== undefined) exState.totalMessages = conv.message_count;
+
+                        if (structured) {
+                            exState.lineIndex = buildLineIndex(exState.messages);
+                            exState.matchedLineRange = findMatchedLineRange(exState.lineIndex.allLines, ex.matched_chunk_text);
+                            exState.visibleParaStart = ex.message_start_index;
+                            exState.visibleParaEnd = ex.message_end_index;
+                            exState.paragraphs = buildParagraphIndex(exState.messages);
+                        } else {
+                            exState.paragraphs = buildParagraphIndex(exState.messages);
+                            exState.matchedParaRange = findMatchedParagraphRange(exState.paragraphs, ex.matched_chunk_text);
+                            exState.visibleParaStart = conv.messages && conv.messages.length ? conv.messages[0].message_index : 0;
+                            exState.visibleParaEnd = conv.messages && conv.messages.length ? conv.messages[conv.messages.length - 1].message_index : 0;
+                            exState.lineIndex = buildLineIndex(exState.messages);
+                            exState.matchedLineRange = findMatchedLineRange(exState.lineIndex.allLines, ex.matched_chunk_text);
+                        }
+                    }
+                    renderExcerptContext(i);
+                } catch (err) {
+                    console.error('Excerpt context load failed:', err);
+                    if (snippetContainer && exState.expanded) {
+                        snippetContainer.innerHTML = `<div class="context-error">Failed to load context. <button class="retry-btn" style="font-size:0.7rem; padding: 2px 4px;">Retry</button></div>`;
+                        snippetContainer.querySelector('.retry-btn').onclick = (e) => {
+                            e.stopPropagation();
+                            exState.loading = false;
+                            onOpenExcerpt(i);
+                        };
+                    }
+                } finally {
+                    exState.loading = false;
+                }
+            }
+
             group.excerpts.forEach((ex, i) => {
                 const exState = groupState.excerpts[i];
                 const wrapper = card.querySelector(`.excerpt-wrapper[data-index="${i}"]`);
-
-                function renderExcerptContext() {
-                    if (!exState.messages) return;
-                    let html = '';
-                    let label = '';
-                    let posLabel = '';
-
-                    const pStart = exState.visibleParaStart;
-                    const pEnd = exState.visibleParaEnd;
-
-                    if (structured) {
-                        // ── Structured conversation: line-based rendering ──
-                        const { allLines, lineToMsgIndex } = exState.lineIndex;
-                        const { start: matchStart, end: matchEnd } = exState.matchedLineRange;
-                        const rBefore = exState.lineContextBefore;
-                        const rAfter = exState.lineContextAfter;
-
-                        let fromLine = Math.max(0, matchStart - rBefore);
-                        let toLine = Math.min(allLines.length - 1, matchEnd + rAfter);
-
-                        let firstLineOfP = fromLine;
-                        let lastLineOfP = toLine;
-
-                        if (pStart !== null) {
-                            for (let i = 0; i < lineToMsgIndex.length; i++) {
-                                if (lineToMsgIndex[i] === pStart) { firstLineOfP = i; break; }
-                            }
-                        }
-                        if (pEnd !== null) {
-                            for (let i = lineToMsgIndex.length - 1; i >= 0; i--) {
-                                if (lineToMsgIndex[i] === pEnd) { lastLineOfP = i; break; }
-                            }
-                        }
-
-                        const effectiveFrom = Math.min(fromLine, firstLineOfP);
-                        const effectiveTo = Math.max(toLine, lastLineOfP);
-
-                        html = renderContextLines(allLines, exState.messages, lineToMsgIndex, effectiveFrom, effectiveTo, matchStart, matchEnd, exState.lastAddedIdx);
-
-                        const vStartIdx = lineToMsgIndex[effectiveFrom] + 1;
-                        const vEndIdx = lineToMsgIndex[effectiveTo] + 1;
-                        const msgCount = vEndIdx - vStartIdx + 1;
-                        label = `${msgCount} msgs | -${rBefore}/+${rAfter} lines`;
-                        posLabel = vStartIdx === vEndIdx ? `Message ${vStartIdx}` : `Messages ${vStartIdx}–${vEndIdx}`;
-                    } else {
-                        // ── Raw-text import: paragraph-based rendering ──
-                        // Use the line counters to compute how many paragraphs to show
-                        // within the outer pStart/pEnd window. Each "Next Line" click
-                        // widens lineContextAfter by 1, which we translate to the
-                        // message_index of that line via the line index, then clamp to
-                        // [pStart, pEnd] so paragraph-level boundaries remain the hard limit.
-                        const { allLines, lineToMsgIndex } = exState.lineIndex;
-                        const { start: matchStart, end: matchEnd } = exState.matchedLineRange;
-                        const rBefore = exState.lineContextBefore;
-                        const rAfter = exState.lineContextAfter;
-
-                        // Compute line-driven para boundaries
-                        const lineFrom = Math.max(0, matchStart - rBefore);
-                        const lineTo = Math.min(allLines.length - 1, matchEnd + rAfter);
-                        const lineDrivenParaStart = exState.messages[lineToMsgIndex[lineFrom]].message_index;
-                        const lineDrivenParaEnd = exState.messages[lineToMsgIndex[lineTo]].message_index;
-
-                        // Clamp within the paragraph-level window: use union so the
-                        // line-driven slice can only EXPAND pStart/pEnd, never shrink it.
-                        const effectiveParaStart = Math.min(pStart, lineDrivenParaStart);
-                        const effectiveParaEnd = Math.max(pEnd, lineDrivenParaEnd);
-
-                        const { start: matchParaStart, end: matchParaEnd } = exState.matchedParaRange || { start: pStart, end: pEnd };
-                        html = renderParagraphContext(exState.paragraphs, effectiveParaStart, effectiveParaEnd, matchParaStart, matchParaEnd, exState.lastAddedIdx);
-
-                        const count = exState.paragraphs.filter(p => p.message_index >= effectiveParaStart && p.message_index <= effectiveParaEnd).length;
-                        label = `${count} para${count !== 1 ? 's' : ''} | -${rBefore}/+${rAfter} lines`;
-                        posLabel = effectiveParaStart === effectiveParaEnd ? `Paragraph ${effectiveParaStart + 1}` : `Paragraphs ${effectiveParaStart + 1}–${effectiveParaEnd + 1}`;
-                    }
-
-                    wrapper.querySelector('[data-key="context-content"]').innerHTML = html;
-                    wrapper.querySelector('[data-key="context-label"]').textContent = label;
-                    wrapper.querySelector('[data-key="context-position"]').textContent = posLabel;
-                }
 
                 function scrollToNewContent(direction) {
                     const ctxBlock = wrapper.querySelector('.context-block');
@@ -646,167 +695,172 @@ document.addEventListener('DOMContentLoaded', () => {
                 wrapper.addEventListener('click', (e) => {
                     e.stopPropagation();
                     if (e.target.closest('button')) return;
+
+                    const wasExpanded = exState.expanded;
+
+                    if (!wasExpanded) {
+                        // Collapse all others
+                        group.excerpts.forEach((_, j) => {
+                            if (i !== j) {
+                                const otherState = groupState.excerpts[j];
+                                const otherWrapper = card.querySelector(`.excerpt-wrapper[data-index="${j}"]`);
+                                if (otherState.expanded && otherWrapper) {
+                                    otherState.expanded = false;
+                                    otherWrapper.querySelector('.context-controls-top').classList.add('hidden');
+                                    otherWrapper.querySelector('.context-controls-bottom').classList.add('hidden');
+                                    otherWrapper.querySelector('[data-key="context-content"]').innerHTML = renderHighlightedText(group.excerpts[j].matched_chunk_text || '');
+                                }
+                            }
+                        });
+                    }
+
                     exState.expanded = !exState.expanded;
-                    wrapper.querySelector('.snippet-preview').classList.toggle('hidden', exState.expanded);
-                    wrapper.querySelector('.expanded-content').classList.toggle('hidden', !exState.expanded);
-                    if (exState.expanded) onOpenExcerpt(ex, exState);
+                    wrapper.querySelector('.context-controls-top').classList.toggle('hidden', !exState.expanded);
+                    wrapper.querySelector('.context-controls-bottom').classList.toggle('hidden', !exState.expanded);
+                    if (exState.expanded) {
+                        onOpenExcerpt(i);
+                    } else {
+                        wrapper.querySelector('[data-key="context-content"]').innerHTML = renderHighlightedText(ex.matched_chunk_text || '');
+                    }
                 });
 
-                wrapper.querySelector('.prev-line-btn').addEventListener('click', (e) => {
+                wrapper.querySelector('.prev-line-btn').addEventListener('click', async (e) => {
                     e.stopPropagation();
-                    exState.lineContextBefore++;
                     const { start: matchStart } = exState.matchedLineRange;
-                    const newFromLine = Math.max(0, matchStart - exState.lineContextBefore);
-                    exState.lastAddedIdx = exState.lineIndex.lineToMsgIndex[newFromLine];
-                    renderExcerptContext();
+                    const prevLineIdx = matchStart - exState.lineContextBefore - 1;
+                    if (prevLineIdx < 0) {
+                        const firstMsgIdx = exState.messages[0].message_index;
+                        if (firstMsgIdx > 0) {
+                            const prevMsgIdx = firstMsgIdx - 1;
+                            const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?start_index=${prevMsgIdx}&end_index=${prevMsgIdx}`);
+                            const conv = await res.json();
+                            const oldLen = exState.lineIndex.allLines.length;
+                            exState.messages = [...(conv.messages || []), ...exState.messages].sort((a, b) => a.message_index - b.message_index);
+                            exState.lineIndex = buildLineIndex(exState.messages);
+                            if (!structured) exState.paragraphs = buildParagraphIndex(exState.messages);
+                            // Shift visiblePara limits if needed (optional since render handles offsets)
+                            // Recalculate matchedLineRange because allLines changed at the start
+                            exState.matchedLineRange = findMatchedLineRange(exState.lineIndex.allLines, ex.matched_chunk_text);
+                        }
+                    }
+                    exState.lineContextBefore++;
+                    const { start: currentMatchStart } = exState.matchedLineRange;
+                    const finalFromLine = Math.max(0, currentMatchStart - exState.lineContextBefore);
+                    exState.lastAddedIdx = exState.lineIndex.lineToMsgIndex[finalFromLine];
+                    renderExcerptContext(i);
                     scrollToNewContent('up');
                 });
 
                 wrapper.querySelector('.prev-para-btn').addEventListener('click', async (e) => {
                     e.stopPropagation();
                     if (exState.visibleParaStart > 0) {
-                        exState.visibleParaStart--;
-                        const idx = exState.visibleParaStart;
-                        exState.lastAddedIdx = idx;
-                        if (!exState.messages.some(m => m.message_index === idx)) {
-                            const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?start_index=${idx}&end_index=${idx}`);
-                            const conv = await res.json();
-                            exState.messages = [...exState.messages, ...(conv.messages || [])].sort((a, b) => a.message_index - b.message_index);
-                            exState.paragraphs = buildParagraphIndex(exState.messages);
-                        }
-                        // If the newly revealed paragraph is short, also pull in the next adjacent block
-                        // (treats tightly-related short blocks as one readable section).
-                        if (!structured && exState.visibleParaStart > 0) {
-                            const revealedMsg = exState.messages.find(m => m.message_index === idx);
-                            const isShort = revealedMsg && revealedMsg.content.replace(/\s/g, '').length <= 80;
-                            if (isShort) {
-                                exState.visibleParaStart--;
-                                const idx2 = exState.visibleParaStart;
-                                if (!exState.messages.some(m => m.message_index === idx2)) {
-                                    const res2 = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?start_index=${idx2}&end_index=${idx2}`);
-                                    const conv2 = await res2.json();
-                                    exState.messages = [...exState.messages, ...(conv2.messages || [])].sort((a, b) => a.message_index - b.message_index);
-                                    exState.paragraphs = buildParagraphIndex(exState.messages);
+                        try {
+                            exState.visibleParaStart--;
+                            const idx = exState.visibleParaStart;
+                            exState.lastAddedIdx = idx;
+
+                            async function ensureFetched(targetMi) {
+                                if (!exState.messages.some(m => m.message_index === targetMi)) {
+                                    const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?start_index=${targetMi}&end_index=${targetMi}`);
+                                    if (!res.ok) return false;
+                                    const conv = await res.json();
+                                    exState.messages = [...exState.messages.filter(m => m.message_index !== targetMi), ...(conv.messages || [])].sort((a, b) => a.message_index - b.message_index);
+                                    exState.lineIndex = buildLineIndex(exState.messages);
+                                    if (!structured) exState.paragraphs = buildParagraphIndex(exState.messages);
+                                }
+                                return true;
+                            }
+
+                            await ensureFetched(idx);
+
+                            if (!structured && exState.visibleParaStart > 0) {
+                                let revealedMsg = exState.messages.find(m => m.message_index === exState.visibleParaStart);
+                                while (revealedMsg && revealedMsg.content.replace(/\s/g, '').length <= 80 && exState.visibleParaStart > 0) {
+                                    exState.visibleParaStart--;
+                                    await ensureFetched(exState.visibleParaStart);
+                                    revealedMsg = exState.messages.find(m => m.message_index === exState.visibleParaStart);
                                 }
                             }
+                            exState.matchedLineRange = findMatchedLineRange(exState.lineIndex.allLines, ex.matched_chunk_text);
+                            renderExcerptContext(i);
+                            scrollToNewContent('up');
+                        } catch (err) {
+                            console.error('prev-para error:', err);
                         }
-                        renderExcerptContext();
-                        scrollToNewContent('up');
                     }
                 });
 
-                wrapper.querySelector('.next-line-btn').addEventListener('click', (e) => {
+                wrapper.querySelector('.next-line-btn').addEventListener('click', async (e) => {
                     e.stopPropagation();
-                    exState.lineContextAfter++;
                     const { end: matchEnd } = exState.matchedLineRange;
-                    const newToLine = Math.min(exState.lineIndex.allLines.length - 1, matchEnd + exState.lineContextAfter);
-                    exState.lastAddedIdx = exState.lineIndex.lineToMsgIndex[newToLine];
-                    renderExcerptContext();
+                    const nextLineIdx = matchEnd + exState.lineContextAfter + 1;
+                    if (nextLineIdx >= exState.lineIndex.allLines.length) {
+                        const lastMsgIdx = exState.messages[exState.messages.length - 1].message_index;
+                        if (lastMsgIdx < exState.totalMessages - 1) {
+                            const nextMsgIdx = lastMsgIdx + 1;
+                            const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?start_index=${nextMsgIdx}&end_index=${nextMsgIdx}`);
+                            const conv = await res.json();
+                            exState.messages = [...exState.messages, ...(conv.messages || [])].sort((a, b) => a.message_index - b.message_index);
+                            exState.lineIndex = buildLineIndex(exState.messages);
+                            if (!structured) exState.paragraphs = buildParagraphIndex(exState.messages);
+                        }
+                    }
+                    exState.lineContextAfter++;
+                    const { end: currentMatchEnd } = exState.matchedLineRange;
+                    const finalToLine = Math.min(exState.lineIndex.allLines.length - 1, currentMatchEnd + exState.lineContextAfter);
+                    exState.lastAddedIdx = exState.lineIndex.lineToMsgIndex[finalToLine];
+                    renderExcerptContext(i);
                     scrollToNewContent('down');
                 });
 
                 wrapper.querySelector('.next-para-btn').addEventListener('click', async (e) => {
                     e.stopPropagation();
                     if (exState.visibleParaEnd < exState.totalMessages - 1) {
-                        exState.visibleParaEnd++;
-                        const idx = exState.visibleParaEnd;
-                        exState.lastAddedIdx = idx;
-                        if (!exState.messages.some(m => m.message_index === idx)) {
-                            const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?start_index=${idx}&end_index=${idx}`);
-                            const conv = await res.json();
-                            exState.messages = [...exState.messages, ...(conv.messages || [])].sort((a, b) => a.message_index - b.message_index);
-                            exState.paragraphs = buildParagraphIndex(exState.messages);
-                        }
-                        // If the newly revealed paragraph is short, also pull in the next adjacent block
-                        // (treats tightly-related short blocks as one readable section).
-                        if (!structured && exState.visibleParaEnd < exState.totalMessages - 1) {
-                            const revealedMsg = exState.messages.find(m => m.message_index === idx);
-                            const isShort = revealedMsg && revealedMsg.content.replace(/\s/g, '').length <= 80;
-                            if (isShort) {
-                                exState.visibleParaEnd++;
-                                const idx2 = exState.visibleParaEnd;
-                                if (!exState.messages.some(m => m.message_index === idx2)) {
-                                    const res2 = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?start_index=${idx2}&end_index=${idx2}`);
-                                    const conv2 = await res2.json();
-                                    exState.messages = [...exState.messages, ...(conv2.messages || [])].sort((a, b) => a.message_index - b.message_index);
-                                    exState.paragraphs = buildParagraphIndex(exState.messages);
+                        try {
+                            let targetIdx = exState.visibleParaEnd + 1;
+                            if (structured) {
+                                const { end: mE } = exState.matchedLineRange;
+                                const curL = Math.min(exState.lineIndex.allLines.length - 1, mE + exState.lineContextAfter);
+                                const curM = exState.lineIndex.lineToMsgIndex[curL];
+                                const lastL = exState.lineIndex.lineToMsgIndex.lastIndexOf(curM);
+                                if (curL >= lastL) targetIdx = curM + 1;
+                                else targetIdx = curM;
+                            }
+                            targetIdx = Math.max(targetIdx, exState.visibleParaEnd + 1);
+                            targetIdx = Math.min(exState.totalMessages - 1, targetIdx);
+
+                            exState.visibleParaEnd = targetIdx;
+                            exState.lastAddedIdx = targetIdx;
+
+                            async function ensureFetched(targetMi) {
+                                if (!exState.messages.some(m => m.message_index === targetMi)) {
+                                    const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?start_index=${targetMi}&end_index=${targetMi}`);
+                                    if (!res.ok) return false;
+                                    const conv = await res.json();
+                                    exState.messages = [...exState.messages.filter(m => m.message_index !== targetMi), ...(conv.messages || [])].sort((a, b) => a.message_index - b.message_index);
+                                    exState.lineIndex = buildLineIndex(exState.messages);
+                                    if (!structured) exState.paragraphs = buildParagraphIndex(exState.messages);
+                                }
+                                return true;
+                            }
+
+                            await ensureFetched(targetIdx);
+
+                            if (!structured && exState.visibleParaEnd < exState.totalMessages - 1) {
+                                let revealedMsg = exState.messages.find(m => m.message_index === exState.visibleParaEnd);
+                                while (revealedMsg && revealedMsg.content.replace(/\s/g, '').length <= 80 && exState.visibleParaEnd < exState.totalMessages - 1) {
+                                    exState.visibleParaEnd++;
+                                    await ensureFetched(exState.visibleParaEnd);
+                                    revealedMsg = exState.messages.find(m => m.message_index === exState.visibleParaEnd);
                                 }
                             }
+                            renderExcerptContext(i);
+                            scrollToNewContent('down');
+                        } catch (err) {
+                            console.error('next-para error:', err);
                         }
-                        renderExcerptContext();
-                        scrollToNewContent('down');
                     }
                 });
-
-                async function onOpenExcerpt(targetEx, targetExState) {
-                    if (targetExState.messages || targetExState.loading) return;
-                    targetExState.loading = true;
-
-                    const snippetContainer = wrapper.querySelector('[data-key="context-content"]');
-                    const labelContainer = wrapper.querySelector('[data-key="context-label"]');
-                    if (snippetContainer) snippetContainer.innerHTML = '<div class="context-loading">Loading context...</div>';
-                    if (labelContainer) labelContainer.textContent = 'Loading...';
-
-                    const mStart = targetEx.message_start_index;
-                    const mEnd = targetEx.message_end_index;
-                    const currentQuery = searchInput.value.trim();
-
-                    try {
-                        let conv;
-                        if (structured) {
-                            const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?highlight_query=${encodeURIComponent(currentQuery)}`);
-                            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                            conv = await res.json();
-                        } else {
-                            // If totalMessages was 0 initialized, we use a large fallback so fEnd is at least mEnd + 1
-                            const total = targetExState.totalMessages || 10000;
-                            const fStart = Math.max(0, mStart - 2);
-                            const fEnd = Math.min(total - 1, mEnd + 1);
-                            const res = await fetch(`${BASE_URL}/conversations/${group.conversation_id}?highlight_query=${encodeURIComponent(currentQuery)}&start_index=${fStart}&end_index=${fEnd}`);
-                            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                            conv = await res.json();
-                        }
-
-                        if (conv) {
-                            targetExState.messages = (conv.messages || []).sort((a, b) => a.message_index - b.message_index);
-                            
-                            // Capture actual count from server if available
-                            if (conv.message_count !== undefined) {
-                                targetExState.totalMessages = conv.message_count;
-                            }
-
-                            if (structured) {
-                                targetExState.lineIndex = buildLineIndex(targetExState.messages);
-                                targetExState.matchedLineRange = findMatchedLineRange(targetExState.lineIndex.allLines, targetEx.matched_chunk_text);
-                                targetExState.visibleParaStart = targetEx.message_start_index;
-                                targetExState.visibleParaEnd = targetEx.message_end_index;
-                                targetExState.paragraphs = buildParagraphIndex(targetExState.messages);
-                            } else {
-                                targetExState.paragraphs = buildParagraphIndex(targetExState.messages);
-                                targetExState.matchedParaRange = findMatchedParagraphRange(targetExState.paragraphs, targetEx.matched_chunk_text);
-                                targetExState.visibleParaStart = conv.messages && conv.messages.length ? conv.messages[0].message_index : 0;
-                                targetExState.visibleParaEnd = conv.messages && conv.messages.length ? conv.messages[conv.messages.length - 1].message_index : 0;
-
-                                // Index lines for raw text navigation
-                                targetExState.lineIndex = buildLineIndex(targetExState.messages);
-                                targetExState.matchedLineRange = findMatchedLineRange(targetExState.lineIndex.allLines, targetEx.matched_chunk_text);
-                            }
-                        }
-                        renderExcerptContext();
-                    } catch (err) {
-                        console.error('Excerpt context load failed:', err);
-                        if (snippetContainer) {
-                            snippetContainer.innerHTML = `<div class="context-error">Failed to load context. <button class="retry-btn" style="font-size:0.7rem; padding: 2px 4px;">Retry</button></div>`;
-                            snippetContainer.querySelector('.retry-btn').onclick = (e) => {
-                                e.stopPropagation();
-                                targetExState.loading = false;
-                                onOpenExcerpt(targetEx, targetExState);
-                            };
-                        }
-                    } finally {
-                        targetExState.loading = false;
-                    }
-                }
             });
 
             function toggleExpand(e) {
@@ -815,17 +869,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.classList.toggle('expanded', groupState.expanded);
                 card.querySelector('.excerpts-container').classList.toggle('hidden', !groupState.expanded);
                 card.querySelector('.toggle-btn').textContent = groupState.expanded ? 'Collapse' : 'Expand';
-                
-                // Mark viewed on any expansion
+
                 if (groupState.expanded) {
                     visitedResults.add(group.conversation_id);
                     card.classList.add('visited');
-                }
-
-                // If expanding for the first time in this session, auto-expand the first excerpt
-                if (groupState.expanded && group.excerpts.length > 0 && !groupState.excerpts[0].expanded) {
-                    const firstEx = card.querySelector('.excerpt-wrapper');
-                    if (firstEx) firstEx.click();
+                    group.excerpts.forEach((_, i) => {
+                        if (groupState.excerpts[i].expanded) {
+                            onOpenExcerpt(i);
+                        }
+                    });
                 }
             }
             card.querySelector('.toggle-btn').addEventListener('click', toggleExpand);
@@ -854,6 +906,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.querySelector('.collapsed-snippet').classList.remove('hidden');
         card.querySelector('.toggle-btn').textContent = 'Expand';
     }
+
 
     function setStatus(msg, isError = false) {
         statusMessage.textContent = msg;
@@ -1256,7 +1309,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 list.className = 'library-item-list';
 
                 group.items.forEach(item => {
-                    const isRaw = (item.source_type === 'raw');
+                    const isRaw = (item.source_type === 'raw_text_chat');
                     const typeLabel = isRaw ? 'Raw Imported Text' : 'Structured Conversation';
                     const typeCls = isRaw ? 'library-type-raw' : 'library-type-structured';
                     const dateStr = formatLibraryDate(item.imported_at);
@@ -1332,7 +1385,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('library-open-title').textContent = title;
         document.getElementById('library-open-project').textContent = project ? `in ${project}` : '';
 
-        const isRaw = (source === 'raw');
+        const isRaw = (source === 'raw_text_chat');
         const typeBadge = document.getElementById('library-open-type-badge');
         typeBadge.textContent = isRaw ? 'Raw Imported Text' : 'Structured Conversation';
         typeBadge.className = `library-open-type-badge library-type-badge ${isRaw ? 'library-type-raw' : 'library-type-structured'}`;
@@ -1374,7 +1427,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Structured: render user/assistant messages, mark by index range
                 openContent.innerHTML = messages.map(m => {
                     const roleClass = m.role === 'user' ? 'user' : 'assistant';
-                    const roleLabel = m.role === 'user' ? 'User' : 'Assistant';
+                    const roleLabel = (m.role === 'user' || m.role === 'assistant')
+                        ? (m.role.charAt(0).toUpperCase() + m.role.slice(1))
+                        : m.role;
                     const isMatch = anchor &&
                         m.message_index >= anchor.msgStart &&
                         m.message_index <= anchor.msgEnd;
@@ -1555,49 +1610,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (headerRow) headerRow.classList.remove('hidden');
 
-        // Group by conversation_id
-        const groupMap = new Map();
-        currentSearchResults.forEach(res => {
-            if (!groupMap.has(res.conversation_id)) {
-                groupMap.set(res.conversation_id, {
-                    conversation_id: res.conversation_id,
-                    conversation_title: res.conversation_title,
-                    category_name: res.category_name,
-                    conversation_source_type: res.conversation_source_type,
-                    imported_at: res.imported_at,
-                    max_score: res.similarity_score,
-                    results: []
-                });
-            }
-            const group = groupMap.get(res.conversation_id);
-            group.results.push(res);
-            if (res.similarity_score > group.max_score) {
-                group.max_score = res.similarity_score;
-            }
-        });
+        // Results are already grouped by conversation_id in the backend
+        const groups = currentSearchResults;
 
-        const groups = Array.from(groupMap.values());
-
-        // Process each group's results into merged excerpts
+        // Ensure excerpts overlap merging still applies if necessary,
+        // though the backend handles most clustering logic inherently now.
         groups.forEach(group => {
-            // Sort by message position
-            group.results.sort((a, b) => a.message_start_index - b.message_start_index);
-
             const merged = [];
-            group.results.forEach(res => {
+            group.excerpts.forEach(res => {
                 if (merged.length > 0) {
                     const last = merged[merged.length - 1];
                     // Overlap or adjacency merging
                     if (res.message_start_index <= last.message_end_index + 1) {
                         last.message_start_index = Math.min(last.message_start_index, res.message_start_index);
                         last.message_end_index = Math.max(last.message_end_index, res.message_end_index);
+                        // Merge ranking flags (OR logic)
+                        if (res.ranking_flags) {
+                            if (!last.ranking_flags) last.ranking_flags = {};
+                            last.ranking_flags.exact_phrase = last.ranking_flags.exact_phrase || res.ranking_flags.exact_phrase;
+                            last.ranking_flags.all_terms = last.ranking_flags.all_terms || res.ranking_flags.all_terms;
+                            last.ranking_flags.high_proximity = last.ranking_flags.high_proximity || res.ranking_flags.high_proximity;
+                        }
                         return;
                     }
                 }
                 merged.push({
-                    message_start_index: res.message_start_index,
-                    message_end_index: res.message_end_index,
-                    matched_chunk_text: res.matched_chunk_text
+                    ...res
                 });
             });
             group.excerpts = merged;

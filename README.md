@@ -5,7 +5,8 @@
 ### Prerequisites
 - Docker and Docker Compose (to run PostgreSQL with pgvector)
 - Python 3.10+
-- OpenAI API Key (or equivalent embedding model access)
+- A local or self-hosted embedding provider (required for development; see `PROJECT.md` embedding-provider constraint)
+- OpenAI API Key or equivalent (optional — fallback only; not required for ordinary dev or evaluation work)
 
 ### Setup Steps
 1. **Database Setup**
@@ -30,7 +31,9 @@
    Create a `.env` file based on the local setup:
    ```env
    DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/thoughtreach
-   OPENAI_API_KEY=your_api_key_here
+   # Embedding provider — default to local/self-hosted during development.
+   # OPENAI_API_KEY is optional; only required if using the paid OpenAI fallback.
+   # OPENAI_API_KEY=your_api_key_here
    ```
 
 4. **Database Migrations**

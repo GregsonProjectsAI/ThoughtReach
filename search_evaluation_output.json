@@ -1,0 +1,1752 @@
+{
+  "dataset_version": "3.3-real-world-anchors",
+  "entries": [
+    {
+      "query_id": "EVAL-C001",
+      "category": "lookup",
+      "query_text": "Captain's Code puzzle",
+      "expected_target_description": "The AI Treasure Hunt Dev conversation containing the Captain's Code cipher puzzle design within the pirate treasure hunt game.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "Direct keyword match test. Captain's Code is a distinctive named element that should resolve to the AI Treasure Hunt Dev conversation.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C002",
+      "category": "lookup",
+      "query_text": "Smuggler's Mark symbol matching",
+      "expected_target_description": "The AI Treasure Hunt Dev conversation where the Smuggler's Mark puzzle (symbol-to-location matching) was designed as part of the cutlass path branch.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "Tests retrieval of a unique named game element combined with a mechanic description. Content also partially present in Target Audience Selection and Treasure Hunt System Design.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C003",
+      "category": "lookup",
+      "query_text": "where do players find fragment F1",
+      "expected_target_description": "The AI Treasure Hunt Dev conversation detailing that map Fragment F1 is found in the bedroom during the first step of the treasure hunt.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "Semantic understanding test. Query asks 'where' without naming the bedroom. Fragment F1 content exists only in AI Treasure Hunt Dev.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C004",
+      "category": "lookup",
+      "query_text": "dinner ideas and meal inspiration",
+      "expected_target_description": "The conversation about dinner inspiration and meal planning, distinct from all treasure hunt content.",
+      "expected_target_identifier": "conv:grab-dinner-inspiration",
+      "notes": "Corpus discrimination test. Can the search isolate the one non-treasure-hunt conversation from a corpus dominated by treasure hunt content?",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "780591a2-bc6e-464c-9fb6-9a4382856665",
+          "conversation_title": "Grab Dinner Inspiration",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "634ad2bd-37d4-4486-8cf4-d550f3ba7ed6",
+          "conversation_title": "Grab Dinner Inspiration",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "4ef35c81-3de5-4fb0-8a42-9cb4667d14ad",
+          "conversation_title": "Grab Dinner Inspiration",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "576f45c0-7542-440e-b480-b4cde0aa4713",
+          "conversation_title": "Hyperliquid Perps Tutorial",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C005",
+      "category": "recall",
+      "query_text": "map fragment distribution across game steps",
+      "expected_target_description": "Conversations discussing how the 4 map fragments (F1-F4) are distributed across game steps, including the structural fix that moved from branch-yields-fragments to branch-yields-clues. Primary source is AI Treasure Hunt Dev.",
+      "expected_target_identifier": "topic:fragment-distribution",
+      "notes": "Thematic recall across multiple chunks. Fragment distribution is discussed primarily in AI Treasure Hunt Dev with related content in Pirate Pack Build Plan.",
+      "difficulty": "medium",
+      "expected_precision": "narrow_set",
+      "expected_min_results": 3,
+      "actual_results": [
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Found 7 distinct conversations, meeting minimum of 3",
+      "distinct_result_count": 7
+    },
+    {
+      "query_id": "EVAL-C006",
+      "category": "recall",
+      "query_text": "fixing dead-end locations and broken game flow",
+      "expected_target_description": "Conversations where structural flaws in the treasure hunt (dead-end bedroom, broken branch fragment count, convergence error) were identified and resolved. Primary source is AI Treasure Hunt Dev, with some content in Target Audience Selection.",
+      "expected_target_identifier": "topic:structural-flaw-fixes",
+      "notes": "Semantic recall test. Uses paraphrases ('dead-end', 'broken game flow'). Content confirmed in AI Treasure Hunt Dev and Target Audience Selection.",
+      "difficulty": "hard",
+      "expected_precision": "narrow_set",
+      "expected_min_results": 2,
+      "actual_results": [
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "576f45c0-7542-440e-b480-b4cde0aa4713",
+          "conversation_title": "Hyperliquid Perps Tutorial",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Found 8 distinct conversations, meeting minimum of 2",
+      "distinct_result_count": 8
+    },
+    {
+      "query_id": "EVAL-C007",
+      "category": "navigation",
+      "query_text": "where did we decide that branch paths should give clues not fragments",
+      "expected_target_description": "The specific point in the AI Treasure Hunt Dev conversation where the decision was made that branch paths yield information/clues only, not map fragments.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "Navigation to a specific design decision. Content 'branch gives clues not fragments' exists only in AI Treasure Hunt Dev.",
+      "difficulty": "hard",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 3",
+      "matched_rank": 3
+    },
+    {
+      "query_id": "EVAL-C008",
+      "category": "navigation",
+      "query_text": "when did we introduce the location sheets concept",
+      "expected_target_description": "The point in AI Treasure Hunt Dev where the Location Sheets concept (visible environmental anchors representing map landmarks like volcano, jungle, lagoon, rocks) was introduced.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "Navigation to a specific design introduction. 'Location sheets' content exists in AI Treasure Hunt Dev and Pirate Pack Build Plan.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C009",
+      "category": "collection",
+      "query_text": "all discussions about treasure hunt planning and preparation",
+      "expected_target_description": "All conversations related to treasure hunt planning. Should surface AI Treasure Hunt Dev, Treasure Hunt System Design, AI Treasure Hunt Prep, AI Party Game Plan, Top German Treasure Hunt Sites, and Pirate Pack Build Plan.",
+      "expected_target_identifier": "topic:treasure-hunt-planning",
+      "notes": "Broad collection test. Should pull from multiple treasure-hunt-related conversations in the 33-conversation corpus. Tests recall breadth.",
+      "difficulty": "hard",
+      "expected_precision": "broad_set",
+      "expected_min_results": 5,
+      "actual_results": [
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "de8c0583-cd3c-4897-b87f-c3ac83f4c379",
+          "conversation_title": "The Treasure Hunt",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "4a6debc2-8f2d-4d92-a436-d8c332498a67",
+          "conversation_title": "The Treasure Hunt",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "576f45c0-7542-440e-b480-b4cde0aa4713",
+          "conversation_title": "Hyperliquid Perps Tutorial",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Found 10 distinct conversations, meeting minimum of 5",
+      "distinct_result_count": 10
+    },
+    {
+      "query_id": "EVAL-C010",
+      "category": "collection",
+      "query_text": "everything about puzzles ciphers and physical clue hiding spots",
+      "expected_target_description": "All conversations containing puzzle design (Captain's Code, Smuggler's Mark), cipher mechanics, and physical clue placement (bedroom, dining area, shoes, curtains). Primary sources are AI Treasure Hunt Dev and Target Audience Selection.",
+      "expected_target_identifier": "topic:puzzles-and-clues",
+      "notes": "Semantic breadth test with multiple related terms. Should surface AI Treasure Hunt Dev, Target Audience Selection, and AI Party Game Plan.",
+      "difficulty": "hard",
+      "expected_precision": "broad_set",
+      "expected_min_results": 3,
+      "actual_results": [
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Found 7 distinct conversations, meeting minimum of 3",
+      "distinct_result_count": 7
+    },
+    {
+      "query_id": "EVAL-C011",
+      "category": "synthesis_preparation",
+      "query_text": "what do we know about the target audience and age group for this product",
+      "expected_target_description": "All conversations touching on target audience, age group, difficulty tuning, and product positioning for the treasure hunt.",
+      "expected_target_identifier": "topic:audience-and-demographics",
+      "notes": "Synthesis-prep query requiring the system to gather scattered audience/demographic references across multiple conversations.",
+      "difficulty": "hard",
+      "expected_precision": "broad_set",
+      "expected_min_results": 3,
+      "actual_results": [
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "576f45c0-7542-440e-b480-b4cde0aa4713",
+          "conversation_title": "Hyperliquid Perps Tutorial",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "780591a2-bc6e-464c-9fb6-9a4382856665",
+          "conversation_title": "Grab Dinner Inspiration",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Found 9 distinct conversations, meeting minimum of 3",
+      "distinct_result_count": 9
+    },
+    {
+      "query_id": "EVAL-C012",
+      "category": "synthesis_preparation",
+      "query_text": "rhyming pirate prose and narrative tone decisions",
+      "expected_target_description": "Conversations covering the rhyming pirate verse style, prose quality feedback, and narrative tone decisions for the treasure hunt script.",
+      "expected_target_identifier": "topic:prose-and-narrative-tone",
+      "notes": "Tests ability to find creative/narrative content rather than structural/mechanical content. Semantically specific but not an exact phrase match.",
+      "difficulty": "medium",
+      "expected_precision": "narrow_set",
+      "expected_min_results": 2,
+      "actual_results": [
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Found 7 distinct conversations, meeting minimum of 2",
+      "distinct_result_count": 7
+    },
+    {
+      "query_id": "EVAL-C013",
+      "category": "lookup",
+      "query_text": "Pirate Pack Build Plan",
+      "expected_target_description": "Exact title match. The query is the literal title of a conversation. With phrase-matching boost, this should rank at position 1.",
+      "expected_target_identifier": "conv:pirate-pack-build-plan",
+      "notes": "Step 448 EXACT PHRASE test. The query is identical to a conversation title. Tests that the phrase bonus in title field_score pushes this to rank 1.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C014",
+      "category": "lookup",
+      "query_text": "Target Audience Selection",
+      "expected_target_description": "Exact title match for Target Audience Selection conversation. With phrase-matching boost on title, this should rank at position 1.",
+      "expected_target_identifier": "conv:target-audience-selection",
+      "notes": "Step 448 EXACT PHRASE test. Literal title query. Should benefit from the strong phrase bonus in title scoring.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "576f45c0-7542-440e-b480-b4cde0aa4713",
+          "conversation_title": "Hyperliquid Perps Tutorial",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "780591a2-bc6e-464c-9fb6-9a4382856665",
+          "conversation_title": "Grab Dinner Inspiration",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C015",
+      "category": "lookup",
+      "query_text": "treasure hunt system design",
+      "expected_target_description": "Near-exact title match for Treasure Hunt System Design conversation. All four terms appear in the title, and the full phrase matches.",
+      "expected_target_identifier": "conv:treasure-hunt-system-design",
+      "notes": "Step 448 COVERAGE + PHRASE test. All query terms present in the title field. Tests that full-term coverage bonus and phrase bonus together push the correct conversation to rank 1.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 2",
+      "matched_rank": 2
+    },
+    {
+      "query_id": "EVAL-C016",
+      "category": "lookup",
+      "query_text": "treasure",
+      "expected_target_description": "Single-word query. Should return AI Treasure Hunt Dev or other treasure-related conversations via pure semantic similarity, unaffected by multi-word boosts.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "Step 448 SINGLE-WORD STABILITY test. Multi-word phrase/coverage/proximity bonuses should have zero effect on single-word queries. Confirms no regression from the new logic.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "4a6debc2-8f2d-4d92-a436-d8c332498a67",
+          "conversation_title": "The Treasure Hunt",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "de8c0583-cd3c-4897-b87f-c3ac83f4c379",
+          "conversation_title": "The Treasure Hunt",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C017",
+      "category": "lookup",
+      "query_text": "Hyperliquid Perps Tutorial",
+      "expected_target_description": "Exact title match for the Hyperliquid Perps Tutorial conversation. Completely unrelated to treasure hunt content. Tests that phrase matching correctly isolates non-treasure-hunt content.",
+      "expected_target_identifier": "conv:hyperliquid-perps-tutorial",
+      "notes": "Step 448 STRUCTURED UPLIFT test. This conversation exists in the corpus. The exact phrase in the title should strongly boost it to rank 1, even though it is semantically distant from the dominant treasure hunt corpus.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "fadcfdde-548b-478c-a31d-e58ee21a2543",
+          "conversation_title": "Hyperliquid Perps Tutorial",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "576f45c0-7542-440e-b480-b4cde0aa4713",
+          "conversation_title": "Hyperliquid Perps Tutorial",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d754fa26-50cc-4d68-b714-a947b6a444ab",
+          "conversation_title": "Hyperliquid Perps Tutorial",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C018",
+      "category": "recall",
+      "query_text": "fragment map bedroom pirate",
+      "expected_target_description": "A multi-term query with all four terms scattered across the AI Treasure Hunt Dev conversation. Tests that high term-coverage in one chunk boosts it above results with only partial term overlap.",
+      "expected_target_identifier": "topic:fragment-map-overlap",
+      "notes": "Step 448 COVERAGE test. Four distinct terms that individually appear in many conversations but all co-occur specifically in AI Treasure Hunt Dev chunks. Tests the coverage bonus for full-term hits.",
+      "difficulty": "medium",
+      "expected_precision": "narrow_set",
+      "expected_min_results": 2,
+      "actual_results": [
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Found 6 distinct conversations, meeting minimum of 2",
+      "distinct_result_count": 6
+    },
+    {
+      "query_id": "EVAL-C019",
+      "category": "recall",
+      "query_text": "location sheets volcano jungle lagoon",
+      "expected_target_description": "Tight proximity query. All four terms appear close together in AI Treasure Hunt Dev where Location Sheets are described with their landmark names (volcano, jungle, lagoon, rocks).",
+      "expected_target_identifier": "topic:location-sheets-detail",
+      "notes": "Step 448 PROXIMITY test. These terms co-occur within a small region of the AI Treasure Hunt Dev text. Tests that the proximity bonus favours chunks where all terms appear together over chunks where they are scattered.",
+      "difficulty": "medium",
+      "expected_precision": "narrow_set",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Found 7 distinct conversations, meeting minimum of 1",
+      "distinct_result_count": 7
+    },
+    {
+      "query_id": "EVAL-C020",
+      "category": "synthesis_preparation",
+      "query_text": "how should we approach the overall game experience",
+      "expected_target_description": "Deliberately vague/ambiguous query with no exact phrase match in any conversation. Should surface multiple treasure-hunt planning conversations via semantic similarity without being distorted by lexical boosts.",
+      "expected_target_identifier": "topic:game-experience-broad",
+      "notes": "Step 448 AMBIGUITY GUARD test. No conversation title or chunk contains this exact phrase. Confirms that lexical uplift does not overpower semantic search for genuinely ambiguous queries. Should still find relevant treasure-hunt-related conversations.",
+      "difficulty": "hard",
+      "expected_precision": "broad_set",
+      "expected_min_results": 3,
+      "actual_results": [
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Found 7 distinct conversations, meeting minimum of 3",
+      "distinct_result_count": 7
+    },
+    {
+      "query_id": "EVAL-C021",
+      "category": "lookup",
+      "query_text": "AI Party Game Plan",
+      "expected_target_description": "Exact title match for the AI Party Game Plan conversation. Tests whether title relevance correctly outranks conversations with higher body-term frequency for the same keywords.",
+      "expected_target_identifier": "conv:ai-party-game-plan",
+      "notes": "TITLE-VS-BODY CONFLICT test. Keywords 'AI', 'Game', 'Plan' are extremely frequent in the massive AI Treasure Hunt Dev file, but this query is the literal title of a smaller document. Title weighting should ensure the specific plan ranks first.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C022",
+      "category": "lookup",
+      "query_text": "Grab Dinner Inspiration",
+      "expected_target_description": "Targeted search for the Grab Dinner Inspiration conversation. Tests whether a specific intent can overcome the broad frequency burial risk from the dominant treasure hunt corpus.",
+      "expected_target_identifier": "conv:grab-dinner-inspiration",
+      "notes": "BROAD-FREQUENCY BURIAL test. Semantic and lexical match for a niche topic ('dinner') should prevail even when the corpus is dominated by another high-frequency topic ('treasure hunt').",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "634ad2bd-37d4-4486-8cf4-d550f3ba7ed6",
+          "conversation_title": "Grab Dinner Inspiration",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "780591a2-bc6e-464c-9fb6-9a4382856665",
+          "conversation_title": "Grab Dinner Inspiration",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "4ef35c81-3de5-4fb0-8a42-9cb4667d14ad",
+          "conversation_title": "Grab Dinner Inspiration",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "576f45c0-7542-440e-b480-b4cde0aa4713",
+          "conversation_title": "Hyperliquid Perps Tutorial",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C023",
+      "category": "lookup",
+      "query_text": "bedroom fragment and Smuggler's Mark",
+      "expected_target_description": "Query combining two distinct game elements discussed in different parts of the AI Treasure Hunt Dev conversation. Tests whether multi-cluster relevance rewards the combined footprint.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "MULTI-CLUSTER RELEVANCE test. 'Bedroom' and 'Smuggler's Mark' are separate clusters within AI Treasure Hunt Dev. The system should reward the document for containing both distinct matching regions.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C024",
+      "category": "lookup",
+      "query_text": "treasure hunt puzzle design",
+      "expected_target_description": "Broad topical query about puzzle design. Tests whether a conversation with high topical density (many relevant chunks) outranks one with a single isolated strong match.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "CONVERSATION-LEVEL TOPICALITY test. AI Treasure Hunt Dev has massive density of 'puzzle design' content. This should win over a document that has one locally high-scoring paragraph about puzzles.",
+      "difficulty": "hard",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 2",
+      "matched_rank": 2
+    },
+    {
+      "query_id": "EVAL-C025",
+      "category": "lookup",
+      "query_text": "hosting an outdoor pirate party",
+      "expected_target_description": "General concepts around hosting an outdoor pirate party.",
+      "expected_target_identifier": "conv:ai-party-game-plan",
+      "notes": "ADVERSARIAL: Mode 1/2 (Distributed vs Isolated). AI Party Game Plan is holistically about hosting the party (many distributed matches), but the massive AI Treasure Hunt Dev might contain one isolated dense chunk about an 'outdoor pirate party' and incorrectly win rank 1 under a max-chunk model.",
+      "difficulty": "hard",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 2",
+      "matched_rank": 2
+    },
+    {
+      "query_id": "EVAL-C026",
+      "category": "recall",
+      "query_text": "that one time we talked about fixing the dead-end branch",
+      "expected_target_description": "Recall the discussion where the dead-end branch flaw was fixed.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "ADVERSARIAL: Mode 3 (Memory-style wording). Users often query using preamble words ('that one time we talked about'). A literal max-chunk ranker might find those exact common words in a completely unrelated document, outscoring the actual semantic target.",
+      "difficulty": "hard",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "576f45c0-7542-440e-b480-b4cde0aa4713",
+          "conversation_title": "Hyperliquid Perps Tutorial",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C027",
+      "category": "lookup",
+      "query_text": "printing physical maps and cutting map fragments",
+      "expected_target_description": "Instructions for printing and assembling physical materials.",
+      "expected_target_identifier": "conv:pirate-pack-build-plan",
+      "notes": "ADVERSARIAL: Mode 4 (Large-file partial match bloat). The Pirate Pack Build Plan is definitively about this topic, but the massive 'AI Treasure Hunt Dev' file might string together enough hits for 'printing', 'maps', and 'fragments' in a single dense paragraph to steal rank 1.",
+      "difficulty": "hard",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "576f45c0-7542-440e-b480-b4cde0aa4713",
+          "conversation_title": "Hyperliquid Perps Tutorial",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 3",
+      "matched_rank": 3
+    },
+    {
+      "query_id": "EVAL-C028",
+      "category": "recall",
+      "query_text": "can we make the pirate clues rhyme like poetry",
+      "expected_target_description": "Discussion about pirate verse and rhyming clues.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "VAGUE-MEMORY test. Simulates 'Pirate Poetry' vague recall. Should succeed via semantic match without an exact phrase.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "676a4590-aeae-402d-933f-ddc2825a7714",
+          "conversation_title": "Validation Case",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 2",
+      "matched_rank": 2
+    },
+    {
+      "query_id": "EVAL-C029",
+      "category": "navigation",
+      "query_text": "the fix where branch paths yield clues instead of map fragments",
+      "expected_target_description": "The particular excerpt where the branch path structural flaw was resolved.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "ANCHOR-SELECTION test. This exact phrase occurs deep in the file. Will verify that the UI opens this optimal deep excerpt instead of the chronologically first excerpt.",
+      "difficulty": "hard",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 2",
+      "matched_rank": 2
+    },
+    {
+      "query_id": "EVAL-C030",
+      "category": "lookup",
+      "query_text": "document about target audience selection",
+      "expected_target_description": "Target Audience Selection conversation",
+      "expected_target_identifier": "conv:target-audience-selection",
+      "notes": "TITLE-VS-BODY CONFLICT test. Lexical match in title should elevate this document despite its low relative term frequency compared to the main corpus.",
+      "difficulty": "easy",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "576f45c0-7542-440e-b480-b4cde0aa4713",
+          "conversation_title": "Hyperliquid Perps Tutorial",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "e67e86f6-a2e7-44c0-a839-9e3db4caf770",
+          "conversation_title": "AI Treasure Hunt Prep",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "728a10bd-1f22-4c6d-b253-6fb7c793d7c9",
+          "conversation_title": "Reset Test A",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3d1c6dda-2f03-4024-b8f7-14b69c113471",
+          "conversation_title": "Reset Test B",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    },
+    {
+      "query_id": "EVAL-C031",
+      "category": "lookup",
+      "query_text": "combining the captain's code cipher with the bedroom fragment",
+      "expected_target_description": "Query combining distinct game elements.",
+      "expected_target_identifier": "conv:ai-treasure-hunt-dev",
+      "notes": "MULTI-CLUSTER test. Validates combo of elements that exist inside the same conversation but far apart.",
+      "difficulty": "medium",
+      "expected_precision": "exact",
+      "expected_min_results": 1,
+      "actual_results": [
+        {
+          "conversation_id": "77410e08-68d1-46e2-ad68-c83b652b1594",
+          "conversation_title": "AI Treasure Hunt Dev",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "d5dd0ce4-722b-4506-8aef-4fb916eba0be",
+          "conversation_title": "Pirate Pack Build Plan",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "3e2a1421-1176-40c4-a574-6e81fb43ae99",
+          "conversation_title": "Top German Treasure Hunt Sites",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "0826618c-aefc-4ac5-be51-e644fe0b637a",
+          "conversation_title": "Target Audience Selection",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "f2e33e96-4ac3-410f-bf75-f8e8a03a0cf9",
+          "conversation_title": "Treasure Hunt System Design",
+          "similarity_score": null
+        },
+        {
+          "conversation_id": "b40234b8-1f46-4c6c-8cd3-746d9adf54cb",
+          "conversation_title": "AI Party Game Plan",
+          "similarity_score": null
+        }
+      ],
+      "evaluation_status": "executed",
+      "expected_target_complete": true,
+      "evaluation_pass": true,
+      "evaluation_reason": "Expected target found at rank 1",
+      "matched_rank": 1
+    }
+  ],
+  "summary": {
+    "total_real_entries": 31,
+    "expected_target_complete_count": 31,
+    "expected_target_incomplete_count": 0,
+    "evaluation_pass_count": 31,
+    "evaluation_fail_count": 0,
+    "category_counts": {
+      "lookup": 17,
+      "recall": 6,
+      "navigation": 3,
+      "collection": 2,
+      "synthesis_preparation": 3
+    },
+    "difficulty_counts": {
+      "easy": 7,
+      "medium": 13,
+      "hard": 11
+    },
+    "expected_precision_counts": {
+      "exact": 22,
+      "narrow_set": 5,
+      "broad_set": 4
+    },
+    "category_coverage_complete": true,
+    "missing_categories": [],
+    "dataset_ready_for_execution": true,
+    "readiness_failure_reasons": []
+  },
+  "warnings": []
+}

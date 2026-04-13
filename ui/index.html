@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ThoughtReach Search</title>
-    <link rel="stylesheet" href="styles.css?v=2">
+    <link rel="stylesheet" href="styles.css?v=3">
 
 </head>
+
 <body>
     <div class="search-container">
         <header>
@@ -37,7 +39,8 @@
             <div id="results-header-row" class="results-header-row hidden">
                 <div class="results-summary-container">
                     <div id="search-summary" class="search-summary"></div>
-                    <div id="search-refinement-hint" class="search-refinement-hint hidden">Refine your search to narrow results</div>
+                    <div id="search-refinement-hint" class="search-refinement-hint hidden">Refine your search to narrow
+                        results</div>
                 </div>
                 <div class="result-display-controls">
                     <label for="result-display-select">Show:</label>
@@ -75,13 +78,15 @@
                                 <option value="" disabled selected>Select a project...</option>
                                 <option value="new">+ Create New Project...</option>
                             </select>
-                            <input type="text" id="new-project-input" class="hidden" placeholder="Enter new project name" />
+                            <input type="text" id="new-project-input" class="hidden"
+                                placeholder="Enter new project name" />
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="import-title">Conversation Title</label>
-                        <input type="text" id="import-title" required placeholder="e.g. Planning Session Notes" autocomplete="off" />
+                        <input type="text" id="import-title" required placeholder="e.g. Planning Session Notes"
+                            autocomplete="off" />
                     </div>
 
                     <div class="form-group">
@@ -97,14 +102,15 @@
                             </label>
                         </div>
                         <p class="import-help">
-                            <strong>Structured:</strong> for chats with "User: / Assistant:" labels. 
+                            <strong>Structured:</strong> for chats with "User: / Assistant:" labels.
                             <strong>Raw:</strong> for notes, documents, or manual text imports.
                         </p>
                     </div>
 
                     <div class="form-group">
                         <label for="import-text">Content</label>
-                        <textarea id="import-text" required placeholder="User: How do I build this?&#10;&#10;Assistant: You can follow these steps..."></textarea>
+                        <textarea id="import-text" required
+                            placeholder="User: How do I build this?&#10;&#10;Assistant: You can follow these steps..."></textarea>
                     </div>
 
                     <div class="import-actions">
@@ -137,13 +143,17 @@
                         <span id="library-open-project" class="library-open-project"></span>
                         <span id="library-open-date" class="library-open-meta-date"></span>
                     </div>
-                    <button id="library-back-to-search-btn" class="library-back-to-search-btn hidden" title="Return to Search Results">&larr; Back to Search Result</button>
-                    <button id="library-search-title-btn" class="library-search-btn" title="Search this title">Search This Title</button>
-                    <button id="library-delete-btn" class="library-delete-btn" title="Delete this conversation">Delete</button>
+                    <button id="library-back-to-search-btn" class="library-back-to-search-btn hidden"
+                        title="Return to Search Results">&larr; Back to Search Result</button>
+                    <button id="library-search-title-btn" class="library-search-btn" title="Search this title">Search
+                        This Title</button>
+                    <button id="library-delete-btn" class="library-delete-btn"
+                        title="Delete this conversation">Delete</button>
                 </div>
-                
+
                 <div id="library-delete-confirm" class="library-delete-confirm hidden">
-                    <span class="delete-warning">Are you sure you want to permanently delete this? This cannot be undone.</span>
+                    <span class="delete-warning">Are you sure you want to permanently delete this? This cannot be
+                        undone.</span>
                     <div class="delete-confirm-actions">
                         <button id="library-delete-cancel-btn" class="delete-cancel-btn">Cancel</button>
                         <button id="library-delete-proceed-btn" class="delete-proceed-btn">Delete Permanently</button>
@@ -155,6 +165,6 @@
         </section>
     </div>
 
-    <script src="app.js?v=2"></script>
+    <script src="app.js?v=477c"></script>
 </body>
 </html>

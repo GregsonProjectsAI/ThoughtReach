@@ -25,7 +25,7 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
     if category_id:
         stmt = stmt.where(Conversation.category_id == category_id)
         
-    stmt = stmt.order_by(distance_expr).limit(50)
+    stmt = stmt.order_by(distance_expr).limit(200)
     
     result = await db.execute(stmt)
     rows = result.all()
@@ -69,38 +69,136 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
             text_lower = str(text).lower()
             term_hits = sum(1 for t in query_terms_lower if t in text_lower)
             term_ratio = term_hits / len(query_terms_lower)
-            phrase_bonus = 0.5 if query_phrase_lower in text_lower else 0.0
-            return (term_ratio + phrase_bonus) * weight
+            
+            is_multi_word = len(query_terms_lower) > 1
+            
+            # Phrase bonus: Strong boost for exact phrase if it's a multi-word query
+            phrase_bonus = 0.0
+            if query_phrase_lower in text_lower:
+                phrase_bonus = 2.0 if is_multi_word else 0.5
+                
+            # Coverage bonus: Boost if all distinct terms are found
+            coverage_bonus = 1.0 if (is_multi_word and term_hits == len(query_terms_lower)) else 0.0
+            
+            # Proximity bonus: Boost if multiple terms are found close together
+            proximity_bonus = 0.0
+            if is_multi_word and term_hits > 1:
+                positions = [text_lower.find(t) for t in query_terms_lower if text_lower.find(t) != -1]
+                if positions:
+                    span = max(positions) - min(positions)
+                    if span < len(query_phrase_lower) * 3:
+                        proximity_bonus = 0.5
+            
+            return (term_ratio + phrase_bonus + coverage_bonus + proximity_bonus) * weight
 
         score = 0.0
         score += field_score(getattr(conversation, 'title', ''), 4.0)
         score += field_score(getattr(conversation, 'summary', ''), 2.0)
-        score += field_score(getattr(chunk, 'chunk_text', ''), 1.0)
+        score += field_score(getattr(chunk, 'chunk_text', ''), 2.0) # increased from 1.0 to weight local region more
         
         if category:
             score += field_score(getattr(category, 'name', ''), 0.5)
             
-        
         return score
 
     def sort_key(row):
         chunk, conversation, category, distance = row
         sim = 1.0 - distance if (distance is not None and not _math.isnan(distance)) else 0.0
-        # Only apply lexical tie-break for manual raw-text imports.
-        # Structured conversations retain pure cosine-similarity ordering.
-        if conversation.source_type == "raw":
-            lex = lexical_score(row)
-        else:
-            lex = 0.0
-        # Round sim to 2 decimal places to group near-ties, then use lex as tie-break
-        sim_bucket = round(sim, 2)
+        
+        lex = lexical_score(row)
+        
+        # Allow strong lexical matches to slightly push the item into a higher semantic bucket
+        boosted_sim = sim + (lex * 0.005)
+        
+        # Round to 2 decimal places to group near-ties, then use exact lex as tie-break
+        sim_bucket = round(boosted_sim, 2)
         return (-sim_bucket, -lex)
 
     deduped_rows.sort(key=sort_key)
 
-    # Final truncation to requested limit
-    rows = deduped_rows[:limit]
+    def get_lexical_flags(text: str):
+        if not text or not query_terms_lower:
+            return {"exact_phrase": False, "all_terms": False, "high_proximity": False}
+        
+        text_lower = str(text).lower()
+        term_hits = sum(1 for t in query_terms_lower if t in text_lower)
+        is_multi_word = len(query_terms_lower) > 1
+        
+        exact_phrase = query_phrase_lower in text_lower
+        all_terms = is_multi_word and (term_hits == len(query_terms_lower))
+        
+        high_proximity = False
+        if is_multi_word and term_hits > 1:
+            positions = [text_lower.find(t) for t in query_terms_lower if text_lower.find(t) != -1]
+            if positions:
+                span = max(positions) - min(positions)
+                if span < len(query_phrase_lower) * 3:
+                    high_proximity = True
+        
+        return {
+            "exact_phrase": exact_phrase,
+            "all_terms": all_terms,
+            "high_proximity": high_proximity
+        }
+
+    # Keep all deduplicated candidate rows for grouping before final truncation
+    rows = deduped_rows
     
+    # Calculate group summaries (number of excerpts and match characteristics)
+    group_summary_map = {}
+    from collections import defaultdict
+    conv_to_chunks = defaultdict(list)
+    conv_to_obj = {}
+    for chunk, conversation, category, distance in rows:
+        conv_to_chunks[conversation.id].append(chunk)
+        conv_to_obj[conversation.id] = conversation
+
+    for conv_id, chunks in conv_to_chunks.items():
+        conversation = conv_to_obj[conv_id]
+        num_excerpts = len(chunks)
+        title = getattr(conversation, 'title', '') or ''
+        title_lower = title.lower()
+        title_match = any(t in title_lower for t in query_terms_lower)
+        exact_phrase_in_title = query_phrase_lower in title_lower if len(query_terms_lower) > 1 else False
+        
+        # Check chunks for exact phrase or all terms, and roles
+        exact_phrase_in_content = False
+        all_terms_in_content = False
+        user_match_count = 0
+        assistant_match_count = 0
+        for c in chunks:
+            text = (c.chunk_text or "").lower()
+            if query_phrase_lower in text: exact_phrase_in_content = True
+            hits = sum(1 for t in query_terms_lower if t in text)
+            if hits == len(query_terms_lower): all_terms_in_content = True
+            
+            # Simple role detection from the chunk results available in the current loop scope?
+            # Actually, I can check if this chunk has matches in user or assistant parts
+            # But the 'out' list is built later. 
+            # I'll rely on the existing 'source_user_is_match' flags calculated in the loop.
+            # Wait, I am calculating summaries BEFORE building 'out' list. 
+            # I'll just check title/content for now to avoid complexity, 
+            # unless I move summary generation after 'out' list is partially built.
+
+        is_structured = (conversation.source_type == "structured_conversation")
+        item_type = "conversation" if is_structured else "imported item"
+            
+        parts = [f"Matched {num_excerpts} {'excerpt' if num_excerpts == 1 else 'excerpts'} in this {item_type}"]
+        reasons = []
+        if exact_phrase_in_title:
+            reasons.append("exact phrase found in title")
+        elif exact_phrase_in_content:
+            reasons.append("exact phrase found in content")
+        elif all_terms_in_content:
+            reasons.append("all words found in one local region")
+        elif title_match:
+            reasons.append("match found in title")
+            
+        if reasons:
+            parts.append(reasons[0])
+            
+        group_summary_map[conv_id] = "; ".join(parts).capitalize() + "."
+
     # Prepare highlighting regex for individual terms
     highlight_regex = None
     terms = [re.escape(t) for t in query.split() if t]
@@ -159,8 +257,12 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
         next_exchange_user_message = None
         next_exchange_assistant_message = None
 
-        # Determine if we should perform Layer 2/3 exchange reconstruction
-        is_structured = (conversation.source_type != "raw")
+        # Determine if we should perform Layer 2/3 exchange reconstruction.
+        # Use role presence in the surrounding window rather than source_type,
+        # so conversations stored as 'raw' but containing non-user (assistant/model)
+        # messages are still treated as structured for exchange reconstruction.
+        has_non_user_in_surrounding = any(m["role"] not in ("user", "unknown") for m in surrounding)
+        is_structured = (conversation.source_type == "structured_conversation") or has_non_user_in_surrounding
         
         if is_structured:
             # Collect all messages covered by the chunk [s_idx, e_idx]
@@ -281,24 +383,13 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
             if next_exchange_assistant_message:
                 next_exchange_assistant_message = highlight_regex.sub(r"[[\1]]", next_exchange_assistant_message)
 
-        out.append({
-            "conversation_id": conversation.id,
-            "conversation_title": conversation.title,
-            "conversation_summary": conversation.summary,
-            "conversation_source_type": conversation.source_type,
-            "category_id": conversation.category_id,
-            "category_name": category.name if category else None,
-            "imported_at": conversation.imported_at,
-            "conversation_created_at": conversation.created_at,
+        excerpt_dict = {
             "matched_chunk_text": highlighted_text,
             "similarity_score": sim_score,
             "message_start_index": chunk.message_start_index,
             "message_end_index": chunk.message_end_index,
             "source_exchange_start_index": l2_start_idx,
             "source_exchange_end_index": l2_end_idx,
-            "chunk_index": chunk.chunk_index,
-            "message_count": total_msgs,
-            "relative_position": rel_pos,
             "surrounding_messages": surrounding,
             "source_user_message": source_user_message,
             "source_assistant_message": source_assistant_message,
@@ -307,9 +398,72 @@ async def search_chunks(query: str, db: AsyncSession, limit: int = 10, category_
             "previous_exchange_user_message": prev_exchange_user_message,
             "previous_exchange_assistant_message": prev_exchange_assistant_message,
             "next_exchange_user_message": next_exchange_user_message,
-            "next_exchange_assistant_message": next_exchange_assistant_message
-        })
-    return out
+            "next_exchange_assistant_message": next_exchange_assistant_message,
+            "message_count": total_msgs,
+            "ranking_flags": get_lexical_flags(raw_text)
+        }
+
+        # Find existing group or create new one to ensure ONE item per conversation
+        existing_group = next((g for g in out if g["conversation_id"] == conversation.id), None)
+        if not existing_group:
+            existing_group = {
+                "conversation_id": conversation.id,
+                "conversation_title": conversation.title,
+                "conversation_summary": conversation.summary,
+                "conversation_source_type": conversation.source_type,
+                "source_type": conversation.source_type,
+                "category_id": conversation.category_id,
+                "category_name": category.name if category else None,
+                "imported_at": conversation.imported_at,
+                "conversation_created_at": conversation.created_at,
+                "match_summary": group_summary_map.get(conversation.id),
+                "excerpts": []
+            }
+            out.append(existing_group)
+
+        existing_group["excerpts"].append(excerpt_dict)
+    
+    # Keep excerpts in original source order within the grouped result,
+    # then tag the single best-match excerpt so the UI can open it by default.
+    for group in out:
+        group["excerpts"].sort(key=lambda x: x["message_start_index"])
+        
+        # Select the best anchor: highest similarity_score, breaking ties by
+        # lexical quality (exact phrase > all terms > neither).
+        def _anchor_key(ex):
+            flags = ex.get("ranking_flags") or {}
+            lex_bonus = (2 if flags.get("exact_phrase") else 0) + (1 if flags.get("all_terms") else 0)
+            return (ex.get("similarity_score", 0.0), lex_bonus)
+        
+        best_idx = max(range(len(group["excerpts"])), key=lambda i: _anchor_key(group["excerpts"][i]))
+        for i, ex in enumerate(group["excerpts"]):
+            ex["is_best_match"] = (i == best_idx)
+
+    # Calculate aggregate conversation score for final ranking
+    def _group_sort_key(group):
+        best_anchor = next((ex for ex in group["excerpts"] if ex["is_best_match"]), None)
+        if not best_anchor:
+            return 0.0
+            
+        flags = best_anchor.get("ranking_flags") or {}
+        lex_bonus = (2 if flags.get("exact_phrase") else 0) + (1 if flags.get("all_terms") else 0)
+        base_score = best_anchor.get("similarity_score", 0.0) + (lex_bonus * 0.005)
+        
+        # Add a minimal density bonus to reward conversations with multiple valid matches
+        # Cap the bonus to prevent extremely large documents from over-accumulating advantage
+        density_bonus = min((len(group["excerpts"]) - 1) * 0.05, 0.15)
+        
+        title_bonus = 0.0
+        title = group.get("conversation_title", "").lower()
+        if title:
+            query_terms = [t for t in query.lower().split() if t not in ['an', 'and', 'the', 'of', 'in', 'to', 'for', 'with', 'a']]
+            if any(qt in title for qt in query_terms):
+                title_bonus = 0.15
+                
+        return base_score + density_bonus + title_bonus
+
+    out.sort(key=_group_sort_key, reverse=True)
+    return out[:limit]
 
 def format_search_results_for_llm(results: list[dict]) -> str:
     """

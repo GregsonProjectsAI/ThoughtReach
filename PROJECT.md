@@ -14,6 +14,7 @@ Archive + search core.
 - Do not invent future abstractions
 - Do not add features outside Phase 1
 - Preserve chunk provenance in the eventual design
+- **Embedding provider — development default**: Embedding generation for ingestion, query retrieval, and evaluation must default to a local or self-hosted provider during development. Paid external embedding APIs (e.g. OpenAI) may remain as optional fallback or future runtime choices but must not be required for ordinary development and validation work. This constraint does not authorise new user-facing AI behaviour; any runtime AI calls remain a separate future decision.
 
 ## Out of Scope (Do NOT build yet)
 - Categories
