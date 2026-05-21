@@ -18,7 +18,14 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
-    op.drop_column('conversations', 'parser_method')
+    from sqlalchemy import inspect
+
+    bind = op.get_bind()
+    inspector = inspect(bind)
+    columns = [col["name"] for col in inspector.get_columns("conversations")]
+
+    if "parser_method" in columns:
+        op.drop_column("conversations", "parser_method")
 
 def downgrade() -> None:
     op.add_column('conversations', sa.Column('parser_method', sa.String(), nullable=True))
